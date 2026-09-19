@@ -1,6 +1,0 @@
-{
-  "apiUrl": "https://your-erp-backend.fly.dev",
-  "email": "agent@example.com",
-  "password": "your-password",
-  "userId": "user-uuid-here"
-}
