@@ -65,7 +65,7 @@ const sharedResources: ResourceConfig[] = [
   },
 ]
 
-const router = Router()
+const router:Router = Router()
 
 router.use(authenticate)
 

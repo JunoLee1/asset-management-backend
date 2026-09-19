@@ -12,7 +12,7 @@ import {
   handleAcknowledge,
 } from './report.controller'
 
-const router = Router()
+const router:Router = Router()
 
 router.use(authenticate)
 

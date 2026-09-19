@@ -3,7 +3,7 @@ import { authenticate } from '../../../middlewares/authenticate'
 import { authorize } from '../../../middlewares/authorize'
 import { detectedSoftwareController } from './detected-software.controller'
 
-const router = Router()
+const router:Router = Router()
 router.use(authenticate)
 
 router.get('/', authorize('ADMIN', 'ASSET_MANAGER', 'SECURITY_OFFICER'), detectedSoftwareController.list)

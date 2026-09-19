@@ -6,7 +6,7 @@ import { validateBody } from '../../middlewares/validate'
 import { createAssetSchema, updateAssetSchema } from '../../schemas/asset.schema'
 import { uploadAssetImage } from '../../lib/cloudinary'
 
-const router = Router()
+const router:Router = Router()
 
 router.use(authenticate)
 
