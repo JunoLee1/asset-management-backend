@@ -6,3 +6,4 @@ src/generated/
 graphify-out/
 .claude/
 agent-client/
+prisma/seed.ts
