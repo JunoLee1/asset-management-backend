@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { type Express } from 'express'
 import cors from 'cors'
 import passport from 'passport'
 import { configurePassport } from './config/passport'
@@ -26,7 +26,7 @@ import { reportsHubRouter } from './modules/reports/reports-hub.router'
 import { monthlyReportRouter } from './modules/reports/monthly-report.router'
 import { errorHandler } from './middlewares/errorHandler'
 
-const app = express()
+const app: Express = express()
 
 app.use(cors())
 app.use(express.json())

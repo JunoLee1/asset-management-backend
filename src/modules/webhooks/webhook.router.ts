@@ -5,7 +5,7 @@ import { handleMailgunInbound } from './mailgun-inbound.handler'
 // Mailgun inbound parse는 multipart/form-data로 전송됨
 const upload = multer()
 
-export const webhookRouter = Router()
+export const webhookRouter:Router = Router()
 
 // POST /webhooks/mailgun-inbound
 // Mailgun Inbound Parse Webhook — 수리업체 이메일 회신 수신

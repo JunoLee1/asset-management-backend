@@ -3,7 +3,7 @@ import { authenticate } from '../../middlewares/authenticate'
 import { authorize } from '../../middlewares/authorize'
 import { handleSummary } from './report.controller'
 
-const router = Router()
+const router:Router = Router()
 
 router.use(authenticate)
 router.get('/summary', authorize('ADMIN', 'ASSET_MANAGER'), handleSummary)

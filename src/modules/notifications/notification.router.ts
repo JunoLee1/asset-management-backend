@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { notificationController } from './notification.controller'
 import { authenticate } from '../../middlewares/authenticate'
 
-const router = Router()
+const router:Router = Router()
 router.use(authenticate)
 
 router.get('/my', notificationController.my)

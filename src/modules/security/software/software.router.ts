@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { softwareController } from './software.controller'
 import { authenticate } from '../../../middlewares/authenticate'
 
-const router = Router()
+const router:Router = Router()
 
 router.use(authenticate)
 

@@ -3,7 +3,7 @@ import { maintenanceController } from './maintenance.controller'
 import { authenticate } from '../../middlewares/authenticate'
 import { authorize } from '../../middlewares/authorize'
 
-const router = Router()
+const router:Router = Router()
 
 router.use(authenticate)
 

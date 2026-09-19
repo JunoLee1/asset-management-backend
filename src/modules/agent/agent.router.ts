@@ -4,7 +4,7 @@ import { Router } from 'express'
 import { authenticate } from '../../middlewares/authenticate'
 import { agentController } from './agent.controller'
 
-const router = Router()
+const router: Router = Router()
 
 // block-list 는 인증 없이도 조회 가능
 router.get('/block-list', agentController.getBlockList)

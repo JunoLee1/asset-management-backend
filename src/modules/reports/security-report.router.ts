@@ -4,7 +4,7 @@ import { authorize } from '../../middlewares/authorize'
 import { getRequester, requireId } from '../../lib/requestHelpers'
 import { securityReportService, buildSecurityStats } from './security-report.service'
 
-const router = Router()
+const router:Router = Router()
 router.use(authenticate)
 
 // 통계 미리보기

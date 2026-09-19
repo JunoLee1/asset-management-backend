@@ -11,7 +11,7 @@ import {
   verifyResetCodeSchema,
 } from '../../schemas/auth.schema'
 
-const router = Router()
+const router: Router = Router()
 
 // ── 로컬 인증 ───────────────────────────────────────────────────────────────
 router.post('/accept-invite', validateBody(acceptInviteSchema), authController.acceptInvite)

@@ -12,7 +12,7 @@ import {
 } from '../../schemas/disposal.schema'
 import { disposalController, handleExportExcel } from './disposal.controller'
 
-const router = Router()
+const router:Router = Router()
 
 // 기본 인증 — 모든 라우트
 router.use(authenticate)
