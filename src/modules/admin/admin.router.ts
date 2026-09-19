@@ -13,7 +13,7 @@ import {
 } from '../../schemas/user.schema'
 import { notificationService } from '../notifications/notification.service'
 
-const router = Router()
+const router:Router = Router()
 
 router.use(authenticate)
 
