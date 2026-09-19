@@ -1,0 +1,2066 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────
+
+enum Role {
+  // ── 기존 역할 (유지) ─────────────────────────────
+  ADMIN // 운영자: 역할·권한·화면 설정·로직 파라미터 관리
+  TEAM_LEAD // 팀장: 부서 내 대여·정비 1차 승인
+  USER // 일반사원: 대여 신청·반납, 정비 신청
+  ASSET_MANAGER // 자산관리자: 자산 등록·변경·이관·폐기, 자산 마스터 관리
+
+  // ── 신규 운영 역할 ────────────────────────────────
+  REPAIR_OWNER // ADR 0009 — 기술 수리 부서장. DEPT_LEAD 권한 전부 + 수리 전담(배정·RepairReport 작성·제출)
+  REPAIR_TECH // ADR 0009 — 사내 수리 기술자. RepairCompletionReport 직접 제출
+  AP_USER // 정산자: 정산정보·세금계산서·AP 전표·지급
+  APPROVER // 승인자: 수리비·폐기·자산이관 승인
+
+  // ── 정보보안 (ADR 0002) ──────────────────────────
+  SECURITY_OFFICER // 정보보안담당자: SW 허가유무 최종 판정, Shadow IT 감독
+
+  // ── 조직 결재 (ADR 0003) ─────────────────────────
+  DEPT_LEAD // 부서장: 본인 부서의 2차 대여 승인, 부서 전체 자산 가시성
+}
+
+enum OAuthProvider {
+  GOOGLE
+  KAKAO
+}
+
+// 자산군 (최상위 자산 분류) — 코드 채번 접두사 분기점
+// IT_ASSET: IT 장비 (HAR/SFT/PER 전용테이블로 세분 — 네트워크 장비는 NETWORK_ASSET 으로 분리)
+// OFFICE_ASSET: 사무 비품·가구
+// FACILITY_ASSET: 시설·설비 (UI 라벨 = "유형자산")
+// NETWORK_ASSET: 네트워크 장비 (라우터·스위치·AP — IP/MAC/VLAN/Port 추적)
+enum AssetClass {
+  IT_ASSET
+  OFFICE_ASSET
+  FACILITY_ASSET
+  NETWORK_ASSET
+}
+
+// IT_ASSET 내 전용테이블 분기 (AssetCategory.subType 으로 결정)
+enum AssetSubType {
+  HARDWARE
+  SOFTWARE
+  PERIPHERAL
+}
+
+// 운영/회계 관점: 자산이 지금 어느 단계에 있는가 (회계상 분류와 일치)
+// 가동률(%) = OPERATING / (OPERATING+IDLE+STANDBY+REPAIR+PENDING_DISPOSAL) × 100
+// UNDER_CONSTRUCTION 은 회계상 자산 인식 전(CIP), RETIRED 는 자산대장에서 제외
+enum AssetStatus {
+  OPERATING // 운영중 — 실제 가동·업무 투입 중
+  IDLE // 유휴 — 사용 준비 완료, 가동 안 됨
+  STANDBY // 예비 — 대체용 보관
+  REPAIR // 장애/수리 — 일시 미가동 (이전 PENDING_MAINTENANCE + UNDER_MAINTENANCE 통합)
+  PENDING_DISPOSAL // 폐기 대기 — 폐기 결재 진행 중, 감가상각 종료 직전
+  UNDER_CONSTRUCTION // 건설/구축중 — CIP, 자산 인식 전
+  RETIRED // 폐기 완료 — 자산대장에서 제외
+}
+
+// 물리 상태 관점: "물건이 얼마나 성한가" — status와 별개 축
+enum AssetCondition {
+  EXCELLENT
+  GOOD
+  FAIR
+  POOR
+  LOST
+}
+
+enum Currency {
+  KRW // 원화
+  USD // 미국 달러
+  EUR // 유로
+  GBP // 영국 파운드
+  JPY // 일본 엔
+}
+
+// M2 — USER 신청 + 2단 승인 흐름. PENDING 은 의도적으로 제외 (모호함 회피).
+enum MaintenanceStatus {
+  PENDING_MANAGER // USER 신청, MANAGER 승인 대기
+  PENDING_DEPT // ADR 0003 — TEAM_LEAD 1차 승인 후 DEPT_LEAD 2차 승인 대기 (자산 부서 기준)
+  PENDING_ADMIN // MANAGER 승인, ADMIN 승인 대기
+  APPROVED // ADMIN 승인 완료 또는 관리자 직접 등록(D-2). 처리 시작 전 대기
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  REJECTED // 승인 단계에서 거절
+}
+
+enum MaintenancePayer {
+  COMPANY // 회사 부담 (기본)
+  USER // 개인 부담 (사용자 과실)
+  SHARED // 분담
+}
+
+enum MaintenanceServiceType {
+  PAID_REPAIR // 유상 수리
+  FREE_REPAIR // 무상 수리 (보증)
+  REPLACEMENT // 맞교환
+  RETURN // 반품
+}
+
+// 정비 유형 — 자산 컨디션 자동 강등 정책 분기
+enum MaintenanceType {
+  REPAIR // 수리 (고장) — 신청 시 자산 컨디션 자동 강등 (FAIR)
+  INSPECTION // 점검 (정기/예방) — 컨디션 변경 없음 (자산 정상 가정)
+  UPGRADE // 업그레이드 — 컨디션 변경 없음
+}
+
+enum AssetAction {
+  CREATED
+  UPDATED
+  TRANSFERRED
+  ASSIGNED
+  UNASSIGNED
+  MAINTENANCE_STARTED
+  MAINTENANCE_COMPLETED
+  STATUS_CHANGED
+  RETIRED
+}
+
+enum DepreciationMethod {
+  STRAIGHT_LINE
+  DECLINING_BALANCE
+}
+
+// 대여 상태 머신 (S3 절충 + R-1 RECEIVED 단계)
+// PENDING_MANAGER → PENDING_ADMIN → APPROVED → CHECKED_OUT → RECEIVED
+//   → PENDING_INSPECTION → INSPECTED → PENDING_RETURN_ADMIN → RETURNED
+// 안전망: REJECTED / CANCELLED / RECALLED
+enum LoanExtensionStatus {
+  PENDING_MANAGER
+  PENDING_ADMIN
+  APPROVED
+  REJECTED
+
+  @@map("loan_extension_status")
+}
+
+enum LoanStatus {
+  PENDING_MANAGER
+  PENDING_DEPT // ADR 0003 — 팀장 1차 승인 후 부서장 2차 승인 대기
+  PENDING_ADMIN
+  APPROVED
+  CHECKED_OUT
+  RECEIVED // 사원 QR 스캔 수령 확정
+  PENDING_INSPECTION
+  INSPECTED
+  PENDING_RETURN_DEPT // ADR 0003 — TEAM_LEAD 반납 확인 후 DEPT_LEAD 2차 확인 대기
+  PENDING_RETURN_ADMIN
+  RETURNED
+  REJECTED
+  CANCELLED
+  RECALLED
+}
+
+// 반납 검수 결과 (U2: Asset.condition 과 별개 축)
+enum LoanReturnCondition {
+  GOOD
+  MINOR_DAMAGE
+  MAJOR_DAMAGE
+  LOST
+}
+
+enum NotificationType {
+  TERMINATION_RETURN_REMINDER // 퇴사 D-7 + 활성 대여 보유자 → ADMIN
+  LOAN_APPROVED // 대여 승인 (사원에게)
+  LOAN_CHECKED_OUT // 대여 출고 완료 (사원에게)
+  LOAN_RECEIVED // 사원 수령 확정 (MANAGER/ADMIN 에게)
+  MAINTENANCE_CHARGE // 수리 비용 청구 (사원 과실 확정 시 → 해당 사원)
+  LOAN_OVERDUE // 대여 기한 초과 — D+1/D+3/D+7 단계 발송 (사원에게)
+  COMPLIANCE_URGENT // 보증/라이선스 만료 경과·D-7 임박·시트 초과 (ADMIN 에게)
+  LOAN_PENDING_APPROVAL // 대여 신청·1차 승인 완료 시 다음 승인자에게
+  LOAN_PENDING_DEPT // ADR 0003 — PENDING_DEPT 진입 시 DEPT_LEAD 에게
+  LOAN_PENDING_RETURN_DEPT // ADR 0003 — PENDING_RETURN_DEPT 진입 시 DEPT_LEAD 에게
+  MAINTENANCE_PENDING_DEPT // ADR 0003 — 유지보수 PENDING_DEPT 진입 시 자산 부서 DEPT_LEAD 에게
+  LOAN_RETURN_REQUESTED // 사원 반납 요청 시 자산관리자·ADMIN 에게 (검수 대기)
+  MAINTENANCE_VENDOR_NOTIFY_FAILED // 수리업체 자동 메일 발송 실패 (vendor 미지정/email 없음/SMTP 실패) → 승인자에게
+  MAINTENANCE_ASSIGNED_TO_REPAIR // ADMIN 2차 승인 직후 → REPAIR_OWNER 에게 "정비 배정됨"
+  MAINTENANCE_COMPLETED // 정비 완료 시 → 신청자(USER) + REPAIR_OWNER 에게
+  MAINTENANCE_VENDOR_REPORT // 수리업체 이메일 회신 수신 시 → REPAIR_OWNER 에게 "검토 필요"
+
+  // ADR 0005 — 폐기 결재 알림 fan-out
+  DISPOSAL_PENDING_MANAGER // 폐기 신청 시 → 신청자 제외 ASSET_MANAGER 전원
+  DISPOSAL_PENDING_ADMIN // 1차 승인 시 → ADMIN 전원
+  DISPOSAL_APPROVED // 최종 승인 시 → 신청자
+  DISPOSAL_REJECTED // 어느 단계든 반려 시 → 신청자
+  DISPOSAL_COMPLETED // 완료 처리 시 → 신청자
+
+  // ADR 0009 — 수리 보고서 워크플로 알림
+  REPAIR_REPORT_SUBMITTED // 제출 시 → ADMIN + ASSET_MANAGER 전원
+  REPAIR_REPORT_ACKED // ADMIN 또는 ASSET_MANAGER 확인 시 → 작성자
+  REPAIR_REPORT_FINALIZED // 둘 다 확인 완료 → 작성자
+
+  // ADR 0004 — 월말·연말 자산 보고 알림
+  REPORT_DEADLINE_REMINDER // 마감 D-1 경고 → TEAM_LEAD / DEPT_LEAD
+  REPORT_OVERDUE // 마감 당일 미완료 → ADMIN + 상위 결재자
+
+  // ADR 0010 — 비허가 앱 감시
+  DISALLOWED_APP_DETECTED // (userId,softwareId) 첫 감지 1회 → 직원 본인 + SECURITY_OFFICER 전원
+
+  // 라이선스 승인 결재 알림
+  LICENSE_PENDING_MANAGER  // 요청 생성 → 요청자의 팀장
+  LICENSE_PENDING_DEPT     // 팀장 승인 후 → 요청자의 부서장
+  LICENSE_PENDING_SECURITY // 요청 생성 시 → SECURITY_OFFICER 전원 (없으면 ADMIN)
+  LICENSE_PENDING_ADMIN    // 보안 검토 완료 시 → ADMIN 전원
+  LICENSE_APPROVED         // 최종 승인 시 → 요청자
+  LICENSE_REJECTED         // 거절/취소 시 → 요청자
+
+  // 라이선스 만료 D-30/14/7/1 알림
+  LICENSE_EXPIRY_WARNING   // 만료 D-30/14/7/1 → ADMIN + ASSET_MANAGER
+}
+
+enum LicenseRequestStatus {
+  PENDING_MANAGER  // 팀장 승인 대기
+  PENDING_DEPT     // 부서장 승인 대기
+  PENDING_SECURITY // SECURITY_OFFICER 검토 대기
+  PENDING_ADMIN    // ADMIN 최종 승인 대기
+  APPROVED         // 승인 완료 — LicenseAssignment 생성됨
+  REJECTED         // 거절 (어느 단계든) 또는 요청자 취소
+}
+
+// X3 Outbox 채널 발송 상태 — in-app 은 즉시 저장, 외부 채널(Slack)은 worker 폴링
+enum NotificationChannelStatus {
+  PENDING // 발송 대기
+  SENT // 발송 성공
+  FAILED // 영구 실패
+  SKIPPED // 채널 설정 없음 (예: SLACK_WEBHOOK_URL 미설정)
+}
+
+enum AssetOwnershipType {
+  COMPANY_OWNED
+  PERSONAL
+}
+
+enum VendorStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  SUSPENDED
+  REJECTED
+  INACTIVE
+
+  @@map("vendor_status")
+}
+
+enum VendorType {
+  REPAIR
+  SOFTWARE
+
+  @@map("vendor_type")
+}
+
+enum PaymentTerms {
+  MONTH_END
+  PER_CASE
+  DAYS_AFTER
+
+  @@map("payment_terms")
+}
+
+enum PaymentDirection {
+  VENDOR_PAYMENT // 회사 → 업체 지급
+  USER_COLLECTION // 사용자 → 회사 환수
+
+  @@map("payment_direction")
+}
+
+enum TaxInvoiceMethod {
+  EMAIL
+  FAX
+  POST
+
+  @@map("tax_invoice_method")
+}
+
+enum VendorDocumentType {
+  BUSINESS_REGISTRATION
+  BANKBOOK
+  PROXY
+  CONTRACT
+  TAX_CERTIFICATE
+  INSURANCE           // 보험증서 (REPAIR_VENDOR 필수)
+  CERTIFICATION       // 업체 인증서
+  TECHNICIAN_LICENSE  // 기술자 자격증 증빙
+  EQUIPMENT_PHOTO     // 정비장비 사진
+
+  @@map("vendor_document_type")
+}
+
+enum RepairProcessStep {
+  RECEIVED   // 접수
+  DIAGNOSING // 진단
+  REPAIRING  // 수리
+  COMPLETED  // 완료
+
+  @@map("repair_process_step")
+}
+
+// ─────────────────────────────────────────
+// 사용자 / 인증
+// ─────────────────────────────────────────
+
+model User {
+  id                   String    @id @default(cuid())
+  email                String    @unique
+  password             String?
+  name                 String
+  role                 Role      @default(USER)
+  isActive             Boolean   @default(false)
+  phoneNumber          String?
+  phoneNumberHash      String?   @unique
+  inviteToken          String?   @unique
+  inviteTokenExpiresAt DateTime?
+  hireDate             DateTime // EDF W3: 입사 30일 이내 = 신입
+  terminationDate      DateTime? // 퇴사 알람 (D-7 트리거)
+  isOutOfOffice        Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  teamId String?
+  team   Team?   @relation(fields: [teamId], references: [id])
+
+  ledTeams       Team[]       @relation("TeamTeamLead")
+  ledDepartments Department[] @relation("DepartmentLeader")
+
+  oauthAccounts               OAuthAccount[]
+  refreshTokens               RefreshToken[]
+  assignedAssets              Asset[]              @relation("AssignedUser")
+  assetHistories              AssetHistory[]
+  maintenances                Maintenance[]
+  paidMaintenances            Maintenance[]        @relation("MaintenancePayer")
+  // M2 신규 relations
+  maintenanceRequests         Maintenance[]        @relation("MaintenanceRequester")
+  maintenanceManagerApprovals Maintenance[]        @relation("MaintenanceManagerApprover")
+  maintenanceDeptApprovals    Maintenance[]        @relation("MaintenanceDeptApprover")
+  maintenanceAdminApprovals   Maintenance[]        @relation("MaintenanceAdminApprover")
+  maintenanceRejections       Maintenance[]        @relation("MaintenanceRejector")
+  maintenancePaymentRecords   MaintenancePayment[] @relation("MaintenancePaymentRecorder")
+  licenseAssignments          LicenseAssignment[]  @relation("LicenseAssignedUser")
+  userHistoryTargets          UserHistory[]        @relation("UserHistoryTarget")
+  userHistoryActions          UserHistory[]        @relation("UserHistoryPerformer")
+  passwordHistories           PasswordHistory[]
+
+  // Loan relations
+  loans                         Loan[]          @relation("LoanUser")
+  loanManagerApprovals          Loan[]          @relation("LoanManagerApprover")
+  loanDeptApprovals             Loan[]          @relation("LoanDeptApprover")
+  loanAdminApprovals            Loan[]          @relation("LoanAdminApprover")
+  loanCheckouts                 Loan[]          @relation("LoanCheckoutBy")
+  loanReceivedBy                Loan[]          @relation("LoanReceivedBy")
+  loanRejections                Loan[]          @relation("LoanRejectedBy")
+  loanRecalls                   Loan[]          @relation("LoanRecalledBy")
+  loanReturnInspections         LoanReturn[]    @relation("LoanReturnInspector")
+  loanReturnApprovals           LoanReturn[]    @relation("LoanReturnApprover")
+  loanReturnDeptApprovals       LoanReturn[]    @relation("LoanReturnDeptApprover")
+  loanReturnFinalizations       LoanReturn[]    @relation("LoanReturnFinalizer")
+  loanExtensionRequests         LoanExtension[] @relation("LoanExtensionRequester")
+  loanExtensionManagerApprovals LoanExtension[] @relation("LoanExtensionManagerApprover")
+  loanExtensionAdminApprovals   LoanExtension[] @relation("LoanExtensionAdminApprover")
+  loanExtensionRejections       LoanExtension[] @relation("LoanExtensionRejector")
+
+  notifications           Notification[]   @relation("NotificationRecipient")
+  approvedVendors         Vendor[]         @relation("VendorApprover")
+  rejectedVendors         Vendor[]         @relation("VendorRejector")
+  createdVendors          Vendor[]         @relation("VendorCreator")
+  uploadedVendorDocuments VendorDocument[] @relation("VendorDocumentUploader")
+
+  // ADR 0002 — 정보보안 (Shadow IT 인벤토리 + AuditLog)
+  softwareInstances          SoftwareInstance[]                   @relation("SoftwareInstanceUser")
+  disallowedDetections       DisallowedDetection[]                @relation("DisallowedDetectionUser")
+  blockEvents                BlockEvent[]                         @relation("BlockEventUser")
+  ownedDevices               Device[]                             @relation("DeviceUser")
+  decidedSoftwarePermissions SoftwarePermission[]                 @relation("SoftwarePermissionDecidedBy")
+  decidedInstanceOverrides   SoftwareInstancePermissionOverride[] @relation("InstanceOverrideDecidedBy")
+  matchedSoftwareLicenses    SoftwareLicenseLink[]                @relation("SoftwareLicenseLinkMatchedBy")
+  auditLogs                  AuditLog[]                           @relation("AuditLogPerformedBy")
+
+  // Disposal relations
+  disposalRequests         Disposal[] @relation("DisposalRequester")
+  disposalManagerApprovals Disposal[] @relation("DisposalManagerApprover") // ADR 0005 — 1차 승인 (다른 ASSET_MANAGER)
+  disposalApprovals        Disposal[] @relation("DisposalApprover") // ADR 0005 — 최종 승인 (ADMIN)
+  disposalRejections       Disposal[] @relation("DisposalRejector")
+
+  repairReports                RepairReport[]           @relation("RepairReportAuthor")
+  repairReportAdminAcks        RepairReport[]           @relation("RepairReportAdminAcker")
+  repairReportAssetManagerAcks RepairReport[]           @relation("RepairReportAssetManagerAcker")
+  submittedCompletionReports   RepairCompletionReport[] @relation("CompletionReportSubmitter")
+  technicianCompletionReports  RepairCompletionReport[] @relation("CompletionReportTechnician")
+
+  // ADR 0004 — 월말·연말 자산 보고
+  teamMonthlySubmissions   TeamMonthlyReport[] @relation("TeamMonthlyReportSubmitter")
+  teamMonthlyReviews       TeamMonthlyReport[] @relation("TeamMonthlyReportReviewer")
+  teamMonthlyRejections    TeamMonthlyReport[] @relation("TeamMonthlyReportRejector")
+  deptMonthlyFinalizations DeptMonthlyReport[] @relation("DeptMonthlyReportFinalizer")
+  teamAnnualSubmissions    TeamAnnualReport[]  @relation("TeamAnnualReportSubmitter")
+  teamAnnualReviews        TeamAnnualReport[]  @relation("TeamAnnualReportReviewer")
+  teamAnnualRejections     TeamAnnualReport[]  @relation("TeamAnnualReportRejector")
+  deptAnnualFinalizations  DeptAnnualReport[]  @relation("DeptAnnualReportFinalizer")
+
+  securityReports    SecurityReport[] @relation("SecurityReportAuthor")
+  securityReportAcks SecurityReport[] @relation("SecurityReportAcker")
+
+  licenseRequestsMade             LicenseRequest[] @relation("LicenseRequestRequester")
+  licenseRequestsTargeted         LicenseRequest[] @relation("LicenseRequestTarget")
+  licenseRequestsManagerApproved  LicenseRequest[] @relation("LicenseRequestManagerApprover")
+  licenseRequestsDeptApproved     LicenseRequest[] @relation("LicenseRequestDeptApprover")
+  licenseRequestsSecurityReviewed LicenseRequest[] @relation("LicenseRequestSecurityReviewer")
+  licenseRequestsAdminApproved    LicenseRequest[] @relation("LicenseRequestAdminApprover")
+  licenseRequestsRejected         LicenseRequest[] @relation("LicenseRequestRejecter")
+
+  @@map("users")
+}
+
+enum UserHistoryAction {
+  ROLE_CHANGED
+  DEACTIVATED
+  ACTIVATED
+  REINVITED
+  PROFILE_UPDATED
+}
+
+model UserHistory {
+  id            String            @id @default(cuid())
+  userId        String // 대상 사용자
+  performedById String // 수행자
+  action        UserHistoryAction
+  reason        String // 사유 (회사 정책: 권한 변경/활성·비활성 시 필수)
+  before        Json? // 변경 전 스냅샷
+  after         Json? // 변경 후 스냅샷
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime          @default(now())
+
+  user        User @relation("UserHistoryTarget", fields: [userId], references: [id])
+  performedBy User @relation("UserHistoryPerformer", fields: [performedById], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([performedById])
+  @@map("user_histories")
+}
+
+model PasswordHistory {
+  id           String   @id @default(cuid())
+  userId       String
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("password_histories")
+}
+
+model PasswordReset {
+  id        String    @id @default(cuid())
+  email     String
+  code      String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  attempts  Int       @default(0)
+  createdAt DateTime  @default(now())
+
+  @@index([email, expiresAt])
+  @@index([code])
+  @@map("password_resets")
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userAgent String?
+  ipAddress String?
+  revokedAt DateTime?
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+// ─────────────────────────────────────────
+// 라이선스
+// ─────────────────────────────────────────
+
+model License {
+  id             String  @id @default(cuid())
+  name           String // "Microsoft Office 365 Business"
+  productKey     String? // AES-256-CBC 암호화 저장
+  productKeyMask String? // UI 표시용 (예: "****-1234")
+
+  vendorId String?
+  vendor   Vendor? @relation(fields: [vendorId], references: [id])
+
+  seatsTotal Int @default(1)
+
+  purchaseDate DateTime
+  expiryDate   DateTime?
+  cost         Decimal?  @db.Decimal(15, 2)
+  currency     Currency  @default(KRW)
+
+  assignments LicenseAssignment[]
+  requests    LicenseRequest[]
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  // ADR 0002 — Software 카탈로그와 N:M 다리
+  softwareLinks SoftwareLicenseLink[]
+
+  @@index([expiryDate])
+  @@map("licenses")
+}
+
+model LicenseAssignment {
+  id        String  @id @default(cuid())
+  licenseId String
+  license   License @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation("LicenseAssignedUser", fields: [userId], references: [id])
+
+  // 자산 연결 (옵션) — HW 종속 / 노드락 / OEM 라이선스용
+  assetId String?
+  asset   Asset?  @relation("LicenseInstalledAsset", fields: [assetId], references: [id])
+
+  assignedAt   DateTime  @default(now())
+  unassignedAt DateTime?
+
+  @@index([licenseId, userId, assignedAt])
+  @@index([assetId])
+  @@map("license_assignments")
+}
+
+model LicenseRequest {
+  id        String @id @default(cuid())
+  licenseId String
+  license   License @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+
+  requestedById String
+  requestedBy   User   @relation("LicenseRequestRequester", fields: [requestedById], references: [id])
+
+  targetUserId String
+  targetUser   User   @relation("LicenseRequestTarget", fields: [targetUserId], references: [id])
+
+  assetId String?
+  asset   Asset?  @relation("LicenseRequestAsset", fields: [assetId], references: [id])
+
+  status LicenseRequestStatus
+
+  managerApprovedById String?
+  managerApprovedBy   User?     @relation("LicenseRequestManagerApprover", fields: [managerApprovedById], references: [id])
+  managerApprovedAt   DateTime?
+
+  deptApprovedById String?
+  deptApprovedBy   User?     @relation("LicenseRequestDeptApprover", fields: [deptApprovedById], references: [id])
+  deptApprovedAt   DateTime?
+
+  securityReviewedById String?
+  securityReviewedBy   User?    @relation("LicenseRequestSecurityReviewer", fields: [securityReviewedById], references: [id])
+  securityReviewedAt   DateTime?
+
+  adminApprovedById String?
+  adminApprovedBy   User?   @relation("LicenseRequestAdminApprover", fields: [adminApprovedById], references: [id])
+  adminApprovedAt   DateTime?
+
+  rejectedById String?
+  rejectedBy   User?   @relation("LicenseRequestRejecter", fields: [rejectedById], references: [id])
+  rejectedAt   DateTime?
+  rejectReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([licenseId])
+  @@index([targetUserId])
+  @@index([status])
+  @@index([licenseId, targetUserId, status])
+  @@map("license_requests")
+}
+
+model OAuthAccount {
+  id           String        @id @default(cuid())
+  provider     OAuthProvider
+  providerId   String
+  accessToken  String?
+  refreshToken String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerId])
+  @@map("oauth_accounts")
+}
+
+// ─────────────────────────────────────────
+// 조직 구조
+// ─────────────────────────────────────────
+
+model Department {
+  id        String    @id @default(cuid())
+  name      String
+  code      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  // ADR 0003 — 부서장(DEPT_LEAD). nullable: 부서장 미배정 기간 가능
+  leaderId String?
+  leader   User?   @relation("DepartmentLeader", fields: [leaderId], references: [id])
+
+  locationId String?   @unique
+  location   Location? @relation("DepartmentLocation", fields: [locationId], references: [id])
+
+  // 부서 근무지 (자산 위치 마스터와 무관 — 조직 소속 근무지)
+  officeBuilding String?
+  officeFloor    String?
+  officeRoom     String?
+
+  teams  Team[]
+  assets Asset[]
+
+  monthlyReports DeptMonthlyReport[] @relation("DeptMonthlyReports")
+  annualReports  DeptAnnualReport[]  @relation("DeptAnnualReports")
+
+  @@map("departments")
+}
+
+model Team {
+  id        String    @id @default(cuid())
+  name      String
+  code      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  teamLeadId String?
+  teamLead   User?   @relation("TeamTeamLead", fields: [teamLeadId], references: [id])
+
+  locationId String?
+  location   Location? @relation("TeamLocation", fields: [locationId], references: [id])
+
+  users User[]
+
+  monthlyReports TeamMonthlyReport[] @relation("TeamMonthlyReports")
+  annualReports  TeamAnnualReport[]  @relation("TeamAnnualReports")
+
+  @@map("teams")
+}
+
+// ─────────────────────────────────────────
+// 자산 타입 (의미: 노트의 "타입")
+// 예: Server / Tablet / Antivirus / Mouse / Webcam
+// class 필드로 어느 전용테이블에 속하는지 표시
+// ─────────────────────────────────────────
+
+model AssetCategory {
+  id                        String              @id @default(cuid())
+  name                      String
+  code                      String              @unique
+  class                     AssetClass?
+  subType                   AssetSubType? // IT_ASSET일 때만 유효: 전용테이블 분기
+  // 회계/감가상각 기본값 (한국 법인세법 기준 매핑) — 자산 등록 시 자동 적용
+  glAccountCode             String?
+  glAccountName             String?
+  defaultDepreciationMethod DepreciationMethod?
+  defaultUsefulLifeYears    Int?
+  defaultSalvageValueRatio  Decimal?            @db.Decimal(5, 4)
+  createdAt                 DateTime            @default(now())
+  updatedAt                 DateTime            @updatedAt
+  deletedAt                 DateTime?
+
+  parentId String?
+  parent   AssetCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children AssetCategory[] @relation("CategoryHierarchy")
+
+  assets   Asset[]
+  catalogs AssetCatalog[]
+
+  @@map("asset_categories")
+}
+
+// ─────────────────────────────────────────
+// 자산 카탈로그 (표준 모델 라이브러리)
+// 자산 등록 시 카탈로그에서 모델 선택 → 사양 자동 채움
+// ─────────────────────────────────────────
+
+model Manufacturer {
+  id        String   @id @default(cuid())
+  name      String   @unique // canonical 표기 (저장·표시 기준)
+  aliases   String[] @default([]) // 별칭 (case-insensitive 매칭)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  catalogs AssetCatalog[]
+
+  @@map("manufacturers")
+}
+
+model AssetCatalog {
+  id           String     @id @default(cuid())
+  name         String // "MacBook Pro 16' 2024 (M3 Pro / 18GB / 512GB)"
+  manufacturer String? // legacy free-text — P1c 에서 DROP
+  modelCode    String? // "MK1H3KH/A"
+  class        AssetClass // HARDWARE / SOFTWARE / PERIPHERAL
+  imageUrl     String?
+  specs        Json // 카테고리별 사양 (cpu/ramGb/storageGb 또는 inches/resolution 등)
+  isActive     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  categoryId         String
+  category           AssetCategory @relation(fields: [categoryId], references: [id])
+  manufacturerId     String?
+  manufacturerMaster Manufacturer? @relation(fields: [manufacturerId], references: [id], onDelete: Restrict)
+
+  assets Asset[]
+
+  // NOTE: 중복 차단 unique 는 functional index 라 Prisma 에선 표현 불가.
+  // 마이그레이션 SQL 로 raw CREATE UNIQUE INDEX 관리 — 20260628000001_uniq_catalog_name_mfr_model 참고.
+  // (name, COALESCE(manufacturerId, ''), COALESCE(modelCode, '')) 조합으로 NULL 끼리도 충돌 인식.
+  @@index([class])
+  @@index([categoryId])
+  @@index([manufacturerId])
+  @@map("asset_catalogs")
+}
+
+// ─────────────────────────────────────────
+// 위치 / 공급업체
+// ─────────────────────────────────────────
+
+model Location {
+  id        String    @id @default(cuid())
+  name      String
+  building  String
+  floor     String?
+  room      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  assets        Asset[]
+  loanCheckouts Loan[]
+  department    Department? @relation("DepartmentLocation")
+  teams         Team[]      @relation("TeamLocation")
+
+  @@map("locations")
+}
+
+model Vendor {
+  id                String       @id @default(cuid())
+  name              String
+  contactName       String?
+  email             String?
+  phone             String?
+  status            VendorStatus @default(PENDING)
+  type              VendorType   @default(REPAIR)
+  supportedClasses  AssetClass[]
+  approvedAt        DateTime?
+  approvedById      String?
+  approvedBy        User?        @relation("VendorApprover", fields: [approvedById], references: [id])
+  serviceRegion     String?
+  contractStartDate DateTime?
+  contractEndDate   DateTime?
+  slaHours          Int?
+  canVisitOnSite    Boolean      @default(false)
+  canReceiveDevice  Boolean      @default(false)
+
+  // 기본정보
+  businessRegistrationNumber String?
+  ceoName                    String?
+  businessType               String?
+  businessItem               String?
+  addressHeadOffice          String?
+  addressDetail              String?
+  addressBusiness            String?
+  contactDepartment          String?
+  contactPosition            String?
+
+  // 서비스범위
+  operatingHoursStart   String?
+  operatingHoursEnd     String?
+  operatesOnWeekend     Boolean @default(false)
+  canHandleUrgent       Boolean @default(false)
+  urgentConditionNote   String?
+  brandModelNote        String?
+  repairableItemsNote   String?
+  referenceNote         String?
+  techCertificationNote String?
+  equipmentNote         String?
+  processNote           String?
+  disposalProcedureNote String?
+  insuranceNote         String?
+
+  // 소프트웨어 공급업체 전용
+  softwareDomain        String?
+  productListNote       String?
+  skuNote               String?
+  deliveryNote          String?
+  maintenancePolicyNote String?
+  techStaffCount        Int?
+  certificationNote     String?
+  financialNote         String?
+  canDemo               Boolean?
+  demoNote              String?
+
+  // 정산정보
+  bankName              String?
+  bankAccountNumber     String?
+  bankAccountNumberMask String?
+  bankAccountHolder     String?
+  paymentTerms          PaymentTerms?
+  paymentDaysAfter      Int?
+  taxInvoiceEmail       String?
+  taxInvoiceMethod      TaxInvoiceMethod?
+  faxNumber             String?
+  postalAddress         String?
+  isVatIncluded         Boolean           @default(true)
+  isWithholdingTax      Boolean           @default(false)
+
+  // SLA/계약
+  slaCompletionDays  Int?
+  penaltyTerms       String?
+  repairWarrantyDays Int?
+  unitPriceNote      String?
+
+  // 승인내역
+  approvalNote    String?
+  rejectionNote   String?
+  rejectedAt      DateTime?
+  rejectedById    String?
+  rejectedBy      User?     @relation("VendorRejector", fields: [rejectedById], references: [id])
+  isBlacklisted   Boolean   @default(false)
+  blacklistReason String?
+  blacklistedAt   DateTime?
+  createdById     String?
+  createdBy       User?     @relation("VendorCreator", fields: [createdById], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  // 수리업체 처리 프로세스
+  supportedSteps RepairProcessStep[]
+  stepSlaHours   Json?
+
+  documents         VendorDocument[]
+  products          VendorProduct[]
+  certifications    VendorCertification[]
+  technicians       VendorTechnician[]
+  equipment         VendorEquipment[]
+  assets            Asset[]
+  maintenances      Maintenance[]
+  licenses          License[]
+  completionReports RepairCompletionReport[] @relation("CompletionReportVendor")
+
+  @@map("vendors")
+}
+
+model VendorDocument {
+  id           String             @id @default(cuid())
+  vendorId     String
+  vendor       Vendor             @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  documentType VendorDocumentType
+  publicId     String
+  secureUrl    String
+  originalName String
+  mimeType     String
+  sizeBytes    Int
+  uploadedById String
+  uploadedBy   User               @relation("VendorDocumentUploader", fields: [uploadedById], references: [id])
+  createdAt    DateTime           @default(now())
+  deletedAt    DateTime?
+
+  @@index([vendorId, documentType])
+  @@map("vendor_documents")
+}
+
+model VendorProduct {
+  id        String   @id @default(cuid())
+  vendorId  String
+  vendor    Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  name      String
+  sku       String?
+  category  String?
+  demoUrl   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([vendorId])
+  @@map("vendor_products")
+}
+
+model VendorCertification {
+  id        String    @id @default(cuid())
+  vendorId  String
+  vendor    Vendor    @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  name      String
+  issuer    String?
+  issuedAt  DateTime?
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([vendorId])
+  @@map("vendor_certifications")
+}
+
+model VendorTechnician {
+  id             String   @id @default(cuid())
+  vendorId       String
+  vendor         Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  name           String
+  certifications String[]
+  yearsOfExp     Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([vendorId])
+  @@map("vendor_technicians")
+}
+
+model VendorEquipment {
+  id        String   @id @default(cuid())
+  vendorId  String
+  vendor    Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  name      String
+  model     String?
+  photoUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([vendorId])
+  @@map("vendor_equipment")
+}
+
+// ─────────────────────────────────────────
+// 자산 — 코어 (모든 자산 공통)
+// 전용 필드는 HardwareAsset / SoftwareAsset / PeripheralAsset 에 위치
+// ─────────────────────────────────────────
+
+model Asset {
+  id                  String             @id @default(cuid())
+  assetCode           String             @unique // 표시용 업무키 (예: HAR-0005)
+  name                String
+  description         String?
+  class               AssetClass // 전용테이블 분기점
+  status              AssetStatus        @default(IDLE)
+  condition           AssetCondition     @default(GOOD)
+  conditionAssessedAt DateTime?
+  ownershipType       AssetOwnershipType @default(COMPANY_OWNED)
+  purchaseDate        DateTime
+  purchasePrice       Decimal            @db.Decimal(15, 2)
+  purchaseCurrency    Currency           @default(KRW)
+  currentValue        Decimal?           @db.Decimal(15, 2)
+  imageUrl            String?
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  categoryId String
+  category   AssetCategory @relation(fields: [categoryId], references: [id])
+
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+
+  vendorId String?
+  vendor   Vendor? @relation(fields: [vendorId], references: [id])
+
+  catalogId String?
+  catalog   AssetCatalog? @relation(fields: [catalogId], references: [id])
+
+  assignedUserId String?
+  assignedUser   User?   @relation("AssignedUser", fields: [assignedUserId], references: [id])
+
+  // 전용테이블 1:1 (class에 따라 정확히 하나가 채워짐)
+  hardware   HardwareAsset?
+  software   SoftwareAsset?
+  peripheral PeripheralAsset?
+  office     OfficeAsset?
+  facility   FacilityAsset?
+  network    NetworkAsset?
+
+  histories       AssetHistory[]
+  maintenances    Maintenance[]
+  depreciation    Depreciation?
+  licenseInstalls LicenseAssignment[] @relation("LicenseInstalledAsset")
+  loans           Loan[]
+  disposals       Disposal[]
+  licenseRequests LicenseRequest[]    @relation("LicenseRequestAsset")
+
+  @@map("assets")
+}
+
+// ─────────────────────────────────────────
+// 전용테이블 — Class Table Inheritance
+// asset_id가 PK이자 FK (asset과 1:1)
+// ─────────────────────────────────────────
+
+model HardwareAsset {
+  assetId     String    @id
+  asset       Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  serialNo    String    @unique
+  macAddr     String?
+  ipAddr      String?
+  cpu         String?
+  ramGb       Int?
+  storageGb   Int?
+  warrantyEnd DateTime?
+
+  @@map("hardware_assets")
+}
+
+model SoftwareAsset {
+  assetId        String    @id
+  asset          Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  licenseKey     String
+  licenseSeats   Int
+  installedCount Int       @default(0)
+  expiryDate     DateTime?
+  version        String?
+
+  @@map("software_assets")
+}
+
+model PeripheralAsset {
+  assetId  String  @id
+  asset    Asset   @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  // 저가품(마우스 등)은 개별 시리얼 없이 수량 기반 관리
+  serialNo String? @unique
+  quantity Int     @default(1)
+
+  @@map("peripheral_assets")
+}
+
+// 사무 자산 전용 상세 (책상·의자·캐비닛·프린터 등)
+// 동일 제품 다수 보유 시 식별 위해 modelName 필수
+model OfficeAsset {
+  assetId   String @id
+  asset     Asset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  modelName String // 모델명/제조번호 — 다수 동일 제품 식별의 핵심
+
+  @@map("office_assets")
+}
+
+// 시설 자산 전용 상세 (에어컨·공조·보일러·CCTV 등)
+// 한국 법정 점검 의무(소방·전기 등) 추적 위해 점검 주기·다음 예정일 필수
+model FacilityAsset {
+  assetId               String   @id
+  asset                 Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  installLocationDetail String // 설치 위치 상세 (예: "1층 사무실 동쪽 벽면")
+  installDate           DateTime // 설치 일자 (구매일과 다를 수 있음, 보증·점검 기산점)
+  inspectionCycleMonths Int // 정기 점검 주기 (개월) — 법정 점검 주기 (소방: 6개월, 전기: 12개월 등)
+  nextInspectionDate    DateTime // 다음 점검 예정일
+
+  @@map("facility_assets")
+}
+
+// 네트워크 자산 전용 상세 (라우터·스위치·AP·방화벽 등)
+// IP/MAC 으로 운영중 식별, VLAN/Port 로 토폴로지 위치 추적
+model NetworkAsset {
+  assetId    String  @id
+  asset      Asset   @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  ipAddress  String? // IPv4 또는 IPv6 (DHCP 라 변동될 수 있어 nullable)
+  macAddress String? @unique // 물리 장비 추적 키 (장비 1대 1개)
+  vlan       String? // VLAN ID (예: "VLAN 10", "10")
+  port       String? // 스위치 포트 위치 (예: "GigabitEthernet0/1")
+
+  @@index([ipAddress])
+  @@map("network_assets")
+}
+
+// ─────────────────────────────────────────
+// 자산 코드 카운터 (Class별 독립 채번)
+// 형식: {PREFIX}-{4자리 0패딩} — HAR-0001, SFT-0001, PER-0001
+// ─────────────────────────────────────────
+
+model AssetCodeCounter {
+  class      AssetClass @id
+  nextNumber Int        @default(1)
+  updatedAt  DateTime   @updatedAt
+
+  @@map("asset_code_counters")
+}
+
+// ─────────────────────────────────────────
+// 자산 이력
+// ─────────────────────────────────────────
+
+model AssetHistory {
+  id          String      @id @default(cuid())
+  action      AssetAction
+  description String?
+  metadata    Json?
+  createdAt   DateTime    @default(now())
+
+  assetId String
+  asset   Asset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  performedById String
+  performedBy   User   @relation(fields: [performedById], references: [id])
+
+  @@map("asset_histories")
+}
+
+// ─────────────────────────────────────────
+// 유지보수
+// ─────────────────────────────────────────
+
+model Maintenance {
+  id                      String            @id @default(cuid())
+  title                   String
+  description             String
+  status                  MaintenanceStatus @default(PENDING_MANAGER) // M2: USER 신청 기본. 관리자 등록은 service 에서 별도 상태로 설정
+  // 정비 유형 — REPAIR이면 신청 시 자산 컨디션 자동 강등, INSPECTION/UPGRADE는 변경 없음
+  type                    MaintenanceType   @default(REPAIR)
+  cost                    Decimal?          @db.Decimal(15, 2)
+  scheduledAt             DateTime
+  estimatedCompletionDate DateTime? // EDF W3: 본인 보유 기기 수리 일정 기반 deadline 도출
+  completedAt             DateTime?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+
+  assetId String
+  asset   Asset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  vendorId String?
+  vendor   Vendor? @relation(fields: [vendorId], references: [id])
+
+  // 처리자 — IN_PROGRESS 전이 시 결정 (USER 신청 시점엔 null)
+  managerId String?
+  manager   User?   @relation(fields: [managerId], references: [id])
+
+  // 신청자 — USER/MANAGER/ADMIN 모두 가능 (M2 F-1)
+  requestedById String?
+  requestedBy   User?   @relation("MaintenanceRequester", fields: [requestedById], references: [id])
+
+  // MANAGER 1차 승인
+  managerApprovedAt   DateTime?
+  managerApprovedById String?
+  managerApprovedBy   User?     @relation("MaintenanceManagerApprover", fields: [managerApprovedById], references: [id])
+
+  // DEPT_LEAD 2차 승인 — ADR 0003 (자산 부서 기준. PENDING_ADMIN 진입)
+  deptApprovedAt   DateTime?
+  deptApprovedById String?
+  deptApprovedBy   User?     @relation("MaintenanceDeptApprover", fields: [deptApprovedById], references: [id])
+
+  // ADMIN 최종 승인
+  adminApprovedAt   DateTime?
+  adminApprovedById String?
+  adminApprovedBy   User?     @relation("MaintenanceAdminApprover", fields: [adminApprovedById], references: [id])
+
+  // 거절
+  rejectReason String?
+  rejectedAt   DateTime?
+  rejectedById String?
+  rejectedBy   User?     @relation("MaintenanceRejector", fields: [rejectedById], references: [id])
+
+  // 서비스 유형 + 과실 판단 (업체 접수 후 자산담당자 입력)
+  serviceType MaintenanceServiceType?
+  isUserFault Boolean?
+
+  // 비용 부담 (수리 후 COMPLETED 시점에 입력)
+  payerType   MaintenancePayer?
+  payerUserId String?
+  payerUser   User?             @relation("MaintenancePayer", fields: [payerUserId], references: [id])
+  payerNote   String?
+
+  // 수리업체 이메일 회신 파싱 결과 (Mailgun inbound webhook)
+  vendorReportBody       String?
+  vendorReportParsedCost Decimal?  @db.Decimal(15, 2)
+  vendorReportReceivedAt DateTime?
+  vendorReportEmailId    String?   @unique // Mailgun Message-ID dedup
+
+  payments         MaintenancePayment[]
+  completionReport RepairCompletionReport?
+
+  @@map("maintenances")
+}
+
+model MaintenancePayment {
+  id            String           @id @default(cuid())
+  maintenanceId String
+  maintenance   Maintenance      @relation(fields: [maintenanceId], references: [id], onDelete: Cascade)
+  direction     PaymentDirection
+  amount        Decimal?         @db.Decimal(15, 2)
+  paidAt        DateTime
+  note          String?
+
+  paidById String
+  paidBy   User   @relation("MaintenancePaymentRecorder", fields: [paidById], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([maintenanceId, direction])
+  @@map("maintenance_payments")
+}
+
+model RepairCompletionReport {
+  id            String      @id @default(cuid())
+  maintenanceId String      @unique
+  maintenance   Maintenance @relation(fields: [maintenanceId], references: [id], onDelete: Cascade)
+
+  summaryText String // 수리 내용 요약
+  laborHours  Float? // 소요 시간 (시간)
+  fileUrl     String? // 첨부 파일 URL (Cloudinary)
+
+  // ADR 0009 — 사내 기술자(REPAIR_TECH) 또는 외부 업체 중 하나만 사용
+  technicianId   String? // 사내 REPAIR_TECH User FK
+  technician     User?   @relation("CompletionReportTechnician", fields: [technicianId], references: [id])
+  technicianName String? // 외부 업체 기술자명 (technicianId 없을 때)
+  vendorId       String? // 외부 수리업체 Vendor FK
+  vendor         Vendor? @relation("CompletionReportVendor", fields: [vendorId], references: [id])
+
+  parts RepairCompletionPart[]
+
+  submittedById String
+  submittedBy   User   @relation("CompletionReportSubmitter", fields: [submittedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("repair_completion_reports")
+}
+
+model RepairCompletionPart {
+  id       String                 @id @default(cuid())
+  reportId String
+  report   RepairCompletionReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  name      String // 부품명
+  quantity  Int // 수량
+  unitPrice Int // 단가 (원)
+
+  @@map("repair_completion_parts")
+}
+
+// ─────────────────────────────────────────
+// 감가상각
+// ─────────────────────────────────────────
+
+model Depreciation {
+  id              String             @id @default(cuid())
+  method          DepreciationMethod @default(STRAIGHT_LINE)
+  usefulLifeYears Int
+  salvageValue    Decimal            @db.Decimal(15, 2)
+  annualRate      Decimal            @db.Decimal(5, 4)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  assetId String @unique
+  asset   Asset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  records DepreciationRecord[]
+
+  @@map("depreciations")
+}
+
+model DepreciationRecord {
+  id                 String   @id @default(cuid())
+  fiscalYear         Int
+  depreciationAmount Decimal  @db.Decimal(15, 2)
+  bookValue          Decimal  @db.Decimal(15, 2)
+  recordedAt         DateTime @default(now())
+
+  depreciationId String
+  depreciation   Depreciation @relation(fields: [depreciationId], references: [id], onDelete: Cascade)
+
+  @@unique([depreciationId, fiscalYear])
+  @@map("depreciation_records")
+}
+
+// ─────────────────────────────────────────
+// 대여 (Loan) — S3 절충 + 2단 승인 + 별도 검수 + R-1 RECEIVED
+// ─────────────────────────────────────────
+
+model Loan {
+  id     String     @id @default(cuid())
+  status LoanStatus @default(PENDING_MANAGER)
+
+  assetId String
+  asset   Asset  @relation(fields: [assetId], references: [id])
+
+  userId String
+  user   User   @relation("LoanUser", fields: [userId], references: [id])
+
+  purpose String?
+  dueDate DateTime?
+
+  managerApprovedAt   DateTime?
+  managerApprovedById String?
+  managerApprovedBy   User?     @relation("LoanManagerApprover", fields: [managerApprovedById], references: [id])
+
+  // ADR 0003 — 부서장 2차 승인
+  deptApprovedAt   DateTime?
+  deptApprovedById String?
+  deptApprovedBy   User?     @relation("LoanDeptApprover", fields: [deptApprovedById], references: [id])
+
+  adminApprovedAt   DateTime?
+  adminApprovedById String?
+  adminApprovedBy   User?     @relation("LoanAdminApprover", fields: [adminApprovedById], references: [id])
+
+  checkedOutAt       DateTime?
+  checkedOutById     String?
+  checkedOutBy       User?     @relation("LoanCheckoutBy", fields: [checkedOutById], references: [id])
+  checkoutLocationId String?
+  checkoutLocation   Location? @relation(fields: [checkoutLocationId], references: [id])
+  checkoutMemo       String?
+
+  // 사원 수령 확정 (QR 스캔 — R-1)
+  receivedAt   DateTime?
+  receivedById String?
+  receivedBy   User?     @relation("LoanReceivedBy", fields: [receivedById], references: [id])
+
+  rejectReason String?
+  rejectedAt   DateTime?
+  rejectedById String?
+  rejectedBy   User?     @relation("LoanRejectedBy", fields: [rejectedById], references: [id])
+
+  cancelledAt DateTime?
+
+  // 연체 알림 단계 추적 (0=미발송, 1=D+1, 2=D+3, 3=D+7)
+  overdueNotifyCount Int @default(0)
+
+  recallReason String?
+  recalledAt   DateTime?
+  recalledById String?
+  recalledBy   User?     @relation("LoanRecalledBy", fields: [recalledById], references: [id])
+
+  loanReturn LoanReturn?
+
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  extensions LoanExtension[]
+
+  @@index([status, createdAt])
+  @@index([userId])
+  @@index([assetId])
+  @@map("loans")
+}
+
+model LoanReturn {
+  id     String @id @default(cuid())
+  loanId String @unique
+  loan   Loan   @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  // USER 가 반납 버튼 누른 시점 (PENDING_INSPECTION 진입)
+  returnRequestedAt DateTime @default(now())
+
+  // ASSET_MANAGER 검수 결과 (INSPECTED 진입)
+  condition     LoanReturnCondition?
+  damageNote    String?
+  inspectedAt   DateTime?
+  inspectedById String?
+  inspectedBy   User?                @relation("LoanReturnInspector", fields: [inspectedById], references: [id])
+
+  // MANAGER 반납 승인 (PENDING_RETURN_DEPT 진입)
+  returnApprovedAt   DateTime?
+  returnApprovedById String?
+  returnApprovedBy   User?     @relation("LoanReturnApprover", fields: [returnApprovedById], references: [id])
+
+  // DEPT_LEAD 반납 확인 — ADR 0003 (PENDING_RETURN_ADMIN 진입. 확인만, 반려 없음)
+  deptReturnApprovedAt   DateTime?
+  deptReturnApprovedById String?
+  deptReturnApprovedBy   User?     @relation("LoanReturnDeptApprover", fields: [deptReturnApprovedById], references: [id])
+
+  // ADMIN 최종 회수 (RETURNED 진입)
+  finalizedAt   DateTime?
+  finalizedById String?
+  finalizedBy   User?     @relation("LoanReturnFinalizer", fields: [finalizedById], references: [id])
+
+  @@map("loan_returns")
+}
+
+model LoanExtension {
+  id     String              @id @default(cuid())
+  loanId String
+  loan   Loan                @relation(fields: [loanId], references: [id], onDelete: Cascade)
+  status LoanExtensionStatus @default(PENDING_MANAGER)
+  days   Int
+
+  requestedById String
+  requestedBy   User   @relation("LoanExtensionRequester", fields: [requestedById], references: [id])
+
+  managerApprovedAt   DateTime?
+  managerApprovedById String?
+  managerApprovedBy   User?     @relation("LoanExtensionManagerApprover", fields: [managerApprovedById], references: [id])
+
+  adminApprovedAt   DateTime?
+  adminApprovedById String?
+  adminApprovedBy   User?     @relation("LoanExtensionAdminApprover", fields: [adminApprovedById], references: [id])
+
+  rejectionNote String?
+  rejectedAt    DateTime?
+  rejectedById  String?
+  rejectedBy    User?     @relation("LoanExtensionRejector", fields: [rejectedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("loan_extensions")
+}
+
+// ─────────────────────────────────────────
+// 알림 (in-app feed + Slack outbox)
+// ─────────────────────────────────────────
+
+model Notification {
+  id       String           @id @default(cuid())
+  type     NotificationType
+  title    String
+  body     String
+  metadata Json?
+
+  recipientId String
+  recipient   User   @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  // X3 outbox 패턴 — Slack 채널 발송 상태
+  channelStatus    NotificationChannelStatus @default(PENDING)
+  channelAttempts  Int                       @default(0)
+  channelLastError String?
+  channelSentAt    DateTime?
+
+  // 이메일 채널 발송 상태 (R2 방어 — 별도 retry 가능)
+  emailStatus    NotificationChannelStatus @default(PENDING)
+  emailAttempts  Int                       @default(0)
+  emailLastError String?
+  emailSentAt    DateTime?
+
+  @@index([recipientId, readAt, createdAt])
+  @@index([channelStatus, createdAt]) // Slack outbox 폴링용
+  @@index([emailStatus, createdAt]) // 이메일 outbox 폴링용
+  @@map("notifications")
+}
+
+// ─────────────────────────────────────────
+// ADR 0002 — 정보보안 (Shadow IT 인벤토리 + AuditLog)
+// ─────────────────────────────────────────
+
+enum SoftwareType {
+  SaaS
+  OnPremise
+  Other
+}
+
+enum SoftwarePermissionStatus {
+  UNCLASSIFIED // 미분류 (신규 발견 기본값)
+  ALLOWED // 허가됨 — SECURITY_OFFICER 승인
+  DISALLOWED // 미허가 — 차단/회수 대상 (Shadow IT)
+}
+
+enum DetectedSoftwareStatus {
+  PENDING_ASSET_MANAGER     // 1차 검토 대기 (수집 직후 기본값)
+  PENDING_SECURITY_OFFICER  // 2차 판정 대기 (ASSET_MANAGER 분류 완료 후)
+}
+
+enum SoftwareSource {
+  AGENT  // 에이전트 자동 수집 → DetectedSoftware 승격 경로
+  MANUAL // ASSET_MANAGER 수동 등록
+}
+
+enum AuditAction {
+  // ADR 0002 신규 — Shadow IT
+  SOFTWARE_DISCOVERED // ingest 시 신규 SW 첫 발견
+  SOFTWARE_CREATED // 수동 카탈로그 등록 (ASSET_MANAGER/SECURITY_OFFICER/ADMIN)
+  SOFTWARE_UPDATE // 카탈로그 메타(name/vendor/type/category/description/licenseCoverage) 변경
+  PERMISSION_GRANT // 미분류/미허가 → 허가됨
+  PERMISSION_REVOKE // 허가됨 → 미허가
+  PERMISSION_REVIEW // 미분류 → 검토 시작 (ASSET_MANAGER 가 1차 분류)
+  INSTANCE_OVERRIDE_CHANGE // SoftwareInstance 별 override 변경
+  LICENSE_LINK_CHANGE // SoftwareLicenseLink 생성·삭제
+
+  // ADR 0011 — SW 차단
+  BLOCK_SET   // isBlocked ON — SECURITY_OFFICER 차단 설정
+  BLOCK_UNSET // isBlocked OFF — 차단 해제
+
+  // ADR 0012 — DetectedSoftware 검토 흐름
+  DETECTED_SW_REVIEWED // PENDING_ASSET_MANAGER → PENDING_SECURITY_OFFICER
+  DETECTED_SW_APPROVED // SECURITY_OFFICER 허가 → SoftwareInstance 승격
+  DETECTED_SW_REJECTED // SECURITY_OFFICER 미허가 판정
+
+  // 기존 sensitiveAuditLog action 일반화
+  ROLE_CHANGE
+  VENDOR_APPROVE
+  VENDOR_REJECT
+  VENDOR_BLACKLIST
+  LICENSE_KEY_ACCESS
+  BANK_ACCOUNT_ACCESS
+  USER_DEACTIVATE
+  USER_ACTIVATE
+  ASSET_RETIRE
+}
+
+// 카탈로그 수준 — 같은 SW 라도 OS 별 별 row (Chrome / Chrome(Mac))
+// 식별 키: (name, vendor?) — 같은 vendor·name 이면 dedup, executedOs 는 SoftwareInstance 가 보유
+model Software {
+  id          String       @id @default(cuid())
+  name        String
+  vendor      String?
+  type        SoftwareType @default(Other)
+  category    String       @default("기타")
+  description String?
+
+  // 인벤토리의 "유료 라이선스 보유" flag — ERP License 매칭과 별 축 (ADR 0002 line 56)
+  // null = 미선택, true = 보유, false = 미보유
+  licenseCoverage Boolean?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ADR 0011 — 차단 집행
+  isBlocked   Boolean @default(false)
+  processName String? // 에이전트 차단 매칭 기준 (실행파일 이름), isBlocked 와 독립 설정 가능
+
+  basePermission        SoftwarePermission?
+  instances             SoftwareInstance[]
+  licenseLinks          SoftwareLicenseLink[]
+  disallowedDetections  DisallowedDetection[]
+  blockEvents           BlockEvent[]
+
+  @@index([name])
+  @@index([type])
+  @@map("software")
+}
+
+// Software base 의 허가유무 (1:1) — Software 와 같이 생성, 같이 삭제
+model SoftwarePermission {
+  id         String                   @id @default(cuid())
+  softwareId String                   @unique
+  software   Software                 @relation(fields: [softwareId], references: [id], onDelete: Cascade)
+  status     SoftwarePermissionStatus @default(UNCLASSIFIED)
+
+  prevStatus    SoftwarePermissionStatus?
+  decidedById   String?
+  decidedBy     User?                     @relation("SoftwarePermissionDecidedBy", fields: [decidedById], references: [id])
+  decidedByRole Role?
+  decidedAt     DateTime?
+  reason        String?
+
+  updatedAt DateTime @updatedAt
+
+  @@map("software_permissions")
+}
+
+// 특정 PC × Software 1건 (실제 발견 인스턴스)
+model SoftwareInstance {
+  id         String   @id @default(cuid())
+  softwareId String
+  software   Software @relation(fields: [softwareId], references: [id], onDelete: Cascade)
+
+  userId String?
+  user   User?   @relation("SoftwareInstanceUser", fields: [userId], references: [id])
+
+  deviceId String
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  executedOs        String
+  firstDiscoveredAt DateTime @default(now())
+  lastUsedAt        DateTime @default(now())
+  source            SoftwareSource @default(AGENT) // ADR 0012: AGENT=탐지 승격, MANUAL=직접 등록
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  permissionOverride SoftwareInstancePermissionOverride?
+  usageEvents        SoftwareUsageEvent[]
+
+  @@unique([softwareId, deviceId]) // 한 PC 에 같은 SW 1 instance
+  @@index([userId])
+  @@index([deviceId])
+  @@index([lastUsedAt])
+  @@map("software_instances")
+}
+
+// Instance 단위 허가 override (0..1) — AND 규칙으로 base 와 합쳐 최종 결정 (ADR 0002 결정 4)
+model SoftwareInstancePermissionOverride {
+  id         String           @id @default(cuid())
+  instanceId String           @unique
+  instance   SoftwareInstance @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+
+  status        SoftwarePermissionStatus
+  prevStatus    SoftwarePermissionStatus?
+  decidedById   String?
+  decidedBy     User?                     @relation("InstanceOverrideDecidedBy", fields: [decidedById], references: [id])
+  decidedByRole Role?
+  decidedAt     DateTime?
+  reason        String?
+
+  updatedAt DateTime @updatedAt
+
+  @@map("software_instance_permission_overrides")
+}
+
+// Software ↔ License N:M 다리 (가정 7: 전사 scope)
+model SoftwareLicenseLink {
+  id         String   @id @default(cuid())
+  softwareId String
+  software   Software @relation(fields: [softwareId], references: [id], onDelete: Cascade)
+  licenseId  String
+  license    License  @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+
+  matchedById String?
+  matchedBy   User?    @relation("SoftwareLicenseLinkMatchedBy", fields: [matchedById], references: [id])
+  matchedAt   DateTime @default(now())
+  note        String?
+
+  @@unique([softwareId, licenseId])
+  @@index([licenseId])
+  @@map("software_license_links")
+}
+
+// PC / endpoint — hostname 으로 식별
+model Device {
+  id       String  @id @default(cuid())
+  hostname String  @unique
+  os       String?
+  userId   String?
+  user     User?   @relation("DeviceUser", fields: [userId], references: [id])
+
+  lastSeenAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  instances          SoftwareInstance[]
+  detectedSoftware   DetectedSoftware[]
+  blockEvents        BlockEvent[]
+
+  @@index([userId])
+  @@map("devices")
+}
+
+// raw 사용 이벤트 — KPI 집계의 원천
+model SoftwareUsageEvent {
+  id          String           @id @default(cuid())
+  instanceId  String
+  instance    SoftwareInstance @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+  occurredAt  DateTime
+  durationSec Int?
+
+  @@index([instanceId, occurredAt])
+  @@map("software_usage_events")
+}
+
+// ADR 0010 — (userId, softwareId) 기준 첫 DISALLOWED 감지 dedup
+// 판정 이후 첫 ingest 시 생성 → 이후 재발송 없음 (알림 피로도 방지)
+model DisallowedDetection {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation("DisallowedDetectionUser", fields: [userId], references: [id], onDelete: Cascade)
+  softwareId String
+  software   Software @relation(fields: [softwareId], references: [id], onDelete: Cascade)
+  detectedAt DateTime @default(now())
+
+  @@unique([userId, softwareId])
+  @@index([userId])
+  @@map("disallowed_detections")
+}
+
+// ADR 0012 — 에이전트 SW 수집 큐. (deviceId, processName) 중복 수집 시 버전 갱신만
+model DetectedSoftware {
+  id           String                 @id @default(cuid())
+  deviceId     String
+  device       Device                 @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  processName  String
+  version      String?
+  manufacturer String?
+  os           String?
+  detectedAt   DateTime
+  status       DetectedSoftwareStatus @default(PENDING_ASSET_MANAGER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([deviceId, processName])
+  @@index([status])
+  @@map("detected_software")
+}
+
+// ADR 0011 — 에이전트가 보고한 프로세스 강제 종료 이벤트
+model BlockEvent {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation("BlockEventUser", fields: [userId], references: [id])
+  softwareId  String
+  software    Software @relation(fields: [softwareId], references: [id])
+  deviceId    String
+  device      Device   @relation(fields: [deviceId], references: [id])
+  processName String
+  occurredAt  DateTime
+
+  createdAt DateTime @default(now())
+
+  @@index([softwareId])
+  @@index([deviceId])
+  @@index([userId])
+  @@map("block_events")
+}
+
+// AuditLog 일반화 (ADR 0002 결정 5) — DB(조회) + logger(영구백업) 하이브리드
+// 보관 기간: 가정 5 — 무기한 (별 truncate job 없음)
+model AuditLog {
+  id         String      @id @default(cuid())
+  action     AuditAction
+  targetType String // 'Software' / 'SoftwareInstance' / 'License' / 'User' / ...
+  targetId   String
+
+  performedById   String?
+  performedBy     User?   @relation("AuditLogPerformedBy", fields: [performedById], references: [id])
+  performedByRole Role?
+
+  detail    Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([targetType, targetId, createdAt])
+  @@index([action, createdAt])
+  @@index([performedById, createdAt])
+  @@map("audit_logs")
+}
+
+// ─────────────────────────────────────────
+// 폐기(Disposal) 모듈
+// ─────────────────────────────────────────
+
+enum DisposalStatus {
+  PENDING // (ADR 0005 deprecated — 데이터 마이그레이션 후 다음 PR 에서 제거. 신규 신청은 PENDING_MANAGER 로 진입)
+  PENDING_MANAGER // ADR 0005 — 1차 승인 대기 (다른 ASSET_MANAGER)
+  PENDING_ADMIN // ADR 0005 — 최종 승인 대기 (ADMIN)
+  APPROVED // 최종 승인됨 (완료 대기)
+  COMPLETED // 처리완료 (증빙 첨부 시 마감)
+  REJECTED // 거절됨 (종료)
+  CANCELLED // 취소됨 (종료)
+
+  @@map("disposal_status")
+}
+
+enum DisposalReason {
+  SALE // 매각
+  SCRAP // 스크랩(불용)
+  DONATION // 기부
+  LOST_STOLEN // 분실·도난
+  TRANSFER // 양도(이관)
+
+  @@map("disposal_reason")
+}
+
+model Disposal {
+  id     String         @id @default(cuid())
+  status DisposalStatus @default(PENDING_MANAGER) // ADR 0005
+  reason DisposalReason
+  note   String?
+
+  // 신청 전 자산 상태 스냅샷 (거절/취소 시 복원용)
+  previousStatus AssetStatus
+
+  // Phase 1 회계전표 — 번호만 기록, 자동생성 없음
+  journalEntryNumber String?
+
+  // ADR 0006 — 폐기 판단 기준 체크리스트 (CONTEXT.md L155-162). 신청 시 최소 1개 true 강제.
+  // shape: { lowBookValue: bool, severeDamage: bool, supportEnded: bool, noAlternative: bool }
+  criteria Json?
+
+  assetId String
+  asset   Asset  @relation(fields: [assetId], references: [id])
+
+  requestedById String
+  requestedBy   User   @relation("DisposalRequester", fields: [requestedById], references: [id])
+
+  // ADR 0005 — 1차 승인 (다른 ASSET_MANAGER)
+  managerApprovedAt   DateTime?
+  managerApprovedById String?
+  managerApprovedBy   User?     @relation("DisposalManagerApprover", fields: [managerApprovedById], references: [id])
+
+  // ADR 0005 — 최종 승인 (ADMIN). 컬럼명 유지하되 의미를 ADMIN 단계로 명확화.
+  approvedAt   DateTime?
+  approvedById String?
+  approvedBy   User?     @relation("DisposalApprover", fields: [approvedById], references: [id])
+
+  completedAt DateTime?
+
+  rejectedAt   DateTime?
+  rejectedById String?
+  rejectedBy   User?     @relation("DisposalRejector", fields: [rejectedById], references: [id])
+  rejectReason String?
+
+  cancelledAt DateTime?
+
+  evidences DisposalEvidence[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([assetId])
+  @@index([managerApprovedById]) // ADR 0005
+  @@map("disposals")
+}
+
+model DisposalEvidence {
+  id         String   @id @default(cuid())
+  disposalId String
+  disposal   Disposal @relation(fields: [disposalId], references: [id], onDelete: Cascade)
+  url        String
+  label      String?
+  uploadedAt DateTime @default(now())
+
+  @@map("disposal_evidences")
+}
+
+// ─── 수리 보고서 (ADR 0009) ───────────────────────────────────────────────
+
+enum RepairReportType {
+  MONTHLY // 월간 수리 보고서
+  ANNUAL // 연간 수리 보고서
+  REPAIR_SUMMARY // 특정 기간 수리 요약
+}
+
+enum RepairReportStatus {
+  DRAFT // REPAIR_OWNER 작성 중
+  SUBMITTED // ADMIN + ASSET_MANAGER 에게 전달됨 (구 PUBLISHED)
+  FINALIZED // ADMIN + ASSET_MANAGER 둘 다 확인 완료
+}
+
+model RepairReport {
+  id     String             @id @default(cuid())
+  type   RepairReportType
+  status RepairReportStatus @default(DRAFT)
+
+  // 기간: MONTHLY → year+month, ANNUAL → year, REPAIR_SUMMARY → startDate~endDate
+  year      Int
+  month     Int?
+  startDate DateTime?
+  endDate   DateTime?
+
+  title   String
+  comment String? // 수기 코멘트 (숫자는 실시간 계산)
+
+  authorId    String
+  author      User      @relation("RepairReportAuthor", fields: [authorId], references: [id])
+  submittedAt DateTime?
+
+  // ADR 0009 — ADMIN · ASSET_MANAGER 독립 확인
+  adminAckedAt          DateTime?
+  adminAckedById        String?
+  adminAckedBy          User?     @relation("RepairReportAdminAcker", fields: [adminAckedById], references: [id])
+  assetManagerAckedAt   DateTime?
+  assetManagerAckedById String?
+  assetManagerAckedBy   User?     @relation("RepairReportAssetManagerAcker", fields: [assetManagerAckedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type, year, month])
+  @@index([authorId])
+  @@map("repair_reports")
+}
+
+// ─────────────────────────────────────────
+// ADR 0004 — 월말·연말 자산 보고 (TeamReport → DeptReport 2단계)
+// ─────────────────────────────────────────
+
+enum TeamReportStatus {
+  DRAFT
+  SUBMITTED
+  REVIEWED
+  REJECTED
+}
+
+enum DeptReportStatus {
+  DRAFT
+  FINALIZED
+}
+
+model TeamMonthlyReport {
+  id     String @id @default(cuid())
+  teamId String
+  team   Team   @relation("TeamMonthlyReports", fields: [teamId], references: [id])
+
+  year  Int
+  month Int // 1-12
+
+  status TeamReportStatus @default(DRAFT)
+
+  // 스냅샷 — 생성 시점 집계값, 이후 변경 불가
+  assetCount       Int @default(0)
+  newLoans         Int @default(0)
+  returns          Int @default(0)
+  overdueCount     Int @default(0)
+  maintenanceCount Int @default(0)
+
+  // TEAM_LEAD 서명·제출
+  teamLeadComment String?
+  submittedById   String?
+  submittedBy     User?     @relation("TeamMonthlyReportSubmitter", fields: [submittedById], references: [id])
+  submittedAt     DateTime?
+
+  // DEPT_LEAD 검토
+  reviewedById    String?
+  reviewedBy      User?     @relation("TeamMonthlyReportReviewer", fields: [reviewedById], references: [id])
+  reviewedAt      DateTime?
+  deptLeadComment String?
+
+  // 반려
+  rejectedById    String?
+  rejectedBy      User?     @relation("TeamMonthlyReportRejector", fields: [rejectedById], references: [id])
+  rejectedAt      DateTime?
+  rejectionReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamId, year, month])
+  @@index([year, month])
+  @@map("team_monthly_reports")
+}
+
+model DeptMonthlyReport {
+  id           String     @id @default(cuid())
+  departmentId String
+  department   Department @relation("DeptMonthlyReports", fields: [departmentId], references: [id])
+
+  year  Int
+  month Int // 1-12
+
+  status DeptReportStatus @default(DRAFT)
+
+  // 스냅샷 — 산하 팀 보고서 합산
+  totalAssets      Int @default(0)
+  totalNewLoans    Int @default(0)
+  totalReturns     Int @default(0)
+  totalOverdue     Int @default(0)
+  totalMaintenance Int @default(0)
+
+  // DEPT_LEAD 서명
+  finalizedById String?
+  finalizedBy   User?     @relation("DeptMonthlyReportFinalizer", fields: [finalizedById], references: [id])
+  finalizedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([departmentId, year, month])
+  @@index([year, month])
+  @@map("dept_monthly_reports")
+}
+
+model TeamAnnualReport {
+  id     String @id @default(cuid())
+  teamId String
+  team   Team   @relation("TeamAnnualReports", fields: [teamId], references: [id])
+
+  year Int
+
+  status TeamReportStatus @default(DRAFT)
+
+  assetCount       Int @default(0)
+  newLoans         Int @default(0)
+  returns          Int @default(0)
+  overdueCount     Int @default(0)
+  maintenanceCount Int @default(0)
+
+  teamLeadComment String?
+  submittedById   String?
+  submittedBy     User?     @relation("TeamAnnualReportSubmitter", fields: [submittedById], references: [id])
+  submittedAt     DateTime?
+
+  reviewedById    String?
+  reviewedBy      User?     @relation("TeamAnnualReportReviewer", fields: [reviewedById], references: [id])
+  reviewedAt      DateTime?
+  deptLeadComment String?
+
+  rejectedById    String?
+  rejectedBy      User?     @relation("TeamAnnualReportRejector", fields: [rejectedById], references: [id])
+  rejectedAt      DateTime?
+  rejectionReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamId, year])
+  @@index([year])
+  @@map("team_annual_reports")
+}
+
+model DeptAnnualReport {
+  id           String     @id @default(cuid())
+  departmentId String
+  department   Department @relation("DeptAnnualReports", fields: [departmentId], references: [id])
+
+  year Int
+
+  status DeptReportStatus @default(DRAFT)
+
+  totalAssets      Int @default(0)
+  totalNewLoans    Int @default(0)
+  totalReturns     Int @default(0)
+  totalOverdue     Int @default(0)
+  totalMaintenance Int @default(0)
+
+  finalizedById String?
+  finalizedBy   User?     @relation("DeptAnnualReportFinalizer", fields: [finalizedById], references: [id])
+  finalizedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([departmentId, year])
+  @@index([year])
+  @@map("dept_annual_reports")
+}
+
+enum SecurityReportStatus {
+  DRAFT
+  SUBMITTED
+  ACKED
+}
+
+model SecurityReport {
+  id     String               @id @default(cuid())
+  status SecurityReportStatus @default(DRAFT)
+
+  year    Int
+  month   Int
+  title   String
+  comment String?
+
+  authorId    String
+  author      User      @relation("SecurityReportAuthor", fields: [authorId], references: [id])
+  submittedAt DateTime?
+
+  ackedAt   DateTime?
+  ackedById String?
+  ackedBy   User? @relation("SecurityReportAcker", fields: [ackedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([year, month, authorId])
+  @@index([year, month])
+  @@index([authorId])
+  @@map("security_reports")
+}

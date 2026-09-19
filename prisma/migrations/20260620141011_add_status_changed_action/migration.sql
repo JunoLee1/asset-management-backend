@@ -1,0 +1,2 @@
+-- Add STATUS_CHANGED to AssetAction enum
+ALTER TYPE "AssetAction" ADD VALUE 'STATUS_CHANGED' BEFORE 'RETIRED';

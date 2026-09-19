@@ -1,0 +1,5 @@
+-- 정비 알림용 NotificationType enum 추가
+-- ADMIN 2차 승인 → REPAIR_OWNER에게 "정비 배정"
+-- COMPLETED → 신청자 + REPAIR_OWNER 에게 "정비 완료"
+ALTER TYPE "NotificationType" ADD VALUE IF NOT EXISTS 'MAINTENANCE_ASSIGNED_TO_REPAIR';
+ALTER TYPE "NotificationType" ADD VALUE IF NOT EXISTS 'MAINTENANCE_COMPLETED';

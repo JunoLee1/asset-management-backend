@@ -1,0 +1,2 @@
+-- ADD VALUE는 트랜잭션 밖에서만 가능
+ALTER TYPE "Role" ADD VALUE IF NOT EXISTS 'TEAM_LEAD';

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+src/generated/
+.axhub/bootstrap.state.json
+graphify-out/
+.claude/
+agent-client/

@@ -1,0 +1,33 @@
+# fly.toml app configuration file
+# See https://fly.io/docs/reference/configuration/
+
+app = "asset-erp-backend"
+primary_region = "icn"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[[services]]
+  internal_port = 3001
+  protocol = "tcp"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [services.http_checks]
+    enabled = true
+    grace_period = "5s"
+    interval = "15s"
+    method = "get"
+    path = "/health"
+    timeout = "5s"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "3001"
+  UV_THREADPOOL_SIZE = "8"

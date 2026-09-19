@@ -1,0 +1,6 @@
+version: axhub/v1
+name: 자산관리 ERP Backend
+slug: asset-erp2
+id: 63dc1434-a9ac-4c2f-9752-45b960c6d8f2
+runtime:
+  port: 3001
