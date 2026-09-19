@@ -1,0 +1,1827 @@
+{
+  "jest.config.ts": {
+    "mtime": 1780468652.3472257,
+    "ast_hash": "1afda68ccfabdf0c67c5deb30561940d",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1780996653.9992344,
+    "ast_hash": "1d43519c474737d9b6914901d4780ed8",
+    "semantic_hash": ""
+  },
+  "prisma.config.ts": {
+    "mtime": 1780996654.000452,
+    "ast_hash": "6f5829f1eeed1d538ebc64183f54fe8b",
+    "semantic_hash": ""
+  },
+  "prisma/migrations/20260603050020_init/migration.sql": {
+    "mtime": 1780468652.3586519,
+    "ast_hash": "7dcec19faccc2a0838eb928140362bef",
+    "semantic_hash": ""
+  },
+  "prisma/migrations/20260608035626_require_asset_purchase_fields/migration.sql": {
+    "mtime": 1780897297.501469,
+    "ast_hash": "527a42f5d2f190640ced72674ce889e6",
+    "semantic_hash": ""
+  },
+  "prisma/migrations/20260608042930_add_user_history/migration.sql": {
+    "mtime": 1780897372.2307596,
+    "ast_hash": "f3584b524be2760ffd67ce2a3c84efba",
+    "semantic_hash": ""
+  },
+  "prisma/migrations/20260608071252_add_password_history/migration.sql": {
+    "mtime": 1780907416.6620123,
+    "ast_hash": "07af25089fee8318b0e0758a74810074",
+    "semantic_hash": ""
+  },
+  "prisma/migrations/20260608084935_add_manufacturer_master/migration.sql": {
+    "mtime": 1780983040.607258,
+    "ast_hash": "9c5e9913c80d3cc7e699908050e4a138",
+    "semantic_hash": ""
+  },
+  "prisma/migrations/20260609060000_loan_notification_maintenance_m2/migration.sql": {
+    "mtime": 1780996654.001504,
+    "ast_hash": "cf5b1c15af884a3cbee6f5ddaf88e9fb",
+    "semantic_hash": ""
+  },
+  "prisma/migrations/20260609080000_notification_email_channel/migration.sql": {
+    "mtime": 1780996654.0099585,
+    "ast_hash": "ba25dcae9b7ed999b080eea5275f226e",
+    "semantic_hash": ""
+  },
+  "prisma/seed.ts": {
+    "mtime": 1780996654.0326304,
+    "ast_hash": "ab1b0f547807cbe44324d8f840f40554",
+    "semantic_hash": ""
+  },
+  "src/app.ts": {
+    "mtime": 1780996654.0510123,
+    "ast_hash": "8a5e8125cde894b59ff648e97634f841",
+    "semantic_hash": ""
+  },
+  "src/config/env.ts": {
+    "mtime": 1780468652.3628278,
+    "ast_hash": "aff98ac30149713ee11469d6f1805e3d",
+    "semantic_hash": ""
+  },
+  "src/config/passport.ts": {
+    "mtime": 1780468652.3635013,
+    "ast_hash": "0038a8accb93ef1d80443fb321c7eb1c",
+    "semantic_hash": ""
+  },
+  "src/index.ts": {
+    "mtime": 1780996654.0545642,
+    "ast_hash": "3582f0448f360ed9fb489ea42a03f44b",
+    "semantic_hash": ""
+  },
+  "src/lib/AppError.ts": {
+    "mtime": 1780468652.3652792,
+    "ast_hash": "0936b79971fb3d08541eb0d3ce6f45b0",
+    "semantic_hash": ""
+  },
+  "src/lib/__tests__/emailTemplates.test.ts": {
+    "mtime": 1780468652.3658428,
+    "ast_hash": "8dfd653488744a4077248b56b7aafc5d",
+    "semantic_hash": ""
+  },
+  "src/lib/__tests__/phoneEncryption.test.ts": {
+    "mtime": 1780468652.3670409,
+    "ast_hash": "cde2345c3a4d1c5db2e2a3664ffd850f",
+    "semantic_hash": ""
+  },
+  "src/lib/cloudinary.ts": {
+    "mtime": 1780739723.6102507,
+    "ast_hash": "68f269bbde47a95c080be1bdbc25176a",
+    "semantic_hash": ""
+  },
+  "src/lib/emailTemplates.ts": {
+    "mtime": 1780468652.3684106,
+    "ast_hash": "aac92c890b36bd595a2e943f2c7a28ee",
+    "semantic_hash": ""
+  },
+  "src/lib/licenseKey.ts": {
+    "mtime": 1780739723.6106205,
+    "ast_hash": "95457a498a2441083174007dc2b28cd9",
+    "semantic_hash": ""
+  },
+  "src/lib/logger.ts": {
+    "mtime": 1780468652.3698003,
+    "ast_hash": "1109052d06e502ea14039842ca1a494c",
+    "semantic_hash": ""
+  },
+  "src/lib/mailer.ts": {
+    "mtime": 1780468652.373218,
+    "ast_hash": "15b90b986b24688855ca3ad81493936b",
+    "semantic_hash": ""
+  },
+  "src/lib/pagination.ts": {
+    "mtime": 1780996654.0591586,
+    "ast_hash": "18ba7d96e483fa0a802d471581d0c514",
+    "semantic_hash": ""
+  },
+  "src/lib/phoneEncryption.ts": {
+    "mtime": 1780468652.3742733,
+    "ast_hash": "e5411086e95862274f8780a7ca9f80f6",
+    "semantic_hash": ""
+  },
+  "src/lib/prisma.ts": {
+    "mtime": 1780468652.3754117,
+    "ast_hash": "4a5b7f92a4738ef01817a63fd80ec02d",
+    "semantic_hash": ""
+  },
+  "src/lib/requestHelpers.ts": {
+    "mtime": 1780897372.2332535,
+    "ast_hash": "c52b9ff355e4b47b7a842c532f23a227",
+    "semantic_hash": ""
+  },
+  "src/lib/scheduler.ts": {
+    "mtime": 1780996654.1032505,
+    "ast_hash": "4c23640c3bbfc1be9f7713ef3ca254b7",
+    "semantic_hash": ""
+  },
+  "src/middlewares/authenticate.ts": {
+    "mtime": 1780468652.3762298,
+    "ast_hash": "f30b2af47d52988d3694d7738e096331",
+    "semantic_hash": ""
+  },
+  "src/middlewares/authorize.ts": {
+    "mtime": 1780468652.3769827,
+    "ast_hash": "57928c78e30b63d5175a2bd4474cec9f",
+    "semantic_hash": ""
+  },
+  "src/middlewares/errorHandler.ts": {
+    "mtime": 1780468652.37756,
+    "ast_hash": "17e1591f237a34ba9d9d08429f047ca9",
+    "semantic_hash": ""
+  },
+  "src/middlewares/validate.ts": {
+    "mtime": 1780468652.3780792,
+    "ast_hash": "a74e469700261d3ecc69334d9800e538",
+    "semantic_hash": ""
+  },
+  "src/modules/admin/__tests__/admin.service.test.ts": {
+    "mtime": 1780468652.3792748,
+    "ast_hash": "775b94fc12bf50d7fb3e5534697abd3b",
+    "semantic_hash": ""
+  },
+  "src/modules/admin/__tests__/user.service.test.ts": {
+    "mtime": 1780628071.3839529,
+    "ast_hash": "fc7250f780e57ae34cd07fc89927f0c7",
+    "semantic_hash": ""
+  },
+  "src/modules/admin/admin.controller.ts": {
+    "mtime": 1780996654.103781,
+    "ast_hash": "24dd1975eeb25c678ef15d6a7cc657af",
+    "semantic_hash": ""
+  },
+  "src/modules/admin/admin.router.ts": {
+    "mtime": 1780897372.233685,
+    "ast_hash": "68f9ad9e76c19e2d440ab5067037a4c9",
+    "semantic_hash": ""
+  },
+  "src/modules/admin/admin.service.ts": {
+    "mtime": 1780897372.2350717,
+    "ast_hash": "be314fc46b7856f91c04e2d2500639be",
+    "semantic_hash": ""
+  },
+  "src/modules/admin/admin.types.ts": {
+    "mtime": 1780468652.382193,
+    "ast_hash": "0736ca4aabbd747d30ea4a6cf80cd2c5",
+    "semantic_hash": ""
+  },
+  "src/modules/admin/user.controller.ts": {
+    "mtime": 1780897372.2359922,
+    "ast_hash": "477848523bb057298d2018d322ffa188",
+    "semantic_hash": ""
+  },
+  "src/modules/admin/user.service.ts": {
+    "mtime": 1780897372.237394,
+    "ast_hash": "52e8d8c4a5fc95b36f7e99d6898dd93a",
+    "semantic_hash": ""
+  },
+  "src/modules/assets/__tests__/asset.service.create.test.ts": {
+    "mtime": 1780628766.8690522,
+    "ast_hash": "b847435f045d0e842061536d50f36ec6",
+    "semantic_hash": ""
+  },
+  "src/modules/assets/__tests__/asset.service.detail.test.ts": {
+    "mtime": 1780629189.523392,
+    "ast_hash": "5e27eb6224d6a9fd0b5a260183e2f8b3",
+    "semantic_hash": ""
+  },
+  "src/modules/assets/__tests__/asset.service.list.test.ts": {
+    "mtime": 1780552237.6126888,
+    "ast_hash": "60c6686ffc54e53f4b513a67984d94ef",
+    "semantic_hash": ""
+  },
+  "src/modules/assets/__tests__/assetCodeGenerator.test.ts": {
+    "mtime": 1780628766.869188,
+    "ast_hash": "8ef14b0f65998bb7a805898a9a06666d",
+    "semantic_hash": ""
+  },
+  "src/modules/assets/asset.controller.ts": {
+    "mtime": 1780890615.992307,
+    "ast_hash": "459ab0c60906a5b1229153a4ae07708a",
+    "semantic_hash": ""
+  },
+  "src/modules/assets/asset.router.ts": {
+    "mtime": 1780739723.6129382,
+    "ast_hash": "0fbb3e3924e45e1808c46b914eba2f78",
+    "semantic_hash": ""
+  },
+  "src/modules/assets/asset.service.ts": {
+    "mtime": 1780996654.1127124,
+    "ast_hash": "5c7fd33e36251b333b6d0b5004e45b36",
+    "semantic_hash": ""
+  },
+  "src/modules/assets/asset.types.ts": {
+    "mtime": 1780996654.1172678,
+    "ast_hash": "20521a3eb3eb7afe7d23ab0a43b9fd65",
+    "semantic_hash": ""
+  },
+  "src/modules/assets/assetCodeGenerator.ts": {
+    "mtime": 1780633479.7547228,
+    "ast_hash": "d14a06580c16700fcbe8658364e5856d",
+    "semantic_hash": ""
+  },
+  "src/modules/auth/__tests__/auth.service.test.ts": {
+    "mtime": 1780645040.3335617,
+    "ast_hash": "6e0e46f4df8b88bc7adbadcee6e777f7",
+    "semantic_hash": ""
+  },
+  "src/modules/auth/auth.controller.ts": {
+    "mtime": 1780907416.6625972,
+    "ast_hash": "f9559bce7a80df39e6ae92e8f8ede01e",
+    "semantic_hash": ""
+  },
+  "src/modules/auth/auth.router.ts": {
+    "mtime": 1780907416.6627874,
+    "ast_hash": "3593b4ecbbb99d5ad61009e5a6acb270",
+    "semantic_hash": ""
+  },
+  "src/modules/auth/auth.service.ts": {
+    "mtime": 1780907416.6629987,
+    "ast_hash": "9419ba2d626c91ef94a49cd7202e5f0f",
+    "semantic_hash": ""
+  },
+  "src/modules/auth/auth.types.ts": {
+    "mtime": 1780468652.3858955,
+    "ast_hash": "3317238dd8a8c7a22fc8e2de6b19df5f",
+    "semantic_hash": ""
+  },
+  "src/modules/catalog/__tests__/catalog.service.test.ts": {
+    "mtime": 1781062980.06429,
+    "ast_hash": "783ff35754e8052b0bafd536e0c2aacb",
+    "semantic_hash": ""
+  },
+  "src/modules/catalog/catalog.controller.ts": {
+    "mtime": 1780739723.6154678,
+    "ast_hash": "2dd5ccc78363e0c60a0b12fa5b49d675",
+    "semantic_hash": ""
+  },
+  "src/modules/catalog/catalog.router.ts": {
+    "mtime": 1780739723.616613,
+    "ast_hash": "76a6f9576c6077b176f0caa263607581",
+    "semantic_hash": ""
+  },
+  "src/modules/catalog/catalog.service.ts": {
+    "mtime": 1781062915.3270898,
+    "ast_hash": "307b2e254ddf7f9187b53a679037c67d",
+    "semantic_hash": ""
+  },
+  "src/modules/catalog/catalog.types.ts": {
+    "mtime": 1781062925.8805273,
+    "ast_hash": "38f4099c8bb0a6f2d21e4806cd1d6f01",
+    "semantic_hash": ""
+  },
+  "src/modules/dashboard/__tests__/dashboard.service.test.ts": {
+    "mtime": 1780550884.7734058,
+    "ast_hash": "30ef2285dfa8667c10843881623cc672",
+    "semantic_hash": ""
+  },
+  "src/modules/dashboard/dashboard.controller.ts": {
+    "mtime": 1780625704.0805151,
+    "ast_hash": "125f0dc150e9463b58e9a3daf960f398",
+    "semantic_hash": ""
+  },
+  "src/modules/dashboard/dashboard.router.ts": {
+    "mtime": 1780468652.3871436,
+    "ast_hash": "857bd429d1b7fae1b086ad013cf9006f",
+    "semantic_hash": ""
+  },
+  "src/modules/dashboard/dashboard.service.ts": {
+    "mtime": 1781067259.3734934,
+    "ast_hash": "dd0af52db304b728d5205c3f34a0697a",
+    "semantic_hash": ""
+  },
+  "src/modules/dashboard/dashboard.types.ts": {
+    "mtime": 1781067249.4179835,
+    "ast_hash": "c1c2795fa10b81abb0f872cb40ca40cf",
+    "semantic_hash": ""
+  },
+  "src/modules/depreciation/__tests__/depreciation.service.test.ts": {
+    "mtime": 1780739723.6184163,
+    "ast_hash": "a9ffafd5bc7f697e185549862e43d45c",
+    "semantic_hash": ""
+  },
+  "src/modules/depreciation/depreciation.controller.ts": {
+    "mtime": 1780739723.6186507,
+    "ast_hash": "bb30e216ea2bee7743b9f715d0aadcba",
+    "semantic_hash": ""
+  },
+  "src/modules/depreciation/depreciation.router.ts": {
+    "mtime": 1780897372.23963,
+    "ast_hash": "d9aa681f8d911a91b4d2d76fd61e49bd",
+    "semantic_hash": ""
+  },
+  "src/modules/depreciation/depreciation.service.ts": {
+    "mtime": 1780739723.6203701,
+    "ast_hash": "c7e738d0581554390a0a195e2b89c333",
+    "semantic_hash": ""
+  },
+  "src/modules/depreciation/depreciation.types.ts": {
+    "mtime": 1780739723.6213756,
+    "ast_hash": "e8bb2f161169b8a07a8b0cb2159e969d",
+    "semantic_hash": ""
+  },
+  "src/modules/licenses/__tests__/license.service.test.ts": {
+    "mtime": 1780739723.621975,
+    "ast_hash": "d173177d6df0a5875c147ddc6a84a38c",
+    "semantic_hash": ""
+  },
+  "src/modules/licenses/license.controller.ts": {
+    "mtime": 1780739723.62276,
+    "ast_hash": "846b394334950f32a2b8d7c8f7354d29",
+    "semantic_hash": ""
+  },
+  "src/modules/licenses/license.router.ts": {
+    "mtime": 1780739723.6232405,
+    "ast_hash": "ff4fd86f516c66ab158a14f074fe040c",
+    "semantic_hash": ""
+  },
+  "src/modules/licenses/license.service.ts": {
+    "mtime": 1780996654.1188226,
+    "ast_hash": "4e18712be8c76f57c4594e979b6db024",
+    "semantic_hash": ""
+  },
+  "src/modules/licenses/license.types.ts": {
+    "mtime": 1780996654.1285574,
+    "ast_hash": "1411726389b98055399511eb47b91ff6",
+    "semantic_hash": ""
+  },
+  "src/modules/loans/loan.controller.ts": {
+    "mtime": 1780996654.1362953,
+    "ast_hash": "fb6b5c363a7cfad77e765eef3e23ec34",
+    "semantic_hash": ""
+  },
+  "src/modules/loans/loan.router.ts": {
+    "mtime": 1780996654.1369543,
+    "ast_hash": "c6b2f9546d1fbc6629aa0dbd4af82a7b",
+    "semantic_hash": ""
+  },
+  "src/modules/loans/loan.service.ts": {
+    "mtime": 1781067264.1284392,
+    "ast_hash": "88f866ad5af0d96848e4fbdf4f9ebc5b",
+    "semantic_hash": ""
+  },
+  "src/modules/loans/loan.types.ts": {
+    "mtime": 1781067241.0317578,
+    "ast_hash": "1f17fc6e133f8613e2b64552477a3c90",
+    "semantic_hash": ""
+  },
+  "src/modules/maintenance/__tests__/maintenance.service.test.ts": {
+    "mtime": 1780739723.6257553,
+    "ast_hash": "bc7f2fcd12da704e1b53d133dab66fb2",
+    "semantic_hash": ""
+  },
+  "src/modules/maintenance/maintenance.controller.ts": {
+    "mtime": 1780996654.40515,
+    "ast_hash": "b52a4deaf7f9296df39e01011f9e02ab",
+    "semantic_hash": ""
+  },
+  "src/modules/maintenance/maintenance.router.ts": {
+    "mtime": 1780996654.4093623,
+    "ast_hash": "823211ea506e3f4205b3b3c3abb6af9c",
+    "semantic_hash": ""
+  },
+  "src/modules/maintenance/maintenance.service.ts": {
+    "mtime": 1781063699.7311034,
+    "ast_hash": "e65db07a0030433901007ba6f95870bb",
+    "semantic_hash": ""
+  },
+  "src/modules/maintenance/maintenance.types.ts": {
+    "mtime": 1780996654.4997575,
+    "ast_hash": "dd933a3ce030ad76b4b091e2f0d54585",
+    "semantic_hash": ""
+  },
+  "src/modules/manufacturer/manufacturer.controller.ts": {
+    "mtime": 1780983040.609357,
+    "ast_hash": "c20e82266c889e3fb4f671166c0c6092",
+    "semantic_hash": ""
+  },
+  "src/modules/manufacturer/manufacturer.router.ts": {
+    "mtime": 1780983040.6096048,
+    "ast_hash": "d4de9b8add3b1909ebc3eef7425576bf",
+    "semantic_hash": ""
+  },
+  "src/modules/manufacturer/manufacturer.service.ts": {
+    "mtime": 1780996654.5029705,
+    "ast_hash": "5d0991df8dd152af56d9bcadeceba7df",
+    "semantic_hash": ""
+  },
+  "src/modules/manufacturer/manufacturer.types.ts": {
+    "mtime": 1780983040.6107721,
+    "ast_hash": "718f7e81b6a6e140989c55518135c1dc",
+    "semantic_hash": ""
+  },
+  "src/modules/master/__tests__/assetCategory.service.test.ts": {
+    "mtime": 1780555286.7056422,
+    "ast_hash": "7f6102378ec8881c77b55494eece7e00",
+    "semantic_hash": ""
+  },
+  "src/modules/master/__tests__/department.service.test.ts": {
+    "mtime": 1780555286.7060058,
+    "ast_hash": "fe10a30bdf2f3e65104567a1fc73ff83",
+    "semantic_hash": ""
+  },
+  "src/modules/master/__tests__/location.service.test.ts": {
+    "mtime": 1780555286.7071888,
+    "ast_hash": "19e83d4e4fd5deb87e378206508a0992",
+    "semantic_hash": ""
+  },
+  "src/modules/master/__tests__/vendor.service.test.ts": {
+    "mtime": 1780555286.707595,
+    "ast_hash": "5c32a943c8f65f18c23b88a2fa31e756",
+    "semantic_hash": ""
+  },
+  "src/modules/master/assetCategory.service.ts": {
+    "mtime": 1780628071.385345,
+    "ast_hash": "1b7371c283287331fdacf564e75245f4",
+    "semantic_hash": ""
+  },
+  "src/modules/master/department.service.ts": {
+    "mtime": 1780555286.7082806,
+    "ast_hash": "3dd7ba9ffc06bb05b28ce1b8d831e67d",
+    "semantic_hash": ""
+  },
+  "src/modules/master/location.service.ts": {
+    "mtime": 1780555286.708484,
+    "ast_hash": "13b70d50b6749452826e8cab38aab200",
+    "semantic_hash": ""
+  },
+  "src/modules/master/master.controller.ts": {
+    "mtime": 1780625704.0807827,
+    "ast_hash": "de0a3204f236f69e9410f35e5d46f4e8",
+    "semantic_hash": ""
+  },
+  "src/modules/master/master.helpers.ts": {
+    "mtime": 1780555286.7088828,
+    "ast_hash": "7de6d38eff913d13a2e473716b09374f",
+    "semantic_hash": ""
+  },
+  "src/modules/master/master.router.ts": {
+    "mtime": 1780637773.8580456,
+    "ast_hash": "c430262d651e912979372e8ee86f7126",
+    "semantic_hash": ""
+  },
+  "src/modules/master/vendor.service.ts": {
+    "mtime": 1780555286.7095172,
+    "ast_hash": "e03be162c9e6e1e42dfb73e7d79aa38b",
+    "semantic_hash": ""
+  },
+  "src/modules/notifications/notification.controller.ts": {
+    "mtime": 1781063699.7334778,
+    "ast_hash": "d5bd4420f33324d9ab9802d498e468c3",
+    "semantic_hash": ""
+  },
+  "src/modules/notifications/notification.router.ts": {
+    "mtime": 1780996654.519621,
+    "ast_hash": "631961733b44c2fb5e9d11b87abb8695",
+    "semantic_hash": ""
+  },
+  "src/modules/notifications/notification.service.ts": {
+    "mtime": 1780996654.5264876,
+    "ast_hash": "5dec77af2a38c098f1a27cee2b62c233",
+    "semantic_hash": ""
+  },
+  "src/schemas/__tests__/asset.schema.test.ts": {
+    "mtime": 1780628766.869787,
+    "ast_hash": "e361948d95eba32378ee8bc20e12c641",
+    "semantic_hash": ""
+  },
+  "src/schemas/__tests__/auth.schema.test.ts": {
+    "mtime": 1780468652.3877838,
+    "ast_hash": "183dd806d6581e3f738c60504ba12ae1",
+    "semantic_hash": ""
+  },
+  "src/schemas/__tests__/master.schema.test.ts": {
+    "mtime": 1780555286.7097828,
+    "ast_hash": "838cae37fc0f4eb58222e91fb98a5bdc",
+    "semantic_hash": ""
+  },
+  "src/schemas/asset.schema.ts": {
+    "mtime": 1780996654.5325055,
+    "ast_hash": "1274ab4bf99a0077611fb7f48d24b7ed",
+    "semantic_hash": ""
+  },
+  "src/schemas/auth.schema.ts": {
+    "mtime": 1780996654.544869,
+    "ast_hash": "24e3ac74102ce9dc2fa7e66883cabeea",
+    "semantic_hash": ""
+  },
+  "src/schemas/catalog.schema.ts": {
+    "mtime": 1780983040.6109672,
+    "ast_hash": "098a36d57132e4c25c8ef094fb223d7e",
+    "semantic_hash": ""
+  },
+  "src/schemas/depreciation.schema.ts": {
+    "mtime": 1780739723.6283484,
+    "ast_hash": "e65b56a6dc16e0c52154990db3775c4d",
+    "semantic_hash": ""
+  },
+  "src/schemas/license.schema.ts": {
+    "mtime": 1780739723.6286926,
+    "ast_hash": "d5aaa2e9f3dc86c6f90dd36f3acaa198",
+    "semantic_hash": ""
+  },
+  "src/schemas/loan.schema.ts": {
+    "mtime": 1780996654.5561604,
+    "ast_hash": "770a1f0adb4f8ba95cd774ba2e44977e",
+    "semantic_hash": ""
+  },
+  "src/schemas/maintenance.schema.ts": {
+    "mtime": 1780996654.5769258,
+    "ast_hash": "3b9d9656cc1d635979a15e91d7e2e75b",
+    "semantic_hash": ""
+  },
+  "src/schemas/manufacturer.schema.ts": {
+    "mtime": 1780983040.6110988,
+    "ast_hash": "12d3db62a98dc391a51044e94a90d4eb",
+    "semantic_hash": ""
+  },
+  "src/schemas/master.schema.ts": {
+    "mtime": 1780555286.7100565,
+    "ast_hash": "ded7c5252f4d8aee0f047b97139bb187",
+    "semantic_hash": ""
+  },
+  "src/schemas/user.schema.ts": {
+    "mtime": 1780996654.5778189,
+    "ast_hash": "ba77182ca193fc27307268f4b6b57591",
+    "semantic_hash": ""
+  },
+  "src/types/express.d.ts": {
+    "mtime": 1780468652.3883808,
+    "ast_hash": "9084a05b6ea879c1e9065a66a199e3c6",
+    "semantic_hash": ""
+  },
+  "src/types/passport-kakao.d.ts": {
+    "mtime": 1780468652.3887029,
+    "ast_hash": "fe1b06341efd84d4948d11fb1f6359cd",
+    "semantic_hash": ""
+  },
+  "tsconfig.json": {
+    "mtime": 1780468652.388905,
+    "ast_hash": "fadc329176dacef44378254974aca452",
+    "semantic_hash": ""
+  },
+  "tsconfig.test.json": {
+    "mtime": 1780468652.3890944,
+    "ast_hash": "84f5b506984397368708f4986bc80173",
+    "semantic_hash": ""
+  },
+  "axhub.yaml": {
+    "mtime": 1781060274.3622575,
+    "ast_hash": "afe6ad72a5c3889e02ec4eb707146849",
+    "semantic_hash": ""
+  },
+  "prisma/migrations/20260610000000_add_lost_to_asset_condition/migration.sql": {
+    "mtime": 1781066326.8073275,
+    "ast_hash": "a86956bc2992527b87391018b92f45c1",
+    "semantic_hash": ""
+  },
+  "src/modules/loans/__tests__/loan.types.test.ts": {
+    "mtime": 1781066441.7355387,
+    "ast_hash": "32fb4906882f85b0066aac2cb69e9066",
+    "semantic_hash": ""
+  },
+  "/Users/juno/asset-erp-backend/agent-client/package.json": {
+    "mtime": 1783259955.3575397,
+    "ast_hash": "0051a5e0c7ac92503ef03d1a3ff9c500",
+    "semantic_hash": "0051a5e0c7ac92503ef03d1a3ff9c500"
+  },
+  "/Users/juno/asset-erp-backend/agent-client/src/api.ts": {
+    "mtime": 1783259928.8773005,
+    "ast_hash": "53beb53eda0627984f51b2eaf120dd78",
+    "semantic_hash": "53beb53eda0627984f51b2eaf120dd78"
+  },
+  "/Users/juno/asset-erp-backend/agent-client/src/config.ts": {
+    "mtime": 1783259899.3246245,
+    "ast_hash": "8989129b156a00a7ea401006b0c611cc",
+    "semantic_hash": "8989129b156a00a7ea401006b0c611cc"
+  },
+  "/Users/juno/asset-erp-backend/agent-client/src/index.ts": {
+    "mtime": 1783259948.4664853,
+    "ast_hash": "677005c6fd93c8eab65db38ed1ae5b8a",
+    "semantic_hash": "677005c6fd93c8eab65db38ed1ae5b8a"
+  },
+  "/Users/juno/asset-erp-backend/agent-client/src/scanner.ts": {
+    "mtime": 1783259918.5713239,
+    "ast_hash": "7ab7d96f767e600cc834e2c3b3eee49a",
+    "semantic_hash": "7ab7d96f767e600cc834e2c3b3eee49a"
+  },
+  "/Users/juno/asset-erp-backend/agent-client/tsconfig.json": {
+    "mtime": 1783259883.7974772,
+    "ast_hash": "c9cb4c576af88f486fa6d34deebafb43",
+    "semantic_hash": "c9cb4c576af88f486fa6d34deebafb43"
+  },
+  "/Users/juno/asset-erp-backend/create-ethereal.mjs": {
+    "mtime": 1782703863.276854,
+    "ast_hash": "c59fad0c3577af069ea16f0111c71e4f",
+    "semantic_hash": "c59fad0c3577af069ea16f0111c71e4f"
+  },
+  "/Users/juno/asset-erp-backend/jest.config.ts": {
+    "mtime": 1782109010.2556999,
+    "ast_hash": "1afda68ccfabdf0c67c5deb30561940d",
+    "semantic_hash": "1afda68ccfabdf0c67c5deb30561940d"
+  },
+  "/Users/juno/asset-erp-backend/migrations_check.sql": {
+    "mtime": 1782199363.3031826,
+    "ast_hash": "bbd55eef3b5813d2747731d3512738b9",
+    "semantic_hash": "bbd55eef3b5813d2747731d3512738b9"
+  },
+  "/Users/juno/asset-erp-backend/package.json": {
+    "mtime": 1782180331.442956,
+    "ast_hash": "20235497ac9a59f19465e10853638fe1",
+    "semantic_hash": "20235497ac9a59f19465e10853638fe1"
+  },
+  "/Users/juno/asset-erp-backend/prisma.config.ts": {
+    "mtime": 1782111591.3814347,
+    "ast_hash": "6f5829f1eeed1d538ebc64183f54fe8b",
+    "semantic_hash": "6f5829f1eeed1d538ebc64183f54fe8b"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260603050020_init/migration.sql": {
+    "mtime": 1782109010.2569609,
+    "ast_hash": "7dcec19faccc2a0838eb928140362bef",
+    "semantic_hash": "7dcec19faccc2a0838eb928140362bef"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260603050021_add_teams_table/migration.sql": {
+    "mtime": 1782109010.2570653,
+    "ast_hash": "341ec8b9ab0cbe27d2a66c7dc27d0768",
+    "semantic_hash": "341ec8b9ab0cbe27d2a66c7dc27d0768"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260603050022_rename_manager_to_team_lead/migration.sql": {
+    "mtime": 1782109010.257159,
+    "ast_hash": "79262a301cf756e04cee839ad344844d",
+    "semantic_hash": "79262a301cf756e04cee839ad344844d"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260603050023_add_missing_user_columns/migration.sql": {
+    "mtime": 1782109010.2572582,
+    "ast_hash": "560c522e5af8e57507767454ac7415ae",
+    "semantic_hash": "560c522e5af8e57507767454ac7415ae"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260603050024_add_maintenance_service_fields/migration.sql": {
+    "mtime": 1782109010.257358,
+    "ast_hash": "334305734f21958cdf9926249f646be6",
+    "semantic_hash": "334305734f21958cdf9926249f646be6"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260608035626_require_asset_purchase_fields/migration.sql": {
+    "mtime": 1782109010.2575192,
+    "ast_hash": "527a42f5d2f190640ced72674ce889e6",
+    "semantic_hash": "527a42f5d2f190640ced72674ce889e6"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260608042930_add_user_history/migration.sql": {
+    "mtime": 1782109010.2576194,
+    "ast_hash": "f3584b524be2760ffd67ce2a3c84efba",
+    "semantic_hash": "f3584b524be2760ffd67ce2a3c84efba"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260608071252_add_password_history/migration.sql": {
+    "mtime": 1782109010.257723,
+    "ast_hash": "07af25089fee8318b0e0758a74810074",
+    "semantic_hash": "07af25089fee8318b0e0758a74810074"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260608084935_add_manufacturer_master/migration.sql": {
+    "mtime": 1782109010.2578676,
+    "ast_hash": "9c5e9913c80d3cc7e699908050e4a138",
+    "semantic_hash": "9c5e9913c80d3cc7e699908050e4a138"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260609060000_loan_notification_maintenance_m2/migration.sql": {
+    "mtime": 1782109010.2580144,
+    "ast_hash": "cf5b1c15af884a3cbee6f5ddaf88e9fb",
+    "semantic_hash": "cf5b1c15af884a3cbee6f5ddaf88e9fb"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260609080000_notification_email_channel/migration.sql": {
+    "mtime": 1782109010.2581198,
+    "ast_hash": "ba25dcae9b7ed999b080eea5275f226e",
+    "semantic_hash": "ba25dcae9b7ed999b080eea5275f226e"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260610000000_add_lost_to_asset_condition/migration.sql": {
+    "mtime": 1782109010.2582157,
+    "ast_hash": "a86956bc2992527b87391018b92f45c1",
+    "semantic_hash": "a86956bc2992527b87391018b92f45c1"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260611000000_add_vendor_service_fields/migration.sql": {
+    "mtime": 1782109010.2583096,
+    "ast_hash": "1ca98881f292fc32c2cf8092b07a410a",
+    "semantic_hash": "1ca98881f292fc32c2cf8092b07a410a"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260611010000_extend_vendor_registration_fields/migration.sql": {
+    "mtime": 1782109010.2584565,
+    "ast_hash": "f793ce00c1b6a4eeded3ed2f62130461",
+    "semantic_hash": "f793ce00c1b6a4eeded3ed2f62130461"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260611020000_add_new_operational_roles/migration.sql": {
+    "mtime": 1782109010.2585547,
+    "ast_hash": "b9268003f57a76469d8577b489fd7add",
+    "semantic_hash": "b9268003f57a76469d8577b489fd7add"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260611030000_add_maintenance_payment/migration.sql": {
+    "mtime": 1782109010.2586496,
+    "ast_hash": "16ffb5bc2a63ddcd682cab8b5288ca2e",
+    "semantic_hash": "16ffb5bc2a63ddcd682cab8b5288ca2e"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260611040000_add_loan_extension/migration.sql": {
+    "mtime": 1782109010.258746,
+    "ast_hash": "8653fb0d1485a66787a0a8c326dcf2d6",
+    "semantic_hash": "8653fb0d1485a66787a0a8c326dcf2d6"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260612000000_require_hire_date/migration.sql": {
+    "mtime": 1782109010.2588513,
+    "ast_hash": "66378e44ad690806ea615e9e1ceb1724",
+    "semantic_hash": "66378e44ad690806ea615e9e1ceb1724"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260612010000_general_class_require_catalog_category/migration.sql": {
+    "mtime": 1782109010.2589502,
+    "ast_hash": "33df9d3e79d34f6d490adce9b891d749",
+    "semantic_hash": "33df9d3e79d34f6d490adce9b891d749"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260617000000_add_category_gl_and_depreciation_defaults/migration.sql": {
+    "mtime": 1782109010.2590504,
+    "ast_hash": "f72b3cc3bea819b340358d97e46c66e8",
+    "semantic_hash": "f72b3cc3bea819b340358d97e46c66e8"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260617010000_add_office_facility_assets/migration.sql": {
+    "mtime": 1782109010.2591574,
+    "ast_hash": "a637d41c314722696dc5b6454780e8b4",
+    "semantic_hash": "a637d41c314722696dc5b6454780e8b4"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260617020000_add_maintenance_vendor_notify_failed/migration.sql": {
+    "mtime": 1782109010.2592545,
+    "ast_hash": "e42009fc03b9858dab60fe390b9616e1",
+    "semantic_hash": "e42009fc03b9858dab60fe390b9616e1"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260617030000_add_asset_status_pending_maintenance/migration.sql": {
+    "mtime": 1782109010.259352,
+    "ast_hash": "f639f8230c35006091df9b23c3a62e4a",
+    "semantic_hash": "f639f8230c35006091df9b23c3a62e4a"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260617040000_add_maintenance_type/migration.sql": {
+    "mtime": 1782109010.2594564,
+    "ast_hash": "2567e2769fb4ffbe43f22e0c1d1ba3cf",
+    "semantic_hash": "2567e2769fb4ffbe43f22e0c1d1ba3cf"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260617050000_add_maintenance_notification_types/migration.sql": {
+    "mtime": 1782109010.259571,
+    "ast_hash": "b972df3f2f65342a9754c610bf95f01b",
+    "semantic_hash": "b972df3f2f65342a9754c610bf95f01b"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260618165215_security_shadow_it/migration.sql": {
+    "mtime": 1782109010.2597153,
+    "ast_hash": "23805bdca150aab710ac8c90ca2abbd5",
+    "semantic_hash": "23805bdca150aab710ac8c90ca2abbd5"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260618171610_network_asset_class/migration.sql": {
+    "mtime": 1782109010.2598102,
+    "ast_hash": "d3161d1ab3da8b4e9734cf71b3bef89f",
+    "semantic_hash": "d3161d1ab3da8b4e9734cf71b3bef89f"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260618171700_add_software_update_audit_action/migration.sql": {
+    "mtime": 1782109010.2599134,
+    "ast_hash": "7c913d402bf9f13e2c49d497c9528722",
+    "semantic_hash": "7c913d402bf9f13e2c49d497c9528722"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260618171800_add_software_created_audit_action/migration.sql": {
+    "mtime": 1782109010.260013,
+    "ast_hash": "2b993e821e3f94547cfaf62a7745efe6",
+    "semantic_hash": "2b993e821e3f94547cfaf62a7745efe6"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260618171900_deptlead_3stage_approval/migration.sql": {
+    "mtime": 1782109010.260111,
+    "ast_hash": "3063b1993422a876d21e1473113eef58",
+    "semantic_hash": "3063b1993422a876d21e1473113eef58"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260618172000_loan_dept_approver/migration.sql": {
+    "mtime": 1782109010.260218,
+    "ast_hash": "5ffa5d428e4a855d49f5294b7e24347d",
+    "semantic_hash": "5ffa5d428e4a855d49f5294b7e24347d"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260620141011_add_status_changed_action/migration.sql": {
+    "mtime": 1782109010.2603219,
+    "ast_hash": "d55692c1d67e5a3f22c0cab415b4994d",
+    "semantic_hash": "d55692c1d67e5a3f22c0cab415b4994d"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260620141200_add_vendor_type/migration.sql": {
+    "mtime": 1782109010.2604156,
+    "ast_hash": "9a9f40a0193fbfb148869ce20909ae34",
+    "semantic_hash": "9a9f40a0193fbfb148869ce20909ae34"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260622000001_add_password_reset_table/migration.sql": {
+    "mtime": 1782199363.3042636,
+    "ast_hash": "821e7f7b75615de3c1a6c142946fbf80",
+    "semantic_hash": "821e7f7b75615de3c1a6c142946fbf80"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260623070708_auto/migration.sql": {
+    "mtime": 1782199363.3060496,
+    "ast_hash": "5a6bb4309afe492a80c471ab528bc0bb",
+    "semantic_hash": "5a6bb4309afe492a80c471ab528bc0bb"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260625064902_adr0003_dept_lead_3stage/migration.sql": {
+    "mtime": 1782736254.6063178,
+    "ast_hash": "bc504c191893e9411cf1f8dd76551f93",
+    "semantic_hash": "bc504c191893e9411cf1f8dd76551f93"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260625120000_add_vendor_report_to_maintenance/migration.sql": {
+    "mtime": 1782533315.9397357,
+    "ast_hash": "9fe5a7e81fd4b6c9f8cb9743f64dfaa4",
+    "semantic_hash": "9fe5a7e81fd4b6c9f8cb9743f64dfaa4"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260625_currency_field/migration.sql": {
+    "mtime": 1782533017.1685586,
+    "ast_hash": "6d5343d051500a0d723b300d19b8c6d3",
+    "semantic_hash": "6d5343d051500a0d723b300d19b8c6d3"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260625_repair_reports/migration.sql": {
+    "mtime": 1782533017.168848,
+    "ast_hash": "073a00d958a3df57028d66c8a2e58380",
+    "semantic_hash": "073a00d958a3df57028d66c8a2e58380"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260628000001_uniq_catalog_name_mfr_model/migration.sql": {
+    "mtime": 1782736254.6067374,
+    "ast_hash": "2eea0935d60731d2a8bf842973d0cc1f",
+    "semantic_hash": "2eea0935d60731d2a8bf842973d0cc1f"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260629000000_adr0005_disposal_2stage_approval/migration.sql": {
+    "mtime": 1782736254.607027,
+    "ast_hash": "6f520c0bc17b61cfb1ca51679f389659",
+    "semantic_hash": "6f520c0bc17b61cfb1ca51679f389659"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260629010000_adr0005_disposal_notifications/migration.sql": {
+    "mtime": 1782736254.607534,
+    "ast_hash": "52a43d2103362a6d18ae6b11b1d30c9e",
+    "semantic_hash": "52a43d2103362a6d18ae6b11b1d30c9e"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260629020000_adr0006_disposal_criteria/migration.sql": {
+    "mtime": 1782736254.6080894,
+    "ast_hash": "434d0e9fd628347ea70938f6e3f2b20b",
+    "semantic_hash": "434d0e9fd628347ea70938f6e3f2b20b"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260629074324_add_repair_vendor_fields/migration.sql": {
+    "mtime": 1782736254.6086328,
+    "ast_hash": "aa3513dd94493fb69083ce95a1b44982",
+    "semantic_hash": "aa3513dd94493fb69083ce95a1b44982"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260629075321_add_software_vendor_fields/migration.sql": {
+    "mtime": 1782736254.6091068,
+    "ast_hash": "77a0e6d51c857b9922269fcad2b3d816",
+    "semantic_hash": "77a0e6d51c857b9922269fcad2b3d816"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260629123122_vendor_domain_extension/migration.sql": {
+    "mtime": 1782739183.9329011,
+    "ast_hash": "41d44d57da911afe9582e23bacacf5b1",
+    "semantic_hash": "41d44d57da911afe9582e23bacacf5b1"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260630033137_add_repair_completion_report/migration.sql": {
+    "mtime": 1783157271.7691233,
+    "ast_hash": "37eeea8d9713973767f4367921a4da78",
+    "semantic_hash": "37eeea8d9713973767f4367921a4da78"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260701061110_add_repair_report_notification_types/migration.sql": {
+    "mtime": 1783157271.7700455,
+    "ast_hash": "2789e8fad396202570ffe490a1c6b5bd",
+    "semantic_hash": "2789e8fad396202570ffe490a1c6b5bd"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260701113616_repair_report_workflow/migration.sql": {
+    "mtime": 1783157271.7703915,
+    "ast_hash": "6c73b6b6222816316633aee229d19958",
+    "semantic_hash": "6c73b6b6222816316633aee229d19958"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260703000001_add_location_to_dept_team/migration.sql": {
+    "mtime": 1783157271.7712357,
+    "ast_hash": "fa3679a28b1ea19167e240d466940161",
+    "semantic_hash": "fa3679a28b1ea19167e240d466940161"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260704045646_add_monthly_annual_reports/migration.sql": {
+    "mtime": 1783157271.7717748,
+    "ast_hash": "6c419881cc0e887214f42b7f211e437b",
+    "semantic_hash": "6c419881cc0e887214f42b7f211e437b"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260704092939_adr_0010_disallowed_detection/migration.sql": {
+    "mtime": 1783229072.4056304,
+    "ast_hash": "5b3e169e969eb3b591822628d9f1c5c9",
+    "semantic_hash": "5b3e169e969eb3b591822628d9f1c5c9"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260704110550_adr_0011_0012_block_detected_sw/migration.sql": {
+    "mtime": 1783229072.4059381,
+    "ast_hash": "af2c4ffab30657067d39e3980de8acbc",
+    "semantic_hash": "af2c4ffab30657067d39e3980de8acbc"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260705110841_add_license_request/migration.sql": {
+    "mtime": 1783257800.2599556,
+    "ast_hash": "308b95aeba17dea12b32471660983921",
+    "semantic_hash": "308b95aeba17dea12b32471660983921"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260705111255_add_license_request_composite_index/migration.sql": {
+    "mtime": 1783257800.2602403,
+    "ast_hash": "0066684fecffb1c8a4c55504bcbd4622",
+    "semantic_hash": "0066684fecffb1c8a4c55504bcbd4622"
+  },
+  "/Users/juno/asset-erp-backend/prisma/migrations/20260705131054_add_license_manager_dept_approval/migration.sql": {
+    "mtime": 1783257800.260532,
+    "ast_hash": "2b5dad10f72699745ead0e29ed762125",
+    "semantic_hash": "2b5dad10f72699745ead0e29ed762125"
+  },
+  "/Users/juno/asset-erp-backend/prisma/seed.ts": {
+    "mtime": 1782736254.6114252,
+    "ast_hash": "c7f16afac6c953c5d788b81a872a2efc",
+    "semantic_hash": "c7f16afac6c953c5d788b81a872a2efc"
+  },
+  "/Users/juno/asset-erp-backend/scripts/backfill-asset-catalog.ts": {
+    "mtime": 1782552086.827445,
+    "ast_hash": "a59428a24cb948a3af9dd92c277c93a8",
+    "semantic_hash": "a59428a24cb948a3af9dd92c277c93a8"
+  },
+  "/Users/juno/asset-erp-backend/scripts/backfill-disposal-from-retire.ts": {
+    "mtime": 1782736254.611953,
+    "ast_hash": "c9ec4893b3b8f4310bdf6b3d220f1bf3",
+    "semantic_hash": "c9ec4893b3b8f4310bdf6b3d220f1bf3"
+  },
+  "/Users/juno/asset-erp-backend/src/app.ts": {
+    "mtime": 1783229072.406451,
+    "ast_hash": "737d1d16842bec2eba10e9bb6e0663ff",
+    "semantic_hash": "737d1d16842bec2eba10e9bb6e0663ff"
+  },
+  "/Users/juno/asset-erp-backend/src/config/env.ts": {
+    "mtime": 1782199363.3133397,
+    "ast_hash": "f7e1b5fe4bd7adab11340e8abcc76a89",
+    "semantic_hash": "f7e1b5fe4bd7adab11340e8abcc76a89"
+  },
+  "/Users/juno/asset-erp-backend/src/config/passport.ts": {
+    "mtime": 1782109010.2619028,
+    "ast_hash": "9501d69fb2af20faa5d10015f1666737",
+    "semantic_hash": "9501d69fb2af20faa5d10015f1666737"
+  },
+  "/Users/juno/asset-erp-backend/src/index.ts": {
+    "mtime": 1782109010.261965,
+    "ast_hash": "0687f135413dc2da55a6a6febaeda73f",
+    "semantic_hash": "0687f135413dc2da55a6a6febaeda73f"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/AppError.ts": {
+    "mtime": 1782109010.262057,
+    "ast_hash": "0936b79971fb3d08541eb0d3ce6f45b0",
+    "semantic_hash": "0936b79971fb3d08541eb0d3ce6f45b0"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/__tests__/emailTemplates.test.ts": {
+    "mtime": 1782109010.262153,
+    "ast_hash": "8dfd653488744a4077248b56b7aafc5d",
+    "semantic_hash": "8dfd653488744a4077248b56b7aafc5d"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/__tests__/fieldEncryption.test.ts": {
+    "mtime": 1782109010.2622137,
+    "ast_hash": "4c9014defcc88ae67f64162e2c597de4",
+    "semantic_hash": "4c9014defcc88ae67f64162e2c597de4"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/__tests__/ntsBusinessApi.test.ts": {
+    "mtime": 1782109010.2622747,
+    "ast_hash": "9fc3583ba7d16cb0f1ff0de24bcb5aee",
+    "semantic_hash": "9fc3583ba7d16cb0f1ff0de24bcb5aee"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/__tests__/phoneEncryption.test.ts": {
+    "mtime": 1782109010.262332,
+    "ast_hash": "cde2345c3a4d1c5db2e2a3664ffd850f",
+    "semantic_hash": "cde2345c3a4d1c5db2e2a3664ffd850f"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/cloudinary.ts": {
+    "mtime": 1782109010.2623954,
+    "ast_hash": "0ec322eb552146f8a3ef30f670f2bc7e",
+    "semantic_hash": "0ec322eb552146f8a3ef30f670f2bc7e"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/emailTemplates.ts": {
+    "mtime": 1782109010.2624576,
+    "ast_hash": "aac92c890b36bd595a2e943f2c7a28ee",
+    "semantic_hash": "aac92c890b36bd595a2e943f2c7a28ee"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/fieldEncryption.ts": {
+    "mtime": 1782109010.2625153,
+    "ast_hash": "cc7322f3b60394f234e1ef7f2a78bcc5",
+    "semantic_hash": "cc7322f3b60394f234e1ef7f2a78bcc5"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/krBusinessNumber.ts": {
+    "mtime": 1782739183.9336953,
+    "ast_hash": "c9012fe315ba2e04522ed85465b97cfd",
+    "semantic_hash": "c9012fe315ba2e04522ed85465b97cfd"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/licenseKey.ts": {
+    "mtime": 1782109010.2625754,
+    "ast_hash": "95457a498a2441083174007dc2b28cd9",
+    "semantic_hash": "95457a498a2441083174007dc2b28cd9"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/logger.ts": {
+    "mtime": 1782109010.2626305,
+    "ast_hash": "000e98ef375d89a045357270c75cb1cd",
+    "semantic_hash": "000e98ef375d89a045357270c75cb1cd"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/mailer.ts": {
+    "mtime": 1782109010.262697,
+    "ast_hash": "15b90b986b24688855ca3ad81493936b",
+    "semantic_hash": "15b90b986b24688855ca3ad81493936b"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/maskPii.ts": {
+    "mtime": 1783233574.6926837,
+    "ast_hash": "737fac9cb7dce5277b26b94a06935727",
+    "semantic_hash": "737fac9cb7dce5277b26b94a06935727"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/ntsBusinessApi.ts": {
+    "mtime": 1782109010.2627604,
+    "ast_hash": "08c62df333612771fdc61fc52b9e868e",
+    "semantic_hash": "08c62df333612771fdc61fc52b9e868e"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/pagination.ts": {
+    "mtime": 1782109010.2628193,
+    "ast_hash": "d9128db753798568bb61e0e2c6aaf6fb",
+    "semantic_hash": "d9128db753798568bb61e0e2c6aaf6fb"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/phoneEncryption.ts": {
+    "mtime": 1782109010.262877,
+    "ast_hash": "e5411086e95862274f8780a7ca9f80f6",
+    "semantic_hash": "e5411086e95862274f8780a7ca9f80f6"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/prisma.ts": {
+    "mtime": 1782109010.262938,
+    "ast_hash": "4a5b7f92a4738ef01817a63fd80ec02d",
+    "semantic_hash": "4a5b7f92a4738ef01817a63fd80ec02d"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/requestHelpers.ts": {
+    "mtime": 1782199363.3160996,
+    "ast_hash": "b3558731c280379f9e57ff2f5c3ed9bb",
+    "semantic_hash": "b3558731c280379f9e57ff2f5c3ed9bb"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/scheduler.ts": {
+    "mtime": 1782109010.2630594,
+    "ast_hash": "b3aba6c5b6e85fa77758839575ac2920",
+    "semantic_hash": "b3aba6c5b6e85fa77758839575ac2920"
+  },
+  "/Users/juno/asset-erp-backend/src/lib/sensitiveAuditLog.ts": {
+    "mtime": 1782109010.2631197,
+    "ast_hash": "139fbb7ebca7a140024d6235bdf20726",
+    "semantic_hash": "139fbb7ebca7a140024d6235bdf20726"
+  },
+  "/Users/juno/asset-erp-backend/src/middlewares/__tests__/authorize.router.test.ts": {
+    "mtime": 1782109010.2632565,
+    "ast_hash": "64312e5ceea0c98fc79dc184444a26d8",
+    "semantic_hash": "64312e5ceea0c98fc79dc184444a26d8"
+  },
+  "/Users/juno/asset-erp-backend/src/middlewares/authenticate.ts": {
+    "mtime": 1782109010.263323,
+    "ast_hash": "f30b2af47d52988d3694d7738e096331",
+    "semantic_hash": "f30b2af47d52988d3694d7738e096331"
+  },
+  "/Users/juno/asset-erp-backend/src/middlewares/authorize.ts": {
+    "mtime": 1782109010.2633827,
+    "ast_hash": "57928c78e30b63d5175a2bd4474cec9f",
+    "semantic_hash": "57928c78e30b63d5175a2bd4474cec9f"
+  },
+  "/Users/juno/asset-erp-backend/src/middlewares/errorHandler.ts": {
+    "mtime": 1782109010.2634418,
+    "ast_hash": "c2ee3cfd2abd6048ed4a7b81ae673164",
+    "semantic_hash": "c2ee3cfd2abd6048ed4a7b81ae673164"
+  },
+  "/Users/juno/asset-erp-backend/src/middlewares/validate.ts": {
+    "mtime": 1782736254.6124432,
+    "ast_hash": "d442438b2742f221c75a5481e652252b",
+    "semantic_hash": "d442438b2742f221c75a5481e652252b"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/admin/__tests__/admin.service.test.ts": {
+    "mtime": 1782109010.2637203,
+    "ast_hash": "3f4b3c1a8c26d6a92e36edbdd1d58279",
+    "semantic_hash": "3f4b3c1a8c26d6a92e36edbdd1d58279"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/admin/__tests__/user.service.test.ts": {
+    "mtime": 1782109010.26386,
+    "ast_hash": "9ee752217dd581eabe1846dfd0c756db",
+    "semantic_hash": "9ee752217dd581eabe1846dfd0c756db"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/admin/admin.controller.ts": {
+    "mtime": 1783257798.9558306,
+    "ast_hash": "e6cbc3935181478eeb6d257ff6578d8c",
+    "semantic_hash": "e6cbc3935181478eeb6d257ff6578d8c"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/admin/admin.router.ts": {
+    "mtime": 1783157271.7753432,
+    "ast_hash": "b96775f867a2e3013053faf0c4cf583f",
+    "semantic_hash": "b96775f867a2e3013053faf0c4cf583f"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/admin/admin.service.ts": {
+    "mtime": 1783257798.9561684,
+    "ast_hash": "c07180d45a09b3c5adf7a2909313f051",
+    "semantic_hash": "c07180d45a09b3c5adf7a2909313f051"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/admin/admin.types.ts": {
+    "mtime": 1783157271.7766614,
+    "ast_hash": "ddf55ec739f64f04def7f6fc5d1aa3e7",
+    "semantic_hash": "ddf55ec739f64f04def7f6fc5d1aa3e7"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/admin/user.controller.ts": {
+    "mtime": 1783233574.6931698,
+    "ast_hash": "da09f36748a4d523edb0913ac3491e7b",
+    "semantic_hash": "da09f36748a4d523edb0913ac3491e7b"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/admin/user.service.ts": {
+    "mtime": 1783233574.6939163,
+    "ast_hash": "7d0d39a32ad47ad99e62bf3453ae0d55",
+    "semantic_hash": "7d0d39a32ad47ad99e62bf3453ae0d55"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/agent/agent.controller.ts": {
+    "mtime": 1783229072.4067185,
+    "ast_hash": "c95628a1d8cf214097e1aa02073d4c07",
+    "semantic_hash": "c95628a1d8cf214097e1aa02073d4c07"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/agent/agent.router.ts": {
+    "mtime": 1783229072.4069057,
+    "ast_hash": "c14a85c6b794f48df4101c63ead67462",
+    "semantic_hash": "c14a85c6b794f48df4101c63ead67462"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/agent/agent.schema.ts": {
+    "mtime": 1783229072.4071493,
+    "ast_hash": "1f0eda366a1818f826833836e57a3cc8",
+    "semantic_hash": "1f0eda366a1818f826833836e57a3cc8"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/agent/agent.service.ts": {
+    "mtime": 1783229072.4073896,
+    "ast_hash": "a43338dc06f50aec4e9eba3964bfe8d5",
+    "semantic_hash": "a43338dc06f50aec4e9eba3964bfe8d5"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/agent/agent.types.ts": {
+    "mtime": 1783229072.4075758,
+    "ast_hash": "60b995c2655499d1898c810a842bdb01",
+    "semantic_hash": "60b995c2655499d1898c810a842bdb01"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/analytics/__tests__/analytics.service.compliance.test.ts": {
+    "mtime": 1782109010.2644672,
+    "ast_hash": "905b91ddfa5110e5b11e32e7e6bc2168",
+    "semantic_hash": "905b91ddfa5110e5b11e32e7e6bc2168"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/analytics/analytics.controller.ts": {
+    "mtime": 1782109010.2645278,
+    "ast_hash": "38cc6ced38f08bc5ffddec360dd4e0cf",
+    "semantic_hash": "38cc6ced38f08bc5ffddec360dd4e0cf"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/analytics/analytics.export.ts": {
+    "mtime": 1782109010.264618,
+    "ast_hash": "eb6e9c4d6c323efe49454950f5938091",
+    "semantic_hash": "eb6e9c4d6c323efe49454950f5938091"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/analytics/analytics.router.ts": {
+    "mtime": 1782109010.2646875,
+    "ast_hash": "f4837d3e51dba2134813f8a511e9a48e",
+    "semantic_hash": "f4837d3e51dba2134813f8a511e9a48e"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/analytics/analytics.service.ts": {
+    "mtime": 1782109010.2648718,
+    "ast_hash": "e987f12b1aa56c2ded3960063c12b248",
+    "semantic_hash": "e987f12b1aa56c2ded3960063c12b248"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/analytics/analytics.types.ts": {
+    "mtime": 1782109010.2649326,
+    "ast_hash": "f5b12f93693847d24551206db699763d",
+    "semantic_hash": "f5b12f93693847d24551206db699763d"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/__tests__/asset.service.create.test.ts": {
+    "mtime": 1783157271.7785482,
+    "ast_hash": "e898bfc642fa30862db40dedf0f7b8f9",
+    "semantic_hash": "e898bfc642fa30862db40dedf0f7b8f9"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/__tests__/asset.service.detail.test.ts": {
+    "mtime": 1783157271.7791348,
+    "ast_hash": "b3a34ebcd2bdbd5c627a082c0bc8f15a",
+    "semantic_hash": "b3a34ebcd2bdbd5c627a082c0bc8f15a"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/__tests__/asset.service.history.test.ts": {
+    "mtime": 1782109010.2656884,
+    "ast_hash": "6124ca13eb9c341a30dc628aa06b1056",
+    "semantic_hash": "6124ca13eb9c341a30dc628aa06b1056"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/__tests__/asset.service.list.test.ts": {
+    "mtime": 1782109010.265796,
+    "ast_hash": "c5b4f39c4fb01687c9bbb49f7661c199",
+    "semantic_hash": "c5b4f39c4fb01687c9bbb49f7661c199"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/__tests__/asset.service.statsByModel.test.ts": {
+    "mtime": 1782736254.6133144,
+    "ast_hash": "b1ebeaedb50ebf0ddd1a93ae8a6800cd",
+    "semantic_hash": "b1ebeaedb50ebf0ddd1a93ae8a6800cd"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/__tests__/asset.service.update.test.ts": {
+    "mtime": 1783157271.7797997,
+    "ast_hash": "29c30504e7a0a5158394c9dfd98be828",
+    "semantic_hash": "29c30504e7a0a5158394c9dfd98be828"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/__tests__/assetCodeGenerator.test.ts": {
+    "mtime": 1782109010.2659786,
+    "ast_hash": "f81d1908e961e41884c93c1292b0c8cf",
+    "semantic_hash": "f81d1908e961e41884c93c1292b0c8cf"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/asset.controller.ts": {
+    "mtime": 1782736254.613813,
+    "ast_hash": "d21ffa165687c7912e56ff1244ee9d10",
+    "semantic_hash": "d21ffa165687c7912e56ff1244ee9d10"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/asset.router.ts": {
+    "mtime": 1782736254.6140876,
+    "ast_hash": "46e43d2b7086cc86529f8fac44d159ee",
+    "semantic_hash": "46e43d2b7086cc86529f8fac44d159ee"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/asset.service.ts": {
+    "mtime": 1783157271.7804894,
+    "ast_hash": "53783f2d1bb7379c974a8a5e1e0a7893",
+    "semantic_hash": "53783f2d1bb7379c974a8a5e1e0a7893"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/asset.types.ts": {
+    "mtime": 1783157271.7812343,
+    "ast_hash": "26a0547509422de6831f39bdfb74f6a7",
+    "semantic_hash": "26a0547509422de6831f39bdfb74f6a7"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/assets/assetCodeGenerator.ts": {
+    "mtime": 1782109010.2663648,
+    "ast_hash": "f06c59ae8d7ab66a51a27484fc05bf34",
+    "semantic_hash": "f06c59ae8d7ab66a51a27484fc05bf34"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/auth/__tests__/auth.service.test.ts": {
+    "mtime": 1782109010.266619,
+    "ast_hash": "9b048e30f742b9765af88f76d1525b67",
+    "semantic_hash": "9b048e30f742b9765af88f76d1525b67"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/auth/auth.controller.ts": {
+    "mtime": 1782199363.3225267,
+    "ast_hash": "bd965af924ce451c717a31d557ee4505",
+    "semantic_hash": "bd965af924ce451c717a31d557ee4505"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/auth/auth.router.ts": {
+    "mtime": 1782199363.323436,
+    "ast_hash": "a1c51e3744554ccc7e8195ff9ad29098",
+    "semantic_hash": "a1c51e3744554ccc7e8195ff9ad29098"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/auth/auth.service.ts": {
+    "mtime": 1782199363.325876,
+    "ast_hash": "59e0680609844537bef002ac2dd00d31",
+    "semantic_hash": "59e0680609844537bef002ac2dd00d31"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/auth/auth.types.ts": {
+    "mtime": 1782199363.326386,
+    "ast_hash": "74e698d3d0f3b6a26f3139d116c03528",
+    "semantic_hash": "74e698d3d0f3b6a26f3139d116c03528"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/catalog/__tests__/catalog.service.test.ts": {
+    "mtime": 1782736254.6150925,
+    "ast_hash": "42ab04f5ebc52ce66512e45f09d0f398",
+    "semantic_hash": "42ab04f5ebc52ce66512e45f09d0f398"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/catalog/catalog.controller.ts": {
+    "mtime": 1782109010.2672186,
+    "ast_hash": "2dd5ccc78363e0c60a0b12fa5b49d675",
+    "semantic_hash": "2dd5ccc78363e0c60a0b12fa5b49d675"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/catalog/catalog.router.ts": {
+    "mtime": 1782109010.2672813,
+    "ast_hash": "76a6f9576c6077b176f0caa263607581",
+    "semantic_hash": "76a6f9576c6077b176f0caa263607581"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/catalog/catalog.service.ts": {
+    "mtime": 1782736254.6153378,
+    "ast_hash": "2607addb3a7eaa4c5b470ec66f908d67",
+    "semantic_hash": "2607addb3a7eaa4c5b470ec66f908d67"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/catalog/catalog.types.ts": {
+    "mtime": 1782109010.2674763,
+    "ast_hash": "76deb3da096ec152c6c71ba51754f420",
+    "semantic_hash": "76deb3da096ec152c6c71ba51754f420"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/dashboard/__tests__/dashboard.service.test.ts": {
+    "mtime": 1783157271.7821305,
+    "ast_hash": "0f86df423a38978fa09a2461178457a6",
+    "semantic_hash": "0f86df423a38978fa09a2461178457a6"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/dashboard/dashboard.controller.ts": {
+    "mtime": 1782109010.2677436,
+    "ast_hash": "fe8631532179eda05eff59700ea90f97",
+    "semantic_hash": "fe8631532179eda05eff59700ea90f97"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/dashboard/dashboard.router.ts": {
+    "mtime": 1782109010.2678046,
+    "ast_hash": "857bd429d1b7fae1b086ad013cf9006f",
+    "semantic_hash": "857bd429d1b7fae1b086ad013cf9006f"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/dashboard/dashboard.service.ts": {
+    "mtime": 1783157271.7831182,
+    "ast_hash": "35a92e3032b2f8aa1be03cc3caaa3152",
+    "semantic_hash": "35a92e3032b2f8aa1be03cc3caaa3152"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/dashboard/dashboard.types.ts": {
+    "mtime": 1783157271.7835171,
+    "ast_hash": "918c5b4f55940b958f307d8f03e730ea",
+    "semantic_hash": "918c5b4f55940b958f307d8f03e730ea"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/depreciation/__tests__/depreciation.service.test.ts": {
+    "mtime": 1782109010.2681873,
+    "ast_hash": "e3948c9218c2fb7a554c5c0dda3d9119",
+    "semantic_hash": "e3948c9218c2fb7a554c5c0dda3d9119"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/depreciation/depreciation.controller.ts": {
+    "mtime": 1783157271.7842426,
+    "ast_hash": "e4e715e80f47e278f93b583be8526a3e",
+    "semantic_hash": "e4e715e80f47e278f93b583be8526a3e"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/depreciation/depreciation.router.ts": {
+    "mtime": 1783157271.784716,
+    "ast_hash": "542f80e261a30b5a6845ce331fe2722f",
+    "semantic_hash": "542f80e261a30b5a6845ce331fe2722f"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/depreciation/depreciation.service.ts": {
+    "mtime": 1783157271.7853794,
+    "ast_hash": "a2b0d4b724a91d379c6deaebca9b77d3",
+    "semantic_hash": "a2b0d4b724a91d379c6deaebca9b77d3"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/depreciation/depreciation.types.ts": {
+    "mtime": 1783157271.7857788,
+    "ast_hash": "080184f4a3ac2ea394f0bf9fee726923",
+    "semantic_hash": "080184f4a3ac2ea394f0bf9fee726923"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/disposal/__tests__/disposal.service.test.ts": {
+    "mtime": 1783157271.7878346,
+    "ast_hash": "479970a43f81147e413a9e3d2f836703",
+    "semantic_hash": "479970a43f81147e413a9e3d2f836703"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/disposal/disposal.controller.ts": {
+    "mtime": 1783157271.7883437,
+    "ast_hash": "1305d83dd0a8ff1079834419d5c5d6ea",
+    "semantic_hash": "1305d83dd0a8ff1079834419d5c5d6ea"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/disposal/disposal.router.ts": {
+    "mtime": 1783157271.788789,
+    "ast_hash": "749f524340a4f1c20f762b35f0ce6f6c",
+    "semantic_hash": "749f524340a4f1c20f762b35f0ce6f6c"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/disposal/disposal.service.ts": {
+    "mtime": 1783157271.7895596,
+    "ast_hash": "a83aa57800059dfed4aa5b1b93f87726",
+    "semantic_hash": "a83aa57800059dfed4aa5b1b93f87726"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/disposal/disposal.types.ts": {
+    "mtime": 1782736254.6177359,
+    "ast_hash": "9ba10114ddef75b3362d993d712fb52b",
+    "semantic_hash": "9ba10114ddef75b3362d993d712fb52b"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/licenses/__tests__/license.service.test.ts": {
+    "mtime": 1783258176.392023,
+    "ast_hash": "accc2bf80ac2d06ef836eefec0c758a5",
+    "semantic_hash": "accc2bf80ac2d06ef836eefec0c758a5"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/licenses/license.controller.ts": {
+    "mtime": 1783257800.2620113,
+    "ast_hash": "147e85d103eea0d6ad4c57682e584fc6",
+    "semantic_hash": "147e85d103eea0d6ad4c57682e584fc6"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/licenses/license.router.ts": {
+    "mtime": 1783257800.2623158,
+    "ast_hash": "1c8b8679359fc3cc23dbb9732190809f",
+    "semantic_hash": "1c8b8679359fc3cc23dbb9732190809f"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/licenses/license.service.ts": {
+    "mtime": 1783258107.6474912,
+    "ast_hash": "cef1239a6ace3313bd8504755fed07b4",
+    "semantic_hash": "cef1239a6ace3313bd8504755fed07b4"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/licenses/license.types.ts": {
+    "mtime": 1783258083.4726453,
+    "ast_hash": "7edf6e3ac417659ad4c9665c6ea1a53b",
+    "semantic_hash": "7edf6e3ac417659ad4c9665c6ea1a53b"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/__tests__/loan.service.approve-ooo.test.ts": {
+    "mtime": 1782109010.2691677,
+    "ast_hash": "9ab02d06cab40d569306557dd2849f0d",
+    "semantic_hash": "9ab02d06cab40d569306557dd2849f0d"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/__tests__/loan.service.asset-manager-self-loan.test.ts": {
+    "mtime": 1782109010.2692463,
+    "ast_hash": "cfc2c138c2b8ea43e900cc18a2624632",
+    "semantic_hash": "cfc2c138c2b8ea43e900cc18a2624632"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/__tests__/loan.service.department-manager.test.ts": {
+    "mtime": 1783157271.7900076,
+    "ast_hash": "ebe2ad6d3d319267a7e5738154127430",
+    "semantic_hash": "ebe2ad6d3d319267a7e5738154127430"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/__tests__/loan.service.maintenance-auto.test.ts": {
+    "mtime": 1783157271.790527,
+    "ast_hash": "a403647504f849e910642c9d7478374a",
+    "semantic_hash": "a403647504f849e910642c9d7478374a"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/__tests__/loan.service.overdue.test.ts": {
+    "mtime": 1782109010.2695808,
+    "ast_hash": "8c9e011226aab3c97063dd56f121eba0",
+    "semantic_hash": "8c9e011226aab3c97063dd56f121eba0"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/__tests__/loan.service.return-manager-gate.test.ts": {
+    "mtime": 1782109010.2696457,
+    "ast_hash": "8ad9d6c6642f7823303782e3c73ad55a",
+    "semantic_hash": "8ad9d6c6642f7823303782e3c73ad55a"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/__tests__/loan.types.test.ts": {
+    "mtime": 1782109010.2697105,
+    "ast_hash": "2b7f3aa2c73249654a6593b112fb306e",
+    "semantic_hash": "2b7f3aa2c73249654a6593b112fb306e"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/loan.controller.ts": {
+    "mtime": 1782532398.1956258,
+    "ast_hash": "07c55b8f77c6a1848faaae6ba9232935",
+    "semantic_hash": "07c55b8f77c6a1848faaae6ba9232935"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/loan.router.ts": {
+    "mtime": 1782532398.1959245,
+    "ast_hash": "21d976c5b06330611782b2ba29918b59",
+    "semantic_hash": "21d976c5b06330611782b2ba29918b59"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/loan.service.ts": {
+    "mtime": 1783157271.7911181,
+    "ast_hash": "8b0de159b409504bb53709832c5eb15e",
+    "semantic_hash": "8b0de159b409504bb53709832c5eb15e"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/loans/loan.types.ts": {
+    "mtime": 1782109010.2700806,
+    "ast_hash": "f227926ea4b86d6ea579cece966bede0",
+    "semantic_hash": "f227926ea4b86d6ea579cece966bede0"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/maintenance/__tests__/maintenance.service.dept-gate.test.ts": {
+    "mtime": 1782109010.2702258,
+    "ast_hash": "7fc616d24afb99be957c266f7b7c6a34",
+    "semantic_hash": "7fc616d24afb99be957c266f7b7c6a34"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/maintenance/__tests__/maintenance.service.test.ts": {
+    "mtime": 1782533017.1739955,
+    "ast_hash": "e370286f2eb390be7c5ae6de4bf7f109",
+    "semantic_hash": "e370286f2eb390be7c5ae6de4bf7f109"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/maintenance/maintenance.controller.ts": {
+    "mtime": 1782533017.174195,
+    "ast_hash": "3b23087b1ea9f28491b716f05e214ca3",
+    "semantic_hash": "3b23087b1ea9f28491b716f05e214ca3"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/maintenance/maintenance.router.ts": {
+    "mtime": 1783157271.7934713,
+    "ast_hash": "f735a30e8e2cdb514af17b9bb2c9bbae",
+    "semantic_hash": "f735a30e8e2cdb514af17b9bb2c9bbae"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/maintenance/maintenance.service.ts": {
+    "mtime": 1783157271.793891,
+    "ast_hash": "564a6d9a8f1958d2f74ca439bc569f3a",
+    "semantic_hash": "564a6d9a8f1958d2f74ca439bc569f3a"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/maintenance/maintenance.types.ts": {
+    "mtime": 1783157271.794317,
+    "ast_hash": "62b2b8e75ed838be5de5f9147abbf227",
+    "semantic_hash": "62b2b8e75ed838be5de5f9147abbf227"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/manufacturer/manufacturer.controller.ts": {
+    "mtime": 1782109010.2707481,
+    "ast_hash": "c20e82266c889e3fb4f671166c0c6092",
+    "semantic_hash": "c20e82266c889e3fb4f671166c0c6092"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/manufacturer/manufacturer.router.ts": {
+    "mtime": 1782109010.2708116,
+    "ast_hash": "d4de9b8add3b1909ebc3eef7425576bf",
+    "semantic_hash": "d4de9b8add3b1909ebc3eef7425576bf"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/manufacturer/manufacturer.service.ts": {
+    "mtime": 1782109010.2709222,
+    "ast_hash": "5d0991df8dd152af56d9bcadeceba7df",
+    "semantic_hash": "5d0991df8dd152af56d9bcadeceba7df"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/manufacturer/manufacturer.types.ts": {
+    "mtime": 1782109010.2709959,
+    "ast_hash": "718f7e81b6a6e140989c55518135c1dc",
+    "semantic_hash": "718f7e81b6a6e140989c55518135c1dc"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/__tests__/assetCategory.service.test.ts": {
+    "mtime": 1782109010.2711549,
+    "ast_hash": "26ae20a1d7e945b30cde40b1fd8d2555",
+    "semantic_hash": "26ae20a1d7e945b30cde40b1fd8d2555"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/__tests__/department.service.test.ts": {
+    "mtime": 1783157271.794957,
+    "ast_hash": "13bc572b344f4082c5448ed86060a8a5",
+    "semantic_hash": "13bc572b344f4082c5448ed86060a8a5"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/__tests__/location.service.test.ts": {
+    "mtime": 1782109010.2713392,
+    "ast_hash": "19e83d4e4fd5deb87e378206508a0992",
+    "semantic_hash": "19e83d4e4fd5deb87e378206508a0992"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/__tests__/vendor.service.test.ts": {
+    "mtime": 1782739183.934077,
+    "ast_hash": "c5102b3922a685ef71dbe4ffa81f6ddd",
+    "semantic_hash": "c5102b3922a685ef71dbe4ffa81f6ddd"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/assetCategory.service.ts": {
+    "mtime": 1782109010.2715583,
+    "ast_hash": "e509ff90e1f9086f10c8a09d47d80e75",
+    "semantic_hash": "e509ff90e1f9086f10c8a09d47d80e75"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/department.service.ts": {
+    "mtime": 1783157271.7957013,
+    "ast_hash": "3fb20121207c5d002b9bd9925d12a792",
+    "semantic_hash": "3fb20121207c5d002b9bd9925d12a792"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/location.service.ts": {
+    "mtime": 1782109010.2716978,
+    "ast_hash": "13b70d50b6749452826e8cab38aab200",
+    "semantic_hash": "13b70d50b6749452826e8cab38aab200"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/master.controller.ts": {
+    "mtime": 1783157271.7964718,
+    "ast_hash": "84cc5ecec02ecb6dfe7e47058aed59be",
+    "semantic_hash": "84cc5ecec02ecb6dfe7e47058aed59be"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/master.helpers.ts": {
+    "mtime": 1782109010.2718682,
+    "ast_hash": "7de6d38eff913d13a2e473716b09374f",
+    "semantic_hash": "7de6d38eff913d13a2e473716b09374f"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/master.router.ts": {
+    "mtime": 1783157271.7971904,
+    "ast_hash": "e1560b8d12836a94a9661724bca4b1da",
+    "semantic_hash": "e1560b8d12836a94a9661724bca4b1da"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/ntsClient.ts": {
+    "mtime": 1782109010.2719896,
+    "ast_hash": "d07da39c4c185c3606061f0156ebcd63",
+    "semantic_hash": "d07da39c4c185c3606061f0156ebcd63"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/team.service.ts": {
+    "mtime": 1783157271.7975526,
+    "ast_hash": "82f346449a051d9ea9c51750ab5c7fcc",
+    "semantic_hash": "82f346449a051d9ea9c51750ab5c7fcc"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/master/vendor.service.ts": {
+    "mtime": 1783157271.7989821,
+    "ast_hash": "3dd4adc969cfc8e343cdbd1808317cd6",
+    "semantic_hash": "3dd4adc969cfc8e343cdbd1808317cd6"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/notifications/__tests__/notification.service.channels.test.ts": {
+    "mtime": 1782109010.272372,
+    "ast_hash": "1f9628f149b27fb2b9fde0c462cf39a2",
+    "semantic_hash": "1f9628f149b27fb2b9fde0c462cf39a2"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/notifications/__tests__/notification.service.test.ts": {
+    "mtime": 1782109010.2724864,
+    "ast_hash": "283b2a5db45c4c149991b3a338dae903",
+    "semantic_hash": "283b2a5db45c4c149991b3a338dae903"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/notifications/notification.controller.ts": {
+    "mtime": 1782109010.2725484,
+    "ast_hash": "be986a6bbab91414d193d131de7f1a0a",
+    "semantic_hash": "be986a6bbab91414d193d131de7f1a0a"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/notifications/notification.router.ts": {
+    "mtime": 1782109010.27261,
+    "ast_hash": "958e862f64ee5fa6b266a174d2dd24ca",
+    "semantic_hash": "958e862f64ee5fa6b266a174d2dd24ca"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/notifications/notification.service.ts": {
+    "mtime": 1783257800.263896,
+    "ast_hash": "420ef68c041393d90abe9aeeeceae635",
+    "semantic_hash": "420ef68c041393d90abe9aeeeceae635"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/reports/monthly-report.controller.ts": {
+    "mtime": 1783157271.801017,
+    "ast_hash": "845efb4597d8fd848113a87b2837c02b",
+    "semantic_hash": "845efb4597d8fd848113a87b2837c02b"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/reports/monthly-report.router.ts": {
+    "mtime": 1783157271.801869,
+    "ast_hash": "4e5b537bb291817fd218ab090e84de45",
+    "semantic_hash": "4e5b537bb291817fd218ab090e84de45"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/reports/monthly-report.service.ts": {
+    "mtime": 1783157271.802336,
+    "ast_hash": "e86fc103da6609c6f51f4de2e6d07de9",
+    "semantic_hash": "e86fc103da6609c6f51f4de2e6d07de9"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/reports/report.controller.ts": {
+    "mtime": 1783157271.8031979,
+    "ast_hash": "d77157272e12d32ac594e865f6706b8c",
+    "semantic_hash": "d77157272e12d32ac594e865f6706b8c"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/reports/report.router.ts": {
+    "mtime": 1783157271.803583,
+    "ast_hash": "520f21e9ecdaf2c8a5752a6c3ef20a57",
+    "semantic_hash": "520f21e9ecdaf2c8a5752a6c3ef20a57"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/reports/report.schema.ts": {
+    "mtime": 1783163010.4945135,
+    "ast_hash": "933229b0dfa3875240b5a02b374bb979",
+    "semantic_hash": "933229b0dfa3875240b5a02b374bb979"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/reports/report.service.ts": {
+    "mtime": 1783163010.495217,
+    "ast_hash": "71fb237ca6d770c77c6ba766b283b461",
+    "semantic_hash": "71fb237ca6d770c77c6ba766b283b461"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/reports/report.types.ts": {
+    "mtime": 1783163010.4954164,
+    "ast_hash": "475f01573a8d005a12bae1ad6fc4986a",
+    "semantic_hash": "475f01573a8d005a12bae1ad6fc4986a"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/reports/reports-hub.router.ts": {
+    "mtime": 1783157271.8056796,
+    "ast_hash": "a50732b83534e39a85318c3599b05871",
+    "semantic_hash": "a50732b83534e39a85318c3599b05871"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/audit/audit.service.ts": {
+    "mtime": 1782109010.272886,
+    "ast_hash": "1572191f69491c6d92b3da53653fe8ba",
+    "semantic_hash": "1572191f69491c6d92b3da53653fe8ba"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/detected-software/detected-software.controller.ts": {
+    "mtime": 1783229072.4078395,
+    "ast_hash": "95158c3121b62b6e19743af2ddafb061",
+    "semantic_hash": "95158c3121b62b6e19743af2ddafb061"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/detected-software/detected-software.router.ts": {
+    "mtime": 1783229072.408088,
+    "ast_hash": "b2dd21fe535ac2d15a3cbf61d74f0b2f",
+    "semantic_hash": "b2dd21fe535ac2d15a3cbf61d74f0b2f"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/detected-software/detected-software.schema.ts": {
+    "mtime": 1783229072.4090936,
+    "ast_hash": "03c42ab39b23aa36ee9d20edb03c2115",
+    "semantic_hash": "03c42ab39b23aa36ee9d20edb03c2115"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/detected-software/detected-software.service.ts": {
+    "mtime": 1783229072.4093761,
+    "ast_hash": "3afe10a7078c47d21aafa5bad1bc8225",
+    "semantic_hash": "3afe10a7078c47d21aafa5bad1bc8225"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/detected-software/detected-software.types.ts": {
+    "mtime": 1783229072.4095075,
+    "ast_hash": "5e9f4a92e0fe2c66bc5888086514bf42",
+    "semantic_hash": "5e9f4a92e0fe2c66bc5888086514bf42"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/software/__tests__/software.ingest.adr0010.test.ts": {
+    "mtime": 1783229072.4098086,
+    "ast_hash": "a78e31cd9510b579ab6a5ad26ded601d",
+    "semantic_hash": "a78e31cd9510b579ab6a5ad26ded601d"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/software/software.controller.ts": {
+    "mtime": 1783229072.409996,
+    "ast_hash": "4564a87b3f9e32cf074fd0e2dd21d38a",
+    "semantic_hash": "4564a87b3f9e32cf074fd0e2dd21d38a"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/software/software.router.ts": {
+    "mtime": 1783229072.4102798,
+    "ast_hash": "15420697201825827ed0363a67557d5d",
+    "semantic_hash": "15420697201825827ed0363a67557d5d"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/software/software.service.ts": {
+    "mtime": 1783229072.4105473,
+    "ast_hash": "06c6ddd7781963b30c040579d9a46b2f",
+    "semantic_hash": "06c6ddd7781963b30c040579d9a46b2f"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/security/software/software.types.ts": {
+    "mtime": 1783229072.4109375,
+    "ast_hash": "2d64173f350c496aa6e7986e3997a178",
+    "semantic_hash": "2d64173f350c496aa6e7986e3997a178"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/webhooks/mailgun-inbound.handler.ts": {
+    "mtime": 1782533315.9420435,
+    "ast_hash": "d6000e4ea822ebe534633672dd8128ef",
+    "semantic_hash": "d6000e4ea822ebe534633672dd8128ef"
+  },
+  "/Users/juno/asset-erp-backend/src/modules/webhooks/webhook.router.ts": {
+    "mtime": 1782533315.9423044,
+    "ast_hash": "d2618f9900f441b116faba83aec74a71",
+    "semantic_hash": "d2618f9900f441b116faba83aec74a71"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/__tests__/asset.schema.test.ts": {
+    "mtime": 1783157271.8062406,
+    "ast_hash": "efa1ff46a9624eca4545c72a4128f371",
+    "semantic_hash": "efa1ff46a9624eca4545c72a4128f371"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/__tests__/auth.schema.test.ts": {
+    "mtime": 1782109010.2735431,
+    "ast_hash": "183dd806d6581e3f738c60504ba12ae1",
+    "semantic_hash": "183dd806d6581e3f738c60504ba12ae1"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/__tests__/master.schema.test.ts": {
+    "mtime": 1782109010.273617,
+    "ast_hash": "97a97003a88d0b2ad5bfb8048cc3c7d8",
+    "semantic_hash": "97a97003a88d0b2ad5bfb8048cc3c7d8"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/asset.schema.ts": {
+    "mtime": 1782554196.0373924,
+    "ast_hash": "0ae90b8d96ebe3e43c739326d7df282a",
+    "semantic_hash": "0ae90b8d96ebe3e43c739326d7df282a"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/auth.schema.ts": {
+    "mtime": 1783157271.806821,
+    "ast_hash": "4269edf67c8956df17b2fea4ac133325",
+    "semantic_hash": "4269edf67c8956df17b2fea4ac133325"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/catalog.schema.ts": {
+    "mtime": 1782109010.2738888,
+    "ast_hash": "e67bb68af092c2093067852d7bcd12fa",
+    "semantic_hash": "e67bb68af092c2093067852d7bcd12fa"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/depreciation.schema.ts": {
+    "mtime": 1782109010.2739515,
+    "ast_hash": "e65b56a6dc16e0c52154990db3775c4d",
+    "semantic_hash": "e65b56a6dc16e0c52154990db3775c4d"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/disposal.schema.ts": {
+    "mtime": 1782736254.6192048,
+    "ast_hash": "34e556244c6ae4065a1660d24f4c57aa",
+    "semantic_hash": "34e556244c6ae4065a1660d24f4c57aa"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/license.schema.ts": {
+    "mtime": 1783258075.617979,
+    "ast_hash": "415f98785bd27ca53fbba5ea97626bfa",
+    "semantic_hash": "415f98785bd27ca53fbba5ea97626bfa"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/loan.schema.ts": {
+    "mtime": 1782533463.770171,
+    "ast_hash": "782761ca9fcb3ec438b0ac37603f52c1",
+    "semantic_hash": "782761ca9fcb3ec438b0ac37603f52c1"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/maintenance.schema.ts": {
+    "mtime": 1783157271.8073633,
+    "ast_hash": "a0794c24f48b9069140e9d46b3a0fde8",
+    "semantic_hash": "a0794c24f48b9069140e9d46b3a0fde8"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/manufacturer.schema.ts": {
+    "mtime": 1782109010.2741919,
+    "ast_hash": "12d3db62a98dc391a51044e94a90d4eb",
+    "semantic_hash": "12d3db62a98dc391a51044e94a90d4eb"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/master.schema.ts": {
+    "mtime": 1783157271.8079586,
+    "ast_hash": "0aeeca0a5e9c7fd1cfa0e3c34478f6e7",
+    "semantic_hash": "0aeeca0a5e9c7fd1cfa0e3c34478f6e7"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/software.schema.ts": {
+    "mtime": 1782109010.2743783,
+    "ast_hash": "87c75126e2432f4a029bcde70214dbcc",
+    "semantic_hash": "87c75126e2432f4a029bcde70214dbcc"
+  },
+  "/Users/juno/asset-erp-backend/src/schemas/user.schema.ts": {
+    "mtime": 1783157271.8083017,
+    "ast_hash": "dd7f44362e153025d699520054cb701c",
+    "semantic_hash": "dd7f44362e153025d699520054cb701c"
+  },
+  "/Users/juno/asset-erp-backend/src/services/sms.service.ts": {
+    "mtime": 1782199363.3351488,
+    "ast_hash": "7367e606290333c976f6632b7c3b9400",
+    "semantic_hash": "7367e606290333c976f6632b7c3b9400"
+  },
+  "/Users/juno/asset-erp-backend/src/types/express.d.ts": {
+    "mtime": 1782109010.2745435,
+    "ast_hash": "a5550712be99fee647334350bf734afa",
+    "semantic_hash": "a5550712be99fee647334350bf734afa"
+  },
+  "/Users/juno/asset-erp-backend/src/types/passport-kakao.d.ts": {
+    "mtime": 1782109010.2746036,
+    "ast_hash": "fe1b06341efd84d4948d11fb1f6359cd",
+    "semantic_hash": "fe1b06341efd84d4948d11fb1f6359cd"
+  },
+  "/Users/juno/asset-erp-backend/tsconfig.json": {
+    "mtime": 1782109010.2746634,
+    "ast_hash": "fadc329176dacef44378254974aca452",
+    "semantic_hash": "fadc329176dacef44378254974aca452"
+  },
+  "/Users/juno/asset-erp-backend/tsconfig.test.json": {
+    "mtime": 1782109010.2747257,
+    "ast_hash": "84f5b506984397368708f4986bc80173",
+    "semantic_hash": "84f5b506984397368708f4986bc80173"
+  },
+  "/Users/juno/asset-erp-backend/axhub.yaml": {
+    "mtime": 1782200667.6934707,
+    "ast_hash": "96c83a223231e0f159fcff4f99c23bec",
+    "semantic_hash": "96c83a223231e0f159fcff4f99c23bec"
+  },
+  "/Users/juno/asset-erp-backend/docs/superpowers/plans/2026-07-05-license-approval-workflow.md": {
+    "mtime": 1783257800.2593567,
+    "ast_hash": "3bb2a7cf185b168e9a780012831fcad4",
+    "semantic_hash": "3bb2a7cf185b168e9a780012831fcad4"
+  },
+  "/Users/juno/asset-erp-backend/docs/superpowers/specs/2026-07-05-license-approval-design.md": {
+    "mtime": 1783257800.259621,
+    "ast_hash": "d7722a2b62b35aa7e963d82efb818ea1",
+    "semantic_hash": "d7722a2b62b35aa7e963d82efb818ea1"
+  }
+}

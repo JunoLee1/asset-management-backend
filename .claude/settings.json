@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(npx jest *)",
+      "Bash(k6 version *)",
+      "Bash(lsof -i :3001 -sTCP:LISTEN)",
+      "Bash(nohup npm run dev)",
+      "Bash(echo \"PID=$!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/auth/login -X POST -H \"Content-Type: application/json\" -d '{\"email\":\"admin-1@verify.local\",\"password\":\"test1234!\"}' --max-time 5)",
+      "Bash(k6 run *)",
+      "Bash(curl -s http://localhost:3001/auth/login -X POST -H \"Content-Type: application/json\" -d '{\"email\":\"admin-1@verify.local\",\"password\":\"test1234!\"}')",
+      "Bash(kill 37143)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(tail -100 /tmp/asset-erp-dev.log | grep -iE \"error|Error|exception\" | tail -40)",
+      "Read(//private/tmp/**)",
+      "Bash(node /private/tmp/claude-501/bundled-skills/2.1.270/989c32eaa7e38884d02d2a959dad407c/dataviz/scripts/validate_palette.js \"#1B8A94,#2F9E5B,#C97C1F,#C0392B\" --mode light)",
+      "Bash(node /private/tmp/claude-501/bundled-skills/2.1.270/989c32eaa7e38884d02d2a959dad407c/dataviz/scripts/validate_palette.js \"#0A96A8,#3FA34D,#C97C1F,#C0392B\" --mode light)",
+      "Bash(git status *)",
+      "Bash(git rev-list *)",
+      "Bash(git fetch *)",
+      "Bash(git push *)",
+      "Bash(gh pr create --base main --head feat/department-office-fields --title 'fix\\(admin\\): invite hireDate 검증 버그 수정' --body ' *)",
+      "Bash(gh pr *)"
+    ]
+  }
+}

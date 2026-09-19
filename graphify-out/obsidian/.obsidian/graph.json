@@ -1,0 +1,354 @@
+{
+  "colorGroups": [
+    {
+      "query": "tag:#community/\ub300\uc5ec_\uc11c\ube44\uc2a4_\ub85c\uc9c1",
+      "color": {
+        "a": 1,
+        "rgb": 5142951
+      }
+    },
+    {
+      "query": "tag:#community/\uad00\ub9ac\uc790_\uc0ac\uc6a9\uc790_\uad00\ub9ac",
+      "color": {
+        "a": 1,
+        "rgb": 15896107
+      }
+    },
+    {
+      "query": "tag:#community/API_\ub77c\uc6b0\ud130_\ub808\uc774\uc5b4",
+      "color": {
+        "a": 1,
+        "rgb": 14767961
+      }
+    },
+    {
+      "query": "tag:#community/\uce74\ud0c8\ub85c\uadf8_\uc11c\ube44\uc2a4",
+      "color": {
+        "a": 1,
+        "rgb": 7780274
+      }
+    },
+    {
+      "query": "tag:#community/Cloudinary_\ud30c\uc77c_\uc5c5\ub85c\ub4dc",
+      "color": {
+        "a": 1,
+        "rgb": 5873999
+      }
+    },
+    {
+      "query": "tag:#community/\uc6b4\uc601_\ubd84\uc11d_\ub0b4\ubcf4\ub0b4\uae30",
+      "color": {
+        "a": 1,
+        "rgb": 15583560
+      }
+    },
+    {
+      "query": "tag:#community/\ub77c\uc774\uc120\uc2a4_\ud0a4_\uad00\ub9ac",
+      "color": {
+        "a": 1,
+        "rgb": 11565729
+      }
+    },
+    {
+      "query": "tag:#community/\uc778\uc99d_\ucee8\ud2b8\ub864\ub7ec",
+      "color": {
+        "a": 1,
+        "rgb": 16752039
+      }
+    },
+    {
+      "query": "tag:#community/\ud544\ub4dc_\uc554\ud638\ud654_\uc720\ud2f8",
+      "color": {
+        "a": 1,
+        "rgb": 10253663
+      }
+    },
+    {
+      "query": "tag:#community/\ub7f0\ud0c0\uc784_\uc758\uc874\uc131",
+      "color": {
+        "a": 1,
+        "rgb": 12234924
+      }
+    },
+    {
+      "query": "tag:#community/\uac1c\ubc1c_\uc758\uc874\uc131",
+      "color": {
+        "a": 1,
+        "rgb": 5142951
+      }
+    },
+    {
+      "query": "tag:#community/\uc54c\ub9bc_\uc11c\ube44\uc2a4",
+      "color": {
+        "a": 1,
+        "rgb": 15896107
+      }
+    },
+    {
+      "query": "tag:#community/TypeScript_\ube4c\ub4dc_\uc124\uc815",
+      "color": {
+        "a": 1,
+        "rgb": 14767961
+      }
+    },
+    {
+      "query": "tag:#community/\ub300\uc2dc\ubcf4\ub4dc",
+      "color": {
+        "a": 1,
+        "rgb": 7780274
+      }
+    },
+    {
+      "query": "tag:#community/\uc218\ub9ac_\ucee8\ud2b8\ub864\ub7ec",
+      "color": {
+        "a": 1,
+        "rgb": 5873999
+      }
+    },
+    {
+      "query": "tag:#community/\uac10\uac00\uc0c1\uac01_\uc11c\ube44\uc2a4",
+      "color": {
+        "a": 1,
+        "rgb": 15583560
+      }
+    },
+    {
+      "query": "tag:#community/\ub300\uc5ec_\ucee8\ud2b8\ub864\ub7ec",
+      "color": {
+        "a": 1,
+        "rgb": 11565729
+      }
+    },
+    {
+      "query": "tag:#community/\ub77c\uc774\uc120\uc2a4_\ucee8\ud2b8\ub864\ub7ec",
+      "color": {
+        "a": 1,
+        "rgb": 16752039
+      }
+    },
+    {
+      "query": "tag:#community/\uc0ac\uc6a9\uc790_\ud65c\uc131\ud654_\ube44\ud65c\uc131\ud654",
+      "color": {
+        "a": 1,
+        "rgb": 10253663
+      }
+    },
+    {
+      "query": "tag:#community/\uc790\uc0b0_\ubd84\ub958_\ub9c8\uc2a4\ud130",
+      "color": {
+        "a": 1,
+        "rgb": 12234924
+      }
+    },
+    {
+      "query": "tag:#community/\uc790\uc0b0_\uc2a4\ud0a4\ub9c8_Enum",
+      "color": {
+        "a": 1,
+        "rgb": 5142951
+      }
+    },
+    {
+      "query": "tag:#community/\uc778\uc99d_\uc11c\ube44\uc2a4_\ud14c\uc2a4\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 15896107
+      }
+    },
+    {
+      "query": "tag:#community/\uc790\uc0b0_\uc11c\ube44\uc2a4",
+      "color": {
+        "a": 1,
+        "rgb": 14767961
+      }
+    },
+    {
+      "query": "tag:#community/\uc5d0\ub7ec_\ucc98\ub9ac_\ud5ec\ud37c",
+      "color": {
+        "a": 1,
+        "rgb": 7780274
+      }
+    },
+    {
+      "query": "tag:#community/\uc81c\uc870\uc0ac_\ucee8\ud2b8\ub864\ub7ec",
+      "color": {
+        "a": 1,
+        "rgb": 5873999
+      }
+    },
+    {
+      "query": "tag:#community/\uc81c\uc870\uc0ac_\uc11c\ube44\uc2a4",
+      "color": {
+        "a": 1,
+        "rgb": 15583560
+      }
+    },
+    {
+      "query": "tag:#community/\ubd80\uc11c_\ub9c8\uc2a4\ud130_\uc11c\ube44\uc2a4",
+      "color": {
+        "a": 1,
+        "rgb": 11565729
+      }
+    },
+    {
+      "query": "tag:#community/\uc790\uc0b0_\ucee8\ud2b8\ub864\ub7ec",
+      "color": {
+        "a": 1,
+        "rgb": 16752039
+      }
+    },
+    {
+      "query": "tag:#community/\uce74\ud0c8\ub85c\uadf8_\ucee8\ud2b8\ub864\ub7ec",
+      "color": {
+        "a": 1,
+        "rgb": 10253663
+      }
+    },
+    {
+      "query": "tag:#community/\uc704\uce58_\ub9c8\uc2a4\ud130_\uc11c\ube44\uc2a4",
+      "color": {
+        "a": 1,
+        "rgb": 12234924
+      }
+    },
+    {
+      "query": "tag:#community/NPM_\uc2a4\ud06c\ub9bd\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 5142951
+      }
+    },
+    {
+      "query": "tag:#community/Prisma_\ud074\ub77c\uc774\uc5b8\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 15896107
+      }
+    },
+    {
+      "query": "tag:#community/\uac10\uac00\uc0c1\uac01_\ucee8\ud2b8\ub864\ub7ec",
+      "color": {
+        "a": 1,
+        "rgb": 14767961
+      }
+    },
+    {
+      "query": "tag:#community/\ub300\uc5ec_\ubd80\uc11c\uc7a5_\uad8c\ud55c_\ud14c\uc2a4\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 7780274
+      }
+    },
+    {
+      "query": "tag:#community/\ud328\ud0a4\uc9c0_\uba54\ud0c0\uc815\ubcf4",
+      "color": {
+        "a": 1,
+        "rgb": 5873999
+      }
+    },
+    {
+      "query": "tag:#community/\uc790\uc0b0_\ubaa9\ub85d_\uc870\ud68c_\ud14c\uc2a4\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 15583560
+      }
+    },
+    {
+      "query": "tag:#community/\uc0ac\uc6a9\uc790_\uc790\uc0b0_\uc0c1\ud0dc_\ubcc0\uacbd",
+      "color": {
+        "a": 1,
+        "rgb": 11565729
+      }
+    },
+    {
+      "query": "tag:#community/\uc790\uc0b0_\ud0c0\uc785_\uc815\uc758",
+      "color": {
+        "a": 1,
+        "rgb": 16752039
+      }
+    },
+    {
+      "query": "tag:#community/\uc694\uccad\uc790_\ucee8\ud14d\uc2a4\ud2b8_\ud14c\uc2a4\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 10253663
+      }
+    },
+    {
+      "query": "tag:#community/\ub300\uc5ec_\ubc18\ub0a9_\uad8c\ud55c_\ud14c\uc2a4\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 12234924
+      }
+    },
+    {
+      "query": "tag:#community/\uc218\ub9ac_\ubd80\uc11c_\uad8c\ud55c_\ud14c\uc2a4\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 5142951
+      }
+    },
+    {
+      "query": "tag:#community/\ud14c\uc2a4\ud2b8_TypeScript_\uc124\uc815",
+      "color": {
+        "a": 1,
+        "rgb": 15896107
+      }
+    },
+    {
+      "query": "tag:#community/\uce74\uce74\uc624_Passport_\ud0c0\uc785",
+      "color": {
+        "a": 1,
+        "rgb": 14767961
+      }
+    },
+    {
+      "query": "tag:#community/DB_\uc2dc\ub4dc_\ub370\uc774\ud130",
+      "color": {
+        "a": 1,
+        "rgb": 7780274
+      }
+    },
+    {
+      "query": "tag:#community/\ub300\uc5ec_\uc9c1\ubb34\ub300\ud589_\uc2b9\uc778_\ud14c\uc2a4\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 5873999
+      }
+    },
+    {
+      "query": "tag:#community/\ub300\uc5ec_\uc5f0\uccb4_\ud14c\uc2a4\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 15583560
+      }
+    },
+    {
+      "query": "tag:#community/\uc790\uc0b0_\uc0dd\uc131_\ud14c\uc2a4\ud2b8",
+      "color": {
+        "a": 1,
+        "rgb": 11565729
+      }
+    },
+    {
+      "query": "tag:#community/Axhub_\ubc30\ud3ec_\uc124\uc815",
+      "color": {
+        "a": 1,
+        "rgb": 16752039
+      }
+    },
+    {
+      "query": "tag:#community/Jest_\uc124\uc815",
+      "color": {
+        "a": 1,
+        "rgb": 10253663
+      }
+    },
+    {
+      "query": "tag:#community/Express_\ud0c0\uc785_\ud655\uc7a5",
+      "color": {
+        "a": 1,
+        "rgb": 12234924
+      }
+    }
+  ]
+}

@@ -1,0 +1,1739 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums";
+import type * as Prisma from "../internal/prismaNamespace";
+/**
+ * Model AssetCatalog
+ *
+ */
+export type AssetCatalogModel = runtime.Types.Result.DefaultSelection<Prisma.$AssetCatalogPayload>;
+export type AggregateAssetCatalog = {
+    _count: AssetCatalogCountAggregateOutputType | null;
+    _min: AssetCatalogMinAggregateOutputType | null;
+    _max: AssetCatalogMaxAggregateOutputType | null;
+};
+export type AssetCatalogMinAggregateOutputType = {
+    id: string | null;
+    name: string | null;
+    manufacturer: string | null;
+    modelCode: string | null;
+    class: $Enums.AssetClass | null;
+    imageUrl: string | null;
+    isActive: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    categoryId: string | null;
+    manufacturerId: string | null;
+};
+export type AssetCatalogMaxAggregateOutputType = {
+    id: string | null;
+    name: string | null;
+    manufacturer: string | null;
+    modelCode: string | null;
+    class: $Enums.AssetClass | null;
+    imageUrl: string | null;
+    isActive: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    categoryId: string | null;
+    manufacturerId: string | null;
+};
+export type AssetCatalogCountAggregateOutputType = {
+    id: number;
+    name: number;
+    manufacturer: number;
+    modelCode: number;
+    class: number;
+    imageUrl: number;
+    specs: number;
+    isActive: number;
+    createdAt: number;
+    updatedAt: number;
+    categoryId: number;
+    manufacturerId: number;
+    _all: number;
+};
+export type AssetCatalogMinAggregateInputType = {
+    id?: true;
+    name?: true;
+    manufacturer?: true;
+    modelCode?: true;
+    class?: true;
+    imageUrl?: true;
+    isActive?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    categoryId?: true;
+    manufacturerId?: true;
+};
+export type AssetCatalogMaxAggregateInputType = {
+    id?: true;
+    name?: true;
+    manufacturer?: true;
+    modelCode?: true;
+    class?: true;
+    imageUrl?: true;
+    isActive?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    categoryId?: true;
+    manufacturerId?: true;
+};
+export type AssetCatalogCountAggregateInputType = {
+    id?: true;
+    name?: true;
+    manufacturer?: true;
+    modelCode?: true;
+    class?: true;
+    imageUrl?: true;
+    specs?: true;
+    isActive?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    categoryId?: true;
+    manufacturerId?: true;
+    _all?: true;
+};
+export type AssetCatalogAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which AssetCatalog to aggregate.
+     */
+    where?: Prisma.AssetCatalogWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AssetCatalogs to fetch.
+     */
+    orderBy?: Prisma.AssetCatalogOrderByWithRelationInput | Prisma.AssetCatalogOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.AssetCatalogWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AssetCatalogs from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AssetCatalogs.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned AssetCatalogs
+    **/
+    _count?: true | AssetCatalogCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: AssetCatalogMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: AssetCatalogMaxAggregateInputType;
+};
+export type GetAssetCatalogAggregateType<T extends AssetCatalogAggregateArgs> = {
+    [P in keyof T & keyof AggregateAssetCatalog]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateAssetCatalog[P]> : Prisma.GetScalarType<T[P], AggregateAssetCatalog[P]>;
+};
+export type AssetCatalogGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.AssetCatalogWhereInput;
+    orderBy?: Prisma.AssetCatalogOrderByWithAggregationInput | Prisma.AssetCatalogOrderByWithAggregationInput[];
+    by: Prisma.AssetCatalogScalarFieldEnum[] | Prisma.AssetCatalogScalarFieldEnum;
+    having?: Prisma.AssetCatalogScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: AssetCatalogCountAggregateInputType | true;
+    _min?: AssetCatalogMinAggregateInputType;
+    _max?: AssetCatalogMaxAggregateInputType;
+};
+export type AssetCatalogGroupByOutputType = {
+    id: string;
+    name: string;
+    manufacturer: string | null;
+    modelCode: string | null;
+    class: $Enums.AssetClass;
+    imageUrl: string | null;
+    specs: runtime.JsonValue;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    categoryId: string;
+    manufacturerId: string | null;
+    _count: AssetCatalogCountAggregateOutputType | null;
+    _min: AssetCatalogMinAggregateOutputType | null;
+    _max: AssetCatalogMaxAggregateOutputType | null;
+};
+export type GetAssetCatalogGroupByPayload<T extends AssetCatalogGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<AssetCatalogGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof AssetCatalogGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], AssetCatalogGroupByOutputType[P]> : Prisma.GetScalarType<T[P], AssetCatalogGroupByOutputType[P]>;
+}>>;
+export type AssetCatalogWhereInput = {
+    AND?: Prisma.AssetCatalogWhereInput | Prisma.AssetCatalogWhereInput[];
+    OR?: Prisma.AssetCatalogWhereInput[];
+    NOT?: Prisma.AssetCatalogWhereInput | Prisma.AssetCatalogWhereInput[];
+    id?: Prisma.StringFilter<"AssetCatalog"> | string;
+    name?: Prisma.StringFilter<"AssetCatalog"> | string;
+    manufacturer?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    modelCode?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    class?: Prisma.EnumAssetClassFilter<"AssetCatalog"> | $Enums.AssetClass;
+    imageUrl?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    specs?: Prisma.JsonFilter<"AssetCatalog">;
+    isActive?: Prisma.BoolFilter<"AssetCatalog"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"AssetCatalog"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"AssetCatalog"> | Date | string;
+    categoryId?: Prisma.StringFilter<"AssetCatalog"> | string;
+    manufacturerId?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    category?: Prisma.XOR<Prisma.AssetCategoryScalarRelationFilter, Prisma.AssetCategoryWhereInput>;
+    manufacturerMaster?: Prisma.XOR<Prisma.ManufacturerNullableScalarRelationFilter, Prisma.ManufacturerWhereInput> | null;
+    assets?: Prisma.AssetListRelationFilter;
+};
+export type AssetCatalogOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    manufacturer?: Prisma.SortOrderInput | Prisma.SortOrder;
+    modelCode?: Prisma.SortOrderInput | Prisma.SortOrder;
+    class?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    specs?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    manufacturerId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    category?: Prisma.AssetCategoryOrderByWithRelationInput;
+    manufacturerMaster?: Prisma.ManufacturerOrderByWithRelationInput;
+    assets?: Prisma.AssetOrderByRelationAggregateInput;
+};
+export type AssetCatalogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    AND?: Prisma.AssetCatalogWhereInput | Prisma.AssetCatalogWhereInput[];
+    OR?: Prisma.AssetCatalogWhereInput[];
+    NOT?: Prisma.AssetCatalogWhereInput | Prisma.AssetCatalogWhereInput[];
+    name?: Prisma.StringFilter<"AssetCatalog"> | string;
+    manufacturer?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    modelCode?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    class?: Prisma.EnumAssetClassFilter<"AssetCatalog"> | $Enums.AssetClass;
+    imageUrl?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    specs?: Prisma.JsonFilter<"AssetCatalog">;
+    isActive?: Prisma.BoolFilter<"AssetCatalog"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"AssetCatalog"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"AssetCatalog"> | Date | string;
+    categoryId?: Prisma.StringFilter<"AssetCatalog"> | string;
+    manufacturerId?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    category?: Prisma.XOR<Prisma.AssetCategoryScalarRelationFilter, Prisma.AssetCategoryWhereInput>;
+    manufacturerMaster?: Prisma.XOR<Prisma.ManufacturerNullableScalarRelationFilter, Prisma.ManufacturerWhereInput> | null;
+    assets?: Prisma.AssetListRelationFilter;
+}, "id">;
+export type AssetCatalogOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    manufacturer?: Prisma.SortOrderInput | Prisma.SortOrder;
+    modelCode?: Prisma.SortOrderInput | Prisma.SortOrder;
+    class?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    specs?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    manufacturerId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    _count?: Prisma.AssetCatalogCountOrderByAggregateInput;
+    _max?: Prisma.AssetCatalogMaxOrderByAggregateInput;
+    _min?: Prisma.AssetCatalogMinOrderByAggregateInput;
+};
+export type AssetCatalogScalarWhereWithAggregatesInput = {
+    AND?: Prisma.AssetCatalogScalarWhereWithAggregatesInput | Prisma.AssetCatalogScalarWhereWithAggregatesInput[];
+    OR?: Prisma.AssetCatalogScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.AssetCatalogScalarWhereWithAggregatesInput | Prisma.AssetCatalogScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"AssetCatalog"> | string;
+    name?: Prisma.StringWithAggregatesFilter<"AssetCatalog"> | string;
+    manufacturer?: Prisma.StringNullableWithAggregatesFilter<"AssetCatalog"> | string | null;
+    modelCode?: Prisma.StringNullableWithAggregatesFilter<"AssetCatalog"> | string | null;
+    class?: Prisma.EnumAssetClassWithAggregatesFilter<"AssetCatalog"> | $Enums.AssetClass;
+    imageUrl?: Prisma.StringNullableWithAggregatesFilter<"AssetCatalog"> | string | null;
+    specs?: Prisma.JsonWithAggregatesFilter<"AssetCatalog">;
+    isActive?: Prisma.BoolWithAggregatesFilter<"AssetCatalog"> | boolean;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"AssetCatalog"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AssetCatalog"> | Date | string;
+    categoryId?: Prisma.StringWithAggregatesFilter<"AssetCatalog"> | string;
+    manufacturerId?: Prisma.StringNullableWithAggregatesFilter<"AssetCatalog"> | string | null;
+};
+export type AssetCatalogCreateInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    category: Prisma.AssetCategoryCreateNestedOneWithoutCatalogsInput;
+    manufacturerMaster?: Prisma.ManufacturerCreateNestedOneWithoutCatalogsInput;
+    assets?: Prisma.AssetCreateNestedManyWithoutCatalogInput;
+};
+export type AssetCatalogUncheckedCreateInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId: string;
+    manufacturerId?: string | null;
+    assets?: Prisma.AssetUncheckedCreateNestedManyWithoutCatalogInput;
+};
+export type AssetCatalogUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    category?: Prisma.AssetCategoryUpdateOneRequiredWithoutCatalogsNestedInput;
+    manufacturerMaster?: Prisma.ManufacturerUpdateOneWithoutCatalogsNestedInput;
+    assets?: Prisma.AssetUpdateManyWithoutCatalogNestedInput;
+};
+export type AssetCatalogUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    assets?: Prisma.AssetUncheckedUpdateManyWithoutCatalogNestedInput;
+};
+export type AssetCatalogCreateManyInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId: string;
+    manufacturerId?: string | null;
+};
+export type AssetCatalogUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type AssetCatalogUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+};
+export type AssetCatalogListRelationFilter = {
+    every?: Prisma.AssetCatalogWhereInput;
+    some?: Prisma.AssetCatalogWhereInput;
+    none?: Prisma.AssetCatalogWhereInput;
+};
+export type AssetCatalogOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type AssetCatalogCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    manufacturer?: Prisma.SortOrder;
+    modelCode?: Prisma.SortOrder;
+    class?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrder;
+    specs?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    manufacturerId?: Prisma.SortOrder;
+};
+export type AssetCatalogMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    manufacturer?: Prisma.SortOrder;
+    modelCode?: Prisma.SortOrder;
+    class?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    manufacturerId?: Prisma.SortOrder;
+};
+export type AssetCatalogMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    manufacturer?: Prisma.SortOrder;
+    modelCode?: Prisma.SortOrder;
+    class?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    manufacturerId?: Prisma.SortOrder;
+};
+export type AssetCatalogNullableScalarRelationFilter = {
+    is?: Prisma.AssetCatalogWhereInput | null;
+    isNot?: Prisma.AssetCatalogWhereInput | null;
+};
+export type AssetCatalogCreateNestedManyWithoutCategoryInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutCategoryInput, Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput> | Prisma.AssetCatalogCreateWithoutCategoryInput[] | Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutCategoryInput | Prisma.AssetCatalogCreateOrConnectWithoutCategoryInput[];
+    createMany?: Prisma.AssetCatalogCreateManyCategoryInputEnvelope;
+    connect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+};
+export type AssetCatalogUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutCategoryInput, Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput> | Prisma.AssetCatalogCreateWithoutCategoryInput[] | Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutCategoryInput | Prisma.AssetCatalogCreateOrConnectWithoutCategoryInput[];
+    createMany?: Prisma.AssetCatalogCreateManyCategoryInputEnvelope;
+    connect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+};
+export type AssetCatalogUpdateManyWithoutCategoryNestedInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutCategoryInput, Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput> | Prisma.AssetCatalogCreateWithoutCategoryInput[] | Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutCategoryInput | Prisma.AssetCatalogCreateOrConnectWithoutCategoryInput[];
+    upsert?: Prisma.AssetCatalogUpsertWithWhereUniqueWithoutCategoryInput | Prisma.AssetCatalogUpsertWithWhereUniqueWithoutCategoryInput[];
+    createMany?: Prisma.AssetCatalogCreateManyCategoryInputEnvelope;
+    set?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    disconnect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    delete?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    connect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    update?: Prisma.AssetCatalogUpdateWithWhereUniqueWithoutCategoryInput | Prisma.AssetCatalogUpdateWithWhereUniqueWithoutCategoryInput[];
+    updateMany?: Prisma.AssetCatalogUpdateManyWithWhereWithoutCategoryInput | Prisma.AssetCatalogUpdateManyWithWhereWithoutCategoryInput[];
+    deleteMany?: Prisma.AssetCatalogScalarWhereInput | Prisma.AssetCatalogScalarWhereInput[];
+};
+export type AssetCatalogUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutCategoryInput, Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput> | Prisma.AssetCatalogCreateWithoutCategoryInput[] | Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutCategoryInput | Prisma.AssetCatalogCreateOrConnectWithoutCategoryInput[];
+    upsert?: Prisma.AssetCatalogUpsertWithWhereUniqueWithoutCategoryInput | Prisma.AssetCatalogUpsertWithWhereUniqueWithoutCategoryInput[];
+    createMany?: Prisma.AssetCatalogCreateManyCategoryInputEnvelope;
+    set?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    disconnect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    delete?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    connect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    update?: Prisma.AssetCatalogUpdateWithWhereUniqueWithoutCategoryInput | Prisma.AssetCatalogUpdateWithWhereUniqueWithoutCategoryInput[];
+    updateMany?: Prisma.AssetCatalogUpdateManyWithWhereWithoutCategoryInput | Prisma.AssetCatalogUpdateManyWithWhereWithoutCategoryInput[];
+    deleteMany?: Prisma.AssetCatalogScalarWhereInput | Prisma.AssetCatalogScalarWhereInput[];
+};
+export type AssetCatalogCreateNestedManyWithoutManufacturerMasterInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutManufacturerMasterInput, Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput> | Prisma.AssetCatalogCreateWithoutManufacturerMasterInput[] | Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput[];
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutManufacturerMasterInput | Prisma.AssetCatalogCreateOrConnectWithoutManufacturerMasterInput[];
+    createMany?: Prisma.AssetCatalogCreateManyManufacturerMasterInputEnvelope;
+    connect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+};
+export type AssetCatalogUncheckedCreateNestedManyWithoutManufacturerMasterInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutManufacturerMasterInput, Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput> | Prisma.AssetCatalogCreateWithoutManufacturerMasterInput[] | Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput[];
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutManufacturerMasterInput | Prisma.AssetCatalogCreateOrConnectWithoutManufacturerMasterInput[];
+    createMany?: Prisma.AssetCatalogCreateManyManufacturerMasterInputEnvelope;
+    connect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+};
+export type AssetCatalogUpdateManyWithoutManufacturerMasterNestedInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutManufacturerMasterInput, Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput> | Prisma.AssetCatalogCreateWithoutManufacturerMasterInput[] | Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput[];
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutManufacturerMasterInput | Prisma.AssetCatalogCreateOrConnectWithoutManufacturerMasterInput[];
+    upsert?: Prisma.AssetCatalogUpsertWithWhereUniqueWithoutManufacturerMasterInput | Prisma.AssetCatalogUpsertWithWhereUniqueWithoutManufacturerMasterInput[];
+    createMany?: Prisma.AssetCatalogCreateManyManufacturerMasterInputEnvelope;
+    set?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    disconnect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    delete?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    connect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    update?: Prisma.AssetCatalogUpdateWithWhereUniqueWithoutManufacturerMasterInput | Prisma.AssetCatalogUpdateWithWhereUniqueWithoutManufacturerMasterInput[];
+    updateMany?: Prisma.AssetCatalogUpdateManyWithWhereWithoutManufacturerMasterInput | Prisma.AssetCatalogUpdateManyWithWhereWithoutManufacturerMasterInput[];
+    deleteMany?: Prisma.AssetCatalogScalarWhereInput | Prisma.AssetCatalogScalarWhereInput[];
+};
+export type AssetCatalogUncheckedUpdateManyWithoutManufacturerMasterNestedInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutManufacturerMasterInput, Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput> | Prisma.AssetCatalogCreateWithoutManufacturerMasterInput[] | Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput[];
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutManufacturerMasterInput | Prisma.AssetCatalogCreateOrConnectWithoutManufacturerMasterInput[];
+    upsert?: Prisma.AssetCatalogUpsertWithWhereUniqueWithoutManufacturerMasterInput | Prisma.AssetCatalogUpsertWithWhereUniqueWithoutManufacturerMasterInput[];
+    createMany?: Prisma.AssetCatalogCreateManyManufacturerMasterInputEnvelope;
+    set?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    disconnect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    delete?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    connect?: Prisma.AssetCatalogWhereUniqueInput | Prisma.AssetCatalogWhereUniqueInput[];
+    update?: Prisma.AssetCatalogUpdateWithWhereUniqueWithoutManufacturerMasterInput | Prisma.AssetCatalogUpdateWithWhereUniqueWithoutManufacturerMasterInput[];
+    updateMany?: Prisma.AssetCatalogUpdateManyWithWhereWithoutManufacturerMasterInput | Prisma.AssetCatalogUpdateManyWithWhereWithoutManufacturerMasterInput[];
+    deleteMany?: Prisma.AssetCatalogScalarWhereInput | Prisma.AssetCatalogScalarWhereInput[];
+};
+export type EnumAssetClassFieldUpdateOperationsInput = {
+    set?: $Enums.AssetClass;
+};
+export type AssetCatalogCreateNestedOneWithoutAssetsInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutAssetsInput, Prisma.AssetCatalogUncheckedCreateWithoutAssetsInput>;
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutAssetsInput;
+    connect?: Prisma.AssetCatalogWhereUniqueInput;
+};
+export type AssetCatalogUpdateOneWithoutAssetsNestedInput = {
+    create?: Prisma.XOR<Prisma.AssetCatalogCreateWithoutAssetsInput, Prisma.AssetCatalogUncheckedCreateWithoutAssetsInput>;
+    connectOrCreate?: Prisma.AssetCatalogCreateOrConnectWithoutAssetsInput;
+    upsert?: Prisma.AssetCatalogUpsertWithoutAssetsInput;
+    disconnect?: Prisma.AssetCatalogWhereInput | boolean;
+    delete?: Prisma.AssetCatalogWhereInput | boolean;
+    connect?: Prisma.AssetCatalogWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.AssetCatalogUpdateToOneWithWhereWithoutAssetsInput, Prisma.AssetCatalogUpdateWithoutAssetsInput>, Prisma.AssetCatalogUncheckedUpdateWithoutAssetsInput>;
+};
+export type AssetCatalogCreateWithoutCategoryInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    manufacturerMaster?: Prisma.ManufacturerCreateNestedOneWithoutCatalogsInput;
+    assets?: Prisma.AssetCreateNestedManyWithoutCatalogInput;
+};
+export type AssetCatalogUncheckedCreateWithoutCategoryInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    manufacturerId?: string | null;
+    assets?: Prisma.AssetUncheckedCreateNestedManyWithoutCatalogInput;
+};
+export type AssetCatalogCreateOrConnectWithoutCategoryInput = {
+    where: Prisma.AssetCatalogWhereUniqueInput;
+    create: Prisma.XOR<Prisma.AssetCatalogCreateWithoutCategoryInput, Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput>;
+};
+export type AssetCatalogCreateManyCategoryInputEnvelope = {
+    data: Prisma.AssetCatalogCreateManyCategoryInput | Prisma.AssetCatalogCreateManyCategoryInput[];
+    skipDuplicates?: boolean;
+};
+export type AssetCatalogUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: Prisma.AssetCatalogWhereUniqueInput;
+    update: Prisma.XOR<Prisma.AssetCatalogUpdateWithoutCategoryInput, Prisma.AssetCatalogUncheckedUpdateWithoutCategoryInput>;
+    create: Prisma.XOR<Prisma.AssetCatalogCreateWithoutCategoryInput, Prisma.AssetCatalogUncheckedCreateWithoutCategoryInput>;
+};
+export type AssetCatalogUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: Prisma.AssetCatalogWhereUniqueInput;
+    data: Prisma.XOR<Prisma.AssetCatalogUpdateWithoutCategoryInput, Prisma.AssetCatalogUncheckedUpdateWithoutCategoryInput>;
+};
+export type AssetCatalogUpdateManyWithWhereWithoutCategoryInput = {
+    where: Prisma.AssetCatalogScalarWhereInput;
+    data: Prisma.XOR<Prisma.AssetCatalogUpdateManyMutationInput, Prisma.AssetCatalogUncheckedUpdateManyWithoutCategoryInput>;
+};
+export type AssetCatalogScalarWhereInput = {
+    AND?: Prisma.AssetCatalogScalarWhereInput | Prisma.AssetCatalogScalarWhereInput[];
+    OR?: Prisma.AssetCatalogScalarWhereInput[];
+    NOT?: Prisma.AssetCatalogScalarWhereInput | Prisma.AssetCatalogScalarWhereInput[];
+    id?: Prisma.StringFilter<"AssetCatalog"> | string;
+    name?: Prisma.StringFilter<"AssetCatalog"> | string;
+    manufacturer?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    modelCode?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    class?: Prisma.EnumAssetClassFilter<"AssetCatalog"> | $Enums.AssetClass;
+    imageUrl?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+    specs?: Prisma.JsonFilter<"AssetCatalog">;
+    isActive?: Prisma.BoolFilter<"AssetCatalog"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"AssetCatalog"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"AssetCatalog"> | Date | string;
+    categoryId?: Prisma.StringFilter<"AssetCatalog"> | string;
+    manufacturerId?: Prisma.StringNullableFilter<"AssetCatalog"> | string | null;
+};
+export type AssetCatalogCreateWithoutManufacturerMasterInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    category: Prisma.AssetCategoryCreateNestedOneWithoutCatalogsInput;
+    assets?: Prisma.AssetCreateNestedManyWithoutCatalogInput;
+};
+export type AssetCatalogUncheckedCreateWithoutManufacturerMasterInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId: string;
+    assets?: Prisma.AssetUncheckedCreateNestedManyWithoutCatalogInput;
+};
+export type AssetCatalogCreateOrConnectWithoutManufacturerMasterInput = {
+    where: Prisma.AssetCatalogWhereUniqueInput;
+    create: Prisma.XOR<Prisma.AssetCatalogCreateWithoutManufacturerMasterInput, Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput>;
+};
+export type AssetCatalogCreateManyManufacturerMasterInputEnvelope = {
+    data: Prisma.AssetCatalogCreateManyManufacturerMasterInput | Prisma.AssetCatalogCreateManyManufacturerMasterInput[];
+    skipDuplicates?: boolean;
+};
+export type AssetCatalogUpsertWithWhereUniqueWithoutManufacturerMasterInput = {
+    where: Prisma.AssetCatalogWhereUniqueInput;
+    update: Prisma.XOR<Prisma.AssetCatalogUpdateWithoutManufacturerMasterInput, Prisma.AssetCatalogUncheckedUpdateWithoutManufacturerMasterInput>;
+    create: Prisma.XOR<Prisma.AssetCatalogCreateWithoutManufacturerMasterInput, Prisma.AssetCatalogUncheckedCreateWithoutManufacturerMasterInput>;
+};
+export type AssetCatalogUpdateWithWhereUniqueWithoutManufacturerMasterInput = {
+    where: Prisma.AssetCatalogWhereUniqueInput;
+    data: Prisma.XOR<Prisma.AssetCatalogUpdateWithoutManufacturerMasterInput, Prisma.AssetCatalogUncheckedUpdateWithoutManufacturerMasterInput>;
+};
+export type AssetCatalogUpdateManyWithWhereWithoutManufacturerMasterInput = {
+    where: Prisma.AssetCatalogScalarWhereInput;
+    data: Prisma.XOR<Prisma.AssetCatalogUpdateManyMutationInput, Prisma.AssetCatalogUncheckedUpdateManyWithoutManufacturerMasterInput>;
+};
+export type AssetCatalogCreateWithoutAssetsInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    category: Prisma.AssetCategoryCreateNestedOneWithoutCatalogsInput;
+    manufacturerMaster?: Prisma.ManufacturerCreateNestedOneWithoutCatalogsInput;
+};
+export type AssetCatalogUncheckedCreateWithoutAssetsInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId: string;
+    manufacturerId?: string | null;
+};
+export type AssetCatalogCreateOrConnectWithoutAssetsInput = {
+    where: Prisma.AssetCatalogWhereUniqueInput;
+    create: Prisma.XOR<Prisma.AssetCatalogCreateWithoutAssetsInput, Prisma.AssetCatalogUncheckedCreateWithoutAssetsInput>;
+};
+export type AssetCatalogUpsertWithoutAssetsInput = {
+    update: Prisma.XOR<Prisma.AssetCatalogUpdateWithoutAssetsInput, Prisma.AssetCatalogUncheckedUpdateWithoutAssetsInput>;
+    create: Prisma.XOR<Prisma.AssetCatalogCreateWithoutAssetsInput, Prisma.AssetCatalogUncheckedCreateWithoutAssetsInput>;
+    where?: Prisma.AssetCatalogWhereInput;
+};
+export type AssetCatalogUpdateToOneWithWhereWithoutAssetsInput = {
+    where?: Prisma.AssetCatalogWhereInput;
+    data: Prisma.XOR<Prisma.AssetCatalogUpdateWithoutAssetsInput, Prisma.AssetCatalogUncheckedUpdateWithoutAssetsInput>;
+};
+export type AssetCatalogUpdateWithoutAssetsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    category?: Prisma.AssetCategoryUpdateOneRequiredWithoutCatalogsNestedInput;
+    manufacturerMaster?: Prisma.ManufacturerUpdateOneWithoutCatalogsNestedInput;
+};
+export type AssetCatalogUncheckedUpdateWithoutAssetsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+};
+export type AssetCatalogCreateManyCategoryInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    manufacturerId?: string | null;
+};
+export type AssetCatalogUpdateWithoutCategoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    manufacturerMaster?: Prisma.ManufacturerUpdateOneWithoutCatalogsNestedInput;
+    assets?: Prisma.AssetUpdateManyWithoutCatalogNestedInput;
+};
+export type AssetCatalogUncheckedUpdateWithoutCategoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    manufacturerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    assets?: Prisma.AssetUncheckedUpdateManyWithoutCatalogNestedInput;
+};
+export type AssetCatalogUncheckedUpdateManyWithoutCategoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    manufacturerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+};
+export type AssetCatalogCreateManyManufacturerMasterInput = {
+    id?: string;
+    name: string;
+    manufacturer?: string | null;
+    modelCode?: string | null;
+    class: $Enums.AssetClass;
+    imageUrl?: string | null;
+    specs: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId: string;
+};
+export type AssetCatalogUpdateWithoutManufacturerMasterInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    category?: Prisma.AssetCategoryUpdateOneRequiredWithoutCatalogsNestedInput;
+    assets?: Prisma.AssetUpdateManyWithoutCatalogNestedInput;
+};
+export type AssetCatalogUncheckedUpdateWithoutManufacturerMasterInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
+    assets?: Prisma.AssetUncheckedUpdateManyWithoutCatalogNestedInput;
+};
+export type AssetCatalogUncheckedUpdateManyWithoutManufacturerMasterInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    modelCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    class?: Prisma.EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    specs?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
+};
+/**
+ * Count Type AssetCatalogCountOutputType
+ */
+export type AssetCatalogCountOutputType = {
+    assets: number;
+};
+export type AssetCatalogCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    assets?: boolean | AssetCatalogCountOutputTypeCountAssetsArgs;
+};
+/**
+ * AssetCatalogCountOutputType without action
+ */
+export type AssetCatalogCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalogCountOutputType
+     */
+    select?: Prisma.AssetCatalogCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * AssetCatalogCountOutputType without action
+ */
+export type AssetCatalogCountOutputTypeCountAssetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.AssetWhereInput;
+};
+export type AssetCatalogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    name?: boolean;
+    manufacturer?: boolean;
+    modelCode?: boolean;
+    class?: boolean;
+    imageUrl?: boolean;
+    specs?: boolean;
+    isActive?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    categoryId?: boolean;
+    manufacturerId?: boolean;
+    category?: boolean | Prisma.AssetCategoryDefaultArgs<ExtArgs>;
+    manufacturerMaster?: boolean | Prisma.AssetCatalog$manufacturerMasterArgs<ExtArgs>;
+    assets?: boolean | Prisma.AssetCatalog$assetsArgs<ExtArgs>;
+    _count?: boolean | Prisma.AssetCatalogCountOutputTypeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["assetCatalog"]>;
+export type AssetCatalogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    name?: boolean;
+    manufacturer?: boolean;
+    modelCode?: boolean;
+    class?: boolean;
+    imageUrl?: boolean;
+    specs?: boolean;
+    isActive?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    categoryId?: boolean;
+    manufacturerId?: boolean;
+    category?: boolean | Prisma.AssetCategoryDefaultArgs<ExtArgs>;
+    manufacturerMaster?: boolean | Prisma.AssetCatalog$manufacturerMasterArgs<ExtArgs>;
+}, ExtArgs["result"]["assetCatalog"]>;
+export type AssetCatalogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    name?: boolean;
+    manufacturer?: boolean;
+    modelCode?: boolean;
+    class?: boolean;
+    imageUrl?: boolean;
+    specs?: boolean;
+    isActive?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    categoryId?: boolean;
+    manufacturerId?: boolean;
+    category?: boolean | Prisma.AssetCategoryDefaultArgs<ExtArgs>;
+    manufacturerMaster?: boolean | Prisma.AssetCatalog$manufacturerMasterArgs<ExtArgs>;
+}, ExtArgs["result"]["assetCatalog"]>;
+export type AssetCatalogSelectScalar = {
+    id?: boolean;
+    name?: boolean;
+    manufacturer?: boolean;
+    modelCode?: boolean;
+    class?: boolean;
+    imageUrl?: boolean;
+    specs?: boolean;
+    isActive?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    categoryId?: boolean;
+    manufacturerId?: boolean;
+};
+export type AssetCatalogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "manufacturer" | "modelCode" | "class" | "imageUrl" | "specs" | "isActive" | "createdAt" | "updatedAt" | "categoryId" | "manufacturerId", ExtArgs["result"]["assetCatalog"]>;
+export type AssetCatalogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    category?: boolean | Prisma.AssetCategoryDefaultArgs<ExtArgs>;
+    manufacturerMaster?: boolean | Prisma.AssetCatalog$manufacturerMasterArgs<ExtArgs>;
+    assets?: boolean | Prisma.AssetCatalog$assetsArgs<ExtArgs>;
+    _count?: boolean | Prisma.AssetCatalogCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type AssetCatalogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    category?: boolean | Prisma.AssetCategoryDefaultArgs<ExtArgs>;
+    manufacturerMaster?: boolean | Prisma.AssetCatalog$manufacturerMasterArgs<ExtArgs>;
+};
+export type AssetCatalogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    category?: boolean | Prisma.AssetCategoryDefaultArgs<ExtArgs>;
+    manufacturerMaster?: boolean | Prisma.AssetCatalog$manufacturerMasterArgs<ExtArgs>;
+};
+export type $AssetCatalogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "AssetCatalog";
+    objects: {
+        category: Prisma.$AssetCategoryPayload<ExtArgs>;
+        manufacturerMaster: Prisma.$ManufacturerPayload<ExtArgs> | null;
+        assets: Prisma.$AssetPayload<ExtArgs>[];
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        name: string;
+        manufacturer: string | null;
+        modelCode: string | null;
+        class: $Enums.AssetClass;
+        imageUrl: string | null;
+        specs: runtime.JsonValue;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        categoryId: string;
+        manufacturerId: string | null;
+    }, ExtArgs["result"]["assetCatalog"]>;
+    composites: {};
+};
+export type AssetCatalogGetPayload<S extends boolean | null | undefined | AssetCatalogDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload, S>;
+export type AssetCatalogCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<AssetCatalogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: AssetCatalogCountAggregateInputType | true;
+};
+export interface AssetCatalogDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['AssetCatalog'];
+        meta: {
+            name: 'AssetCatalog';
+        };
+    };
+    /**
+     * Find zero or one AssetCatalog that matches the filter.
+     * @param {AssetCatalogFindUniqueArgs} args - Arguments to find a AssetCatalog
+     * @example
+     * // Get one AssetCatalog
+     * const assetCatalog = await prisma.assetCatalog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AssetCatalogFindUniqueArgs>(args: Prisma.SelectSubset<T, AssetCatalogFindUniqueArgs<ExtArgs>>): Prisma.Prisma__AssetCatalogClient<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one AssetCatalog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AssetCatalogFindUniqueOrThrowArgs} args - Arguments to find a AssetCatalog
+     * @example
+     * // Get one AssetCatalog
+     * const assetCatalog = await prisma.assetCatalog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AssetCatalogFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, AssetCatalogFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__AssetCatalogClient<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first AssetCatalog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssetCatalogFindFirstArgs} args - Arguments to find a AssetCatalog
+     * @example
+     * // Get one AssetCatalog
+     * const assetCatalog = await prisma.assetCatalog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AssetCatalogFindFirstArgs>(args?: Prisma.SelectSubset<T, AssetCatalogFindFirstArgs<ExtArgs>>): Prisma.Prisma__AssetCatalogClient<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first AssetCatalog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssetCatalogFindFirstOrThrowArgs} args - Arguments to find a AssetCatalog
+     * @example
+     * // Get one AssetCatalog
+     * const assetCatalog = await prisma.assetCatalog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AssetCatalogFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, AssetCatalogFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__AssetCatalogClient<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more AssetCatalogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssetCatalogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AssetCatalogs
+     * const assetCatalogs = await prisma.assetCatalog.findMany()
+     *
+     * // Get first 10 AssetCatalogs
+     * const assetCatalogs = await prisma.assetCatalog.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const assetCatalogWithIdOnly = await prisma.assetCatalog.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends AssetCatalogFindManyArgs>(args?: Prisma.SelectSubset<T, AssetCatalogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a AssetCatalog.
+     * @param {AssetCatalogCreateArgs} args - Arguments to create a AssetCatalog.
+     * @example
+     * // Create one AssetCatalog
+     * const AssetCatalog = await prisma.assetCatalog.create({
+     *   data: {
+     *     // ... data to create a AssetCatalog
+     *   }
+     * })
+     *
+     */
+    create<T extends AssetCatalogCreateArgs>(args: Prisma.SelectSubset<T, AssetCatalogCreateArgs<ExtArgs>>): Prisma.Prisma__AssetCatalogClient<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many AssetCatalogs.
+     * @param {AssetCatalogCreateManyArgs} args - Arguments to create many AssetCatalogs.
+     * @example
+     * // Create many AssetCatalogs
+     * const assetCatalog = await prisma.assetCatalog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends AssetCatalogCreateManyArgs>(args?: Prisma.SelectSubset<T, AssetCatalogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many AssetCatalogs and returns the data saved in the database.
+     * @param {AssetCatalogCreateManyAndReturnArgs} args - Arguments to create many AssetCatalogs.
+     * @example
+     * // Create many AssetCatalogs
+     * const assetCatalog = await prisma.assetCatalog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many AssetCatalogs and only return the `id`
+     * const assetCatalogWithIdOnly = await prisma.assetCatalog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends AssetCatalogCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, AssetCatalogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a AssetCatalog.
+     * @param {AssetCatalogDeleteArgs} args - Arguments to delete one AssetCatalog.
+     * @example
+     * // Delete one AssetCatalog
+     * const AssetCatalog = await prisma.assetCatalog.delete({
+     *   where: {
+     *     // ... filter to delete one AssetCatalog
+     *   }
+     * })
+     *
+     */
+    delete<T extends AssetCatalogDeleteArgs>(args: Prisma.SelectSubset<T, AssetCatalogDeleteArgs<ExtArgs>>): Prisma.Prisma__AssetCatalogClient<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one AssetCatalog.
+     * @param {AssetCatalogUpdateArgs} args - Arguments to update one AssetCatalog.
+     * @example
+     * // Update one AssetCatalog
+     * const assetCatalog = await prisma.assetCatalog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends AssetCatalogUpdateArgs>(args: Prisma.SelectSubset<T, AssetCatalogUpdateArgs<ExtArgs>>): Prisma.Prisma__AssetCatalogClient<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more AssetCatalogs.
+     * @param {AssetCatalogDeleteManyArgs} args - Arguments to filter AssetCatalogs to delete.
+     * @example
+     * // Delete a few AssetCatalogs
+     * const { count } = await prisma.assetCatalog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends AssetCatalogDeleteManyArgs>(args?: Prisma.SelectSubset<T, AssetCatalogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more AssetCatalogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssetCatalogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AssetCatalogs
+     * const assetCatalog = await prisma.assetCatalog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends AssetCatalogUpdateManyArgs>(args: Prisma.SelectSubset<T, AssetCatalogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more AssetCatalogs and returns the data updated in the database.
+     * @param {AssetCatalogUpdateManyAndReturnArgs} args - Arguments to update many AssetCatalogs.
+     * @example
+     * // Update many AssetCatalogs
+     * const assetCatalog = await prisma.assetCatalog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more AssetCatalogs and only return the `id`
+     * const assetCatalogWithIdOnly = await prisma.assetCatalog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends AssetCatalogUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, AssetCatalogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one AssetCatalog.
+     * @param {AssetCatalogUpsertArgs} args - Arguments to update or create a AssetCatalog.
+     * @example
+     * // Update or create a AssetCatalog
+     * const assetCatalog = await prisma.assetCatalog.upsert({
+     *   create: {
+     *     // ... data to create a AssetCatalog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AssetCatalog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AssetCatalogUpsertArgs>(args: Prisma.SelectSubset<T, AssetCatalogUpsertArgs<ExtArgs>>): Prisma.Prisma__AssetCatalogClient<runtime.Types.Result.GetResult<Prisma.$AssetCatalogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of AssetCatalogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssetCatalogCountArgs} args - Arguments to filter AssetCatalogs to count.
+     * @example
+     * // Count the number of AssetCatalogs
+     * const count = await prisma.assetCatalog.count({
+     *   where: {
+     *     // ... the filter for the AssetCatalogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AssetCatalogCountArgs>(args?: Prisma.Subset<T, AssetCatalogCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], AssetCatalogCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a AssetCatalog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssetCatalogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AssetCatalogAggregateArgs>(args: Prisma.Subset<T, AssetCatalogAggregateArgs>): Prisma.PrismaPromise<GetAssetCatalogAggregateType<T>>;
+    /**
+     * Group by AssetCatalog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssetCatalogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends AssetCatalogGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: AssetCatalogGroupByArgs['orderBy'];
+    } : {
+        orderBy?: AssetCatalogGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, AssetCatalogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAssetCatalogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the AssetCatalog model
+     */
+    readonly fields: AssetCatalogFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for AssetCatalog.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__AssetCatalogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    category<T extends Prisma.AssetCategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssetCategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__AssetCategoryClient<runtime.Types.Result.GetResult<Prisma.$AssetCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    manufacturerMaster<T extends Prisma.AssetCatalog$manufacturerMasterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssetCatalog$manufacturerMasterArgs<ExtArgs>>): Prisma.Prisma__ManufacturerClient<runtime.Types.Result.GetResult<Prisma.$ManufacturerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    assets<T extends Prisma.AssetCatalog$assetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssetCatalog$assetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the AssetCatalog model
+ */
+export interface AssetCatalogFieldRefs {
+    readonly id: Prisma.FieldRef<"AssetCatalog", 'String'>;
+    readonly name: Prisma.FieldRef<"AssetCatalog", 'String'>;
+    readonly manufacturer: Prisma.FieldRef<"AssetCatalog", 'String'>;
+    readonly modelCode: Prisma.FieldRef<"AssetCatalog", 'String'>;
+    readonly class: Prisma.FieldRef<"AssetCatalog", 'AssetClass'>;
+    readonly imageUrl: Prisma.FieldRef<"AssetCatalog", 'String'>;
+    readonly specs: Prisma.FieldRef<"AssetCatalog", 'Json'>;
+    readonly isActive: Prisma.FieldRef<"AssetCatalog", 'Boolean'>;
+    readonly createdAt: Prisma.FieldRef<"AssetCatalog", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"AssetCatalog", 'DateTime'>;
+    readonly categoryId: Prisma.FieldRef<"AssetCatalog", 'String'>;
+    readonly manufacturerId: Prisma.FieldRef<"AssetCatalog", 'String'>;
+}
+/**
+ * AssetCatalog findUnique
+ */
+export type AssetCatalogFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+    /**
+     * Filter, which AssetCatalog to fetch.
+     */
+    where: Prisma.AssetCatalogWhereUniqueInput;
+};
+/**
+ * AssetCatalog findUniqueOrThrow
+ */
+export type AssetCatalogFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+    /**
+     * Filter, which AssetCatalog to fetch.
+     */
+    where: Prisma.AssetCatalogWhereUniqueInput;
+};
+/**
+ * AssetCatalog findFirst
+ */
+export type AssetCatalogFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+    /**
+     * Filter, which AssetCatalog to fetch.
+     */
+    where?: Prisma.AssetCatalogWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AssetCatalogs to fetch.
+     */
+    orderBy?: Prisma.AssetCatalogOrderByWithRelationInput | Prisma.AssetCatalogOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for AssetCatalogs.
+     */
+    cursor?: Prisma.AssetCatalogWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AssetCatalogs from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AssetCatalogs.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of AssetCatalogs.
+     */
+    distinct?: Prisma.AssetCatalogScalarFieldEnum | Prisma.AssetCatalogScalarFieldEnum[];
+};
+/**
+ * AssetCatalog findFirstOrThrow
+ */
+export type AssetCatalogFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+    /**
+     * Filter, which AssetCatalog to fetch.
+     */
+    where?: Prisma.AssetCatalogWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AssetCatalogs to fetch.
+     */
+    orderBy?: Prisma.AssetCatalogOrderByWithRelationInput | Prisma.AssetCatalogOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for AssetCatalogs.
+     */
+    cursor?: Prisma.AssetCatalogWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AssetCatalogs from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AssetCatalogs.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of AssetCatalogs.
+     */
+    distinct?: Prisma.AssetCatalogScalarFieldEnum | Prisma.AssetCatalogScalarFieldEnum[];
+};
+/**
+ * AssetCatalog findMany
+ */
+export type AssetCatalogFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+    /**
+     * Filter, which AssetCatalogs to fetch.
+     */
+    where?: Prisma.AssetCatalogWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AssetCatalogs to fetch.
+     */
+    orderBy?: Prisma.AssetCatalogOrderByWithRelationInput | Prisma.AssetCatalogOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing AssetCatalogs.
+     */
+    cursor?: Prisma.AssetCatalogWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AssetCatalogs from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AssetCatalogs.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of AssetCatalogs.
+     */
+    distinct?: Prisma.AssetCatalogScalarFieldEnum | Prisma.AssetCatalogScalarFieldEnum[];
+};
+/**
+ * AssetCatalog create
+ */
+export type AssetCatalogCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a AssetCatalog.
+     */
+    data: Prisma.XOR<Prisma.AssetCatalogCreateInput, Prisma.AssetCatalogUncheckedCreateInput>;
+};
+/**
+ * AssetCatalog createMany
+ */
+export type AssetCatalogCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AssetCatalogs.
+     */
+    data: Prisma.AssetCatalogCreateManyInput | Prisma.AssetCatalogCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * AssetCatalog createManyAndReturn
+ */
+export type AssetCatalogCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * The data used to create many AssetCatalogs.
+     */
+    data: Prisma.AssetCatalogCreateManyInput | Prisma.AssetCatalogCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * AssetCatalog update
+ */
+export type AssetCatalogUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a AssetCatalog.
+     */
+    data: Prisma.XOR<Prisma.AssetCatalogUpdateInput, Prisma.AssetCatalogUncheckedUpdateInput>;
+    /**
+     * Choose, which AssetCatalog to update.
+     */
+    where: Prisma.AssetCatalogWhereUniqueInput;
+};
+/**
+ * AssetCatalog updateMany
+ */
+export type AssetCatalogUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AssetCatalogs.
+     */
+    data: Prisma.XOR<Prisma.AssetCatalogUpdateManyMutationInput, Prisma.AssetCatalogUncheckedUpdateManyInput>;
+    /**
+     * Filter which AssetCatalogs to update
+     */
+    where?: Prisma.AssetCatalogWhereInput;
+    /**
+     * Limit how many AssetCatalogs to update.
+     */
+    limit?: number;
+};
+/**
+ * AssetCatalog updateManyAndReturn
+ */
+export type AssetCatalogUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * The data used to update AssetCatalogs.
+     */
+    data: Prisma.XOR<Prisma.AssetCatalogUpdateManyMutationInput, Prisma.AssetCatalogUncheckedUpdateManyInput>;
+    /**
+     * Filter which AssetCatalogs to update
+     */
+    where?: Prisma.AssetCatalogWhereInput;
+    /**
+     * Limit how many AssetCatalogs to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * AssetCatalog upsert
+ */
+export type AssetCatalogUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the AssetCatalog to update in case it exists.
+     */
+    where: Prisma.AssetCatalogWhereUniqueInput;
+    /**
+     * In case the AssetCatalog found by the `where` argument doesn't exist, create a new AssetCatalog with this data.
+     */
+    create: Prisma.XOR<Prisma.AssetCatalogCreateInput, Prisma.AssetCatalogUncheckedCreateInput>;
+    /**
+     * In case the AssetCatalog was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.AssetCatalogUpdateInput, Prisma.AssetCatalogUncheckedUpdateInput>;
+};
+/**
+ * AssetCatalog delete
+ */
+export type AssetCatalogDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+    /**
+     * Filter which AssetCatalog to delete.
+     */
+    where: Prisma.AssetCatalogWhereUniqueInput;
+};
+/**
+ * AssetCatalog deleteMany
+ */
+export type AssetCatalogDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which AssetCatalogs to delete
+     */
+    where?: Prisma.AssetCatalogWhereInput;
+    /**
+     * Limit how many AssetCatalogs to delete.
+     */
+    limit?: number;
+};
+/**
+ * AssetCatalog.manufacturerMaster
+ */
+export type AssetCatalog$manufacturerMasterArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacturer
+     */
+    select?: Prisma.ManufacturerSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Manufacturer
+     */
+    omit?: Prisma.ManufacturerOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ManufacturerInclude<ExtArgs> | null;
+    where?: Prisma.ManufacturerWhereInput;
+};
+/**
+ * AssetCatalog.assets
+ */
+export type AssetCatalog$assetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Asset
+     */
+    select?: Prisma.AssetSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Asset
+     */
+    omit?: Prisma.AssetOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetInclude<ExtArgs> | null;
+    where?: Prisma.AssetWhereInput;
+    orderBy?: Prisma.AssetOrderByWithRelationInput | Prisma.AssetOrderByWithRelationInput[];
+    cursor?: Prisma.AssetWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.AssetScalarFieldEnum | Prisma.AssetScalarFieldEnum[];
+};
+/**
+ * AssetCatalog without action
+ */
+export type AssetCatalogDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssetCatalog
+     */
+    select?: Prisma.AssetCatalogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the AssetCatalog
+     */
+    omit?: Prisma.AssetCatalogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AssetCatalogInclude<ExtArgs> | null;
+};
+//# sourceMappingURL=AssetCatalog.d.ts.map

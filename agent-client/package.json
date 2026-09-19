@@ -1,0 +1,19 @@
+{
+  "name": "asset-erp-agent-client",
+  "version": "1.0.0",
+  "description": "Endpoint agent client for Asset Management ERP (ADR 0011/0012)",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "axios": "^1.18.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

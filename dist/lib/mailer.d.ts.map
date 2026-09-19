@@ -1,0 +1,1 @@
+{"version":3,"file":"mailer.d.ts","sourceRoot":"","sources":["../../src/lib/mailer.ts"],"names":[],"mappings":"AAiCA,MAAM,WAAW,WAAW;IAC1B,EAAE,EAAE,MAAM,CAAA;IACV,OAAO,EAAE,MAAM,CAAA;IACf,IAAI,EAAE,MAAM,CAAA;CACb;AAED,wBAAsB,QAAQ,CAAC,OAAO,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC,CAgBlE"}

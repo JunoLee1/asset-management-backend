@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.analyticsRouter = void 0;
+const express_1 = require("express");
+const analytics_controller_1 = require("./analytics.controller");
+const authenticate_1 = require("../../middlewares/authenticate");
+const router = (0, express_1.Router)();
+exports.analyticsRouter = router;
+router.use(authenticate_1.authenticate);
+router.get('/distribution', analytics_controller_1.analyticsController.getDistribution);
+router.get('/utilization', analytics_controller_1.analyticsController.getUtilization);
+router.get('/utilization-by-department', analytics_controller_1.analyticsController.getUtilizationByDepartment);
+router.get('/value-by-department', analytics_controller_1.analyticsController.getDepartmentValue);
+router.get('/maintenance-cost', analytics_controller_1.analyticsController.getMaintenanceCost);
+router.get('/compliance-expiry', analytics_controller_1.analyticsController.getComplianceExpiry);
+router.get('/export/csv', analytics_controller_1.analyticsController.exportAsCsv);
+router.get('/export/excel', analytics_controller_1.analyticsController.exportAsExcel);
+router.get('/export/pdf', analytics_controller_1.analyticsController.exportAsPdf);
+router.get('/export/hwpx', analytics_controller_1.analyticsController.exportAsHwpx);
+//# sourceMappingURL=analytics.router.js.map

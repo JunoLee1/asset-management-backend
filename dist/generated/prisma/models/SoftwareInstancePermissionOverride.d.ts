@@ -1,0 +1,1430 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums";
+import type * as Prisma from "../internal/prismaNamespace";
+/**
+ * Model SoftwareInstancePermissionOverride
+ *
+ */
+export type SoftwareInstancePermissionOverrideModel = runtime.Types.Result.DefaultSelection<Prisma.$SoftwareInstancePermissionOverridePayload>;
+export type AggregateSoftwareInstancePermissionOverride = {
+    _count: SoftwareInstancePermissionOverrideCountAggregateOutputType | null;
+    _min: SoftwareInstancePermissionOverrideMinAggregateOutputType | null;
+    _max: SoftwareInstancePermissionOverrideMaxAggregateOutputType | null;
+};
+export type SoftwareInstancePermissionOverrideMinAggregateOutputType = {
+    id: string | null;
+    instanceId: string | null;
+    status: $Enums.SoftwarePermissionStatus | null;
+    prevStatus: $Enums.SoftwarePermissionStatus | null;
+    decidedById: string | null;
+    decidedByRole: $Enums.Role | null;
+    decidedAt: Date | null;
+    reason: string | null;
+    updatedAt: Date | null;
+};
+export type SoftwareInstancePermissionOverrideMaxAggregateOutputType = {
+    id: string | null;
+    instanceId: string | null;
+    status: $Enums.SoftwarePermissionStatus | null;
+    prevStatus: $Enums.SoftwarePermissionStatus | null;
+    decidedById: string | null;
+    decidedByRole: $Enums.Role | null;
+    decidedAt: Date | null;
+    reason: string | null;
+    updatedAt: Date | null;
+};
+export type SoftwareInstancePermissionOverrideCountAggregateOutputType = {
+    id: number;
+    instanceId: number;
+    status: number;
+    prevStatus: number;
+    decidedById: number;
+    decidedByRole: number;
+    decidedAt: number;
+    reason: number;
+    updatedAt: number;
+    _all: number;
+};
+export type SoftwareInstancePermissionOverrideMinAggregateInputType = {
+    id?: true;
+    instanceId?: true;
+    status?: true;
+    prevStatus?: true;
+    decidedById?: true;
+    decidedByRole?: true;
+    decidedAt?: true;
+    reason?: true;
+    updatedAt?: true;
+};
+export type SoftwareInstancePermissionOverrideMaxAggregateInputType = {
+    id?: true;
+    instanceId?: true;
+    status?: true;
+    prevStatus?: true;
+    decidedById?: true;
+    decidedByRole?: true;
+    decidedAt?: true;
+    reason?: true;
+    updatedAt?: true;
+};
+export type SoftwareInstancePermissionOverrideCountAggregateInputType = {
+    id?: true;
+    instanceId?: true;
+    status?: true;
+    prevStatus?: true;
+    decidedById?: true;
+    decidedByRole?: true;
+    decidedAt?: true;
+    reason?: true;
+    updatedAt?: true;
+    _all?: true;
+};
+export type SoftwareInstancePermissionOverrideAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which SoftwareInstancePermissionOverride to aggregate.
+     */
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of SoftwareInstancePermissionOverrides to fetch.
+     */
+    orderBy?: Prisma.SoftwareInstancePermissionOverrideOrderByWithRelationInput | Prisma.SoftwareInstancePermissionOverrideOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` SoftwareInstancePermissionOverrides from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` SoftwareInstancePermissionOverrides.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned SoftwareInstancePermissionOverrides
+    **/
+    _count?: true | SoftwareInstancePermissionOverrideCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: SoftwareInstancePermissionOverrideMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: SoftwareInstancePermissionOverrideMaxAggregateInputType;
+};
+export type GetSoftwareInstancePermissionOverrideAggregateType<T extends SoftwareInstancePermissionOverrideAggregateArgs> = {
+    [P in keyof T & keyof AggregateSoftwareInstancePermissionOverride]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateSoftwareInstancePermissionOverride[P]> : Prisma.GetScalarType<T[P], AggregateSoftwareInstancePermissionOverride[P]>;
+};
+export type SoftwareInstancePermissionOverrideGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    orderBy?: Prisma.SoftwareInstancePermissionOverrideOrderByWithAggregationInput | Prisma.SoftwareInstancePermissionOverrideOrderByWithAggregationInput[];
+    by: Prisma.SoftwareInstancePermissionOverrideScalarFieldEnum[] | Prisma.SoftwareInstancePermissionOverrideScalarFieldEnum;
+    having?: Prisma.SoftwareInstancePermissionOverrideScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: SoftwareInstancePermissionOverrideCountAggregateInputType | true;
+    _min?: SoftwareInstancePermissionOverrideMinAggregateInputType;
+    _max?: SoftwareInstancePermissionOverrideMaxAggregateInputType;
+};
+export type SoftwareInstancePermissionOverrideGroupByOutputType = {
+    id: string;
+    instanceId: string;
+    status: $Enums.SoftwarePermissionStatus;
+    prevStatus: $Enums.SoftwarePermissionStatus | null;
+    decidedById: string | null;
+    decidedByRole: $Enums.Role | null;
+    decidedAt: Date | null;
+    reason: string | null;
+    updatedAt: Date;
+    _count: SoftwareInstancePermissionOverrideCountAggregateOutputType | null;
+    _min: SoftwareInstancePermissionOverrideMinAggregateOutputType | null;
+    _max: SoftwareInstancePermissionOverrideMaxAggregateOutputType | null;
+};
+export type GetSoftwareInstancePermissionOverrideGroupByPayload<T extends SoftwareInstancePermissionOverrideGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<SoftwareInstancePermissionOverrideGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof SoftwareInstancePermissionOverrideGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], SoftwareInstancePermissionOverrideGroupByOutputType[P]> : Prisma.GetScalarType<T[P], SoftwareInstancePermissionOverrideGroupByOutputType[P]>;
+}>>;
+export type SoftwareInstancePermissionOverrideWhereInput = {
+    AND?: Prisma.SoftwareInstancePermissionOverrideWhereInput | Prisma.SoftwareInstancePermissionOverrideWhereInput[];
+    OR?: Prisma.SoftwareInstancePermissionOverrideWhereInput[];
+    NOT?: Prisma.SoftwareInstancePermissionOverrideWhereInput | Prisma.SoftwareInstancePermissionOverrideWhereInput[];
+    id?: Prisma.StringFilter<"SoftwareInstancePermissionOverride"> | string;
+    instanceId?: Prisma.StringFilter<"SoftwareInstancePermissionOverride"> | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFilter<"SoftwareInstancePermissionOverride"> | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.EnumSoftwarePermissionStatusNullableFilter<"SoftwareInstancePermissionOverride"> | $Enums.SoftwarePermissionStatus | null;
+    decidedById?: Prisma.StringNullableFilter<"SoftwareInstancePermissionOverride"> | string | null;
+    decidedByRole?: Prisma.EnumRoleNullableFilter<"SoftwareInstancePermissionOverride"> | $Enums.Role | null;
+    decidedAt?: Prisma.DateTimeNullableFilter<"SoftwareInstancePermissionOverride"> | Date | string | null;
+    reason?: Prisma.StringNullableFilter<"SoftwareInstancePermissionOverride"> | string | null;
+    updatedAt?: Prisma.DateTimeFilter<"SoftwareInstancePermissionOverride"> | Date | string;
+    instance?: Prisma.XOR<Prisma.SoftwareInstanceScalarRelationFilter, Prisma.SoftwareInstanceWhereInput>;
+    decidedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
+};
+export type SoftwareInstancePermissionOverrideOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    instanceId?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    prevStatus?: Prisma.SortOrderInput | Prisma.SortOrder;
+    decidedById?: Prisma.SortOrderInput | Prisma.SortOrder;
+    decidedByRole?: Prisma.SortOrderInput | Prisma.SortOrder;
+    decidedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    reason?: Prisma.SortOrderInput | Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    instance?: Prisma.SoftwareInstanceOrderByWithRelationInput;
+    decidedBy?: Prisma.UserOrderByWithRelationInput;
+};
+export type SoftwareInstancePermissionOverrideWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    instanceId?: string;
+    AND?: Prisma.SoftwareInstancePermissionOverrideWhereInput | Prisma.SoftwareInstancePermissionOverrideWhereInput[];
+    OR?: Prisma.SoftwareInstancePermissionOverrideWhereInput[];
+    NOT?: Prisma.SoftwareInstancePermissionOverrideWhereInput | Prisma.SoftwareInstancePermissionOverrideWhereInput[];
+    status?: Prisma.EnumSoftwarePermissionStatusFilter<"SoftwareInstancePermissionOverride"> | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.EnumSoftwarePermissionStatusNullableFilter<"SoftwareInstancePermissionOverride"> | $Enums.SoftwarePermissionStatus | null;
+    decidedById?: Prisma.StringNullableFilter<"SoftwareInstancePermissionOverride"> | string | null;
+    decidedByRole?: Prisma.EnumRoleNullableFilter<"SoftwareInstancePermissionOverride"> | $Enums.Role | null;
+    decidedAt?: Prisma.DateTimeNullableFilter<"SoftwareInstancePermissionOverride"> | Date | string | null;
+    reason?: Prisma.StringNullableFilter<"SoftwareInstancePermissionOverride"> | string | null;
+    updatedAt?: Prisma.DateTimeFilter<"SoftwareInstancePermissionOverride"> | Date | string;
+    instance?: Prisma.XOR<Prisma.SoftwareInstanceScalarRelationFilter, Prisma.SoftwareInstanceWhereInput>;
+    decidedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
+}, "id" | "instanceId">;
+export type SoftwareInstancePermissionOverrideOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    instanceId?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    prevStatus?: Prisma.SortOrderInput | Prisma.SortOrder;
+    decidedById?: Prisma.SortOrderInput | Prisma.SortOrder;
+    decidedByRole?: Prisma.SortOrderInput | Prisma.SortOrder;
+    decidedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    reason?: Prisma.SortOrderInput | Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    _count?: Prisma.SoftwareInstancePermissionOverrideCountOrderByAggregateInput;
+    _max?: Prisma.SoftwareInstancePermissionOverrideMaxOrderByAggregateInput;
+    _min?: Prisma.SoftwareInstancePermissionOverrideMinOrderByAggregateInput;
+};
+export type SoftwareInstancePermissionOverrideScalarWhereWithAggregatesInput = {
+    AND?: Prisma.SoftwareInstancePermissionOverrideScalarWhereWithAggregatesInput | Prisma.SoftwareInstancePermissionOverrideScalarWhereWithAggregatesInput[];
+    OR?: Prisma.SoftwareInstancePermissionOverrideScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.SoftwareInstancePermissionOverrideScalarWhereWithAggregatesInput | Prisma.SoftwareInstancePermissionOverrideScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"SoftwareInstancePermissionOverride"> | string;
+    instanceId?: Prisma.StringWithAggregatesFilter<"SoftwareInstancePermissionOverride"> | string;
+    status?: Prisma.EnumSoftwarePermissionStatusWithAggregatesFilter<"SoftwareInstancePermissionOverride"> | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.EnumSoftwarePermissionStatusNullableWithAggregatesFilter<"SoftwareInstancePermissionOverride"> | $Enums.SoftwarePermissionStatus | null;
+    decidedById?: Prisma.StringNullableWithAggregatesFilter<"SoftwareInstancePermissionOverride"> | string | null;
+    decidedByRole?: Prisma.EnumRoleNullableWithAggregatesFilter<"SoftwareInstancePermissionOverride"> | $Enums.Role | null;
+    decidedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SoftwareInstancePermissionOverride"> | Date | string | null;
+    reason?: Prisma.StringNullableWithAggregatesFilter<"SoftwareInstancePermissionOverride"> | string | null;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SoftwareInstancePermissionOverride"> | Date | string;
+};
+export type SoftwareInstancePermissionOverrideCreateInput = {
+    id?: string;
+    status: $Enums.SoftwarePermissionStatus;
+    prevStatus?: $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: $Enums.Role | null;
+    decidedAt?: Date | string | null;
+    reason?: string | null;
+    updatedAt?: Date | string;
+    instance: Prisma.SoftwareInstanceCreateNestedOneWithoutPermissionOverrideInput;
+    decidedBy?: Prisma.UserCreateNestedOneWithoutDecidedInstanceOverridesInput;
+};
+export type SoftwareInstancePermissionOverrideUncheckedCreateInput = {
+    id?: string;
+    instanceId: string;
+    status: $Enums.SoftwarePermissionStatus;
+    prevStatus?: $Enums.SoftwarePermissionStatus | null;
+    decidedById?: string | null;
+    decidedByRole?: $Enums.Role | null;
+    decidedAt?: Date | string | null;
+    reason?: string | null;
+    updatedAt?: Date | string;
+};
+export type SoftwareInstancePermissionOverrideUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.NullableEnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null;
+    decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    instance?: Prisma.SoftwareInstanceUpdateOneRequiredWithoutPermissionOverrideNestedInput;
+    decidedBy?: Prisma.UserUpdateOneWithoutDecidedInstanceOverridesNestedInput;
+};
+export type SoftwareInstancePermissionOverrideUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    instanceId?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.NullableEnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus | null;
+    decidedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    decidedByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null;
+    decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type SoftwareInstancePermissionOverrideCreateManyInput = {
+    id?: string;
+    instanceId: string;
+    status: $Enums.SoftwarePermissionStatus;
+    prevStatus?: $Enums.SoftwarePermissionStatus | null;
+    decidedById?: string | null;
+    decidedByRole?: $Enums.Role | null;
+    decidedAt?: Date | string | null;
+    reason?: string | null;
+    updatedAt?: Date | string;
+};
+export type SoftwareInstancePermissionOverrideUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.NullableEnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null;
+    decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type SoftwareInstancePermissionOverrideUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    instanceId?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.NullableEnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus | null;
+    decidedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    decidedByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null;
+    decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type SoftwareInstancePermissionOverrideListRelationFilter = {
+    every?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    some?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    none?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+};
+export type SoftwareInstancePermissionOverrideOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type SoftwareInstancePermissionOverrideNullableScalarRelationFilter = {
+    is?: Prisma.SoftwareInstancePermissionOverrideWhereInput | null;
+    isNot?: Prisma.SoftwareInstancePermissionOverrideWhereInput | null;
+};
+export type SoftwareInstancePermissionOverrideCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    instanceId?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    prevStatus?: Prisma.SortOrder;
+    decidedById?: Prisma.SortOrder;
+    decidedByRole?: Prisma.SortOrder;
+    decidedAt?: Prisma.SortOrder;
+    reason?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type SoftwareInstancePermissionOverrideMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    instanceId?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    prevStatus?: Prisma.SortOrder;
+    decidedById?: Prisma.SortOrder;
+    decidedByRole?: Prisma.SortOrder;
+    decidedAt?: Prisma.SortOrder;
+    reason?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type SoftwareInstancePermissionOverrideMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    instanceId?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    prevStatus?: Prisma.SortOrder;
+    decidedById?: Prisma.SortOrder;
+    decidedByRole?: Prisma.SortOrder;
+    decidedAt?: Prisma.SortOrder;
+    reason?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type SoftwareInstancePermissionOverrideCreateNestedManyWithoutDecidedByInput = {
+    create?: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput> | Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput[] | Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput[];
+    connectOrCreate?: Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutDecidedByInput[];
+    createMany?: Prisma.SoftwareInstancePermissionOverrideCreateManyDecidedByInputEnvelope;
+    connect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+};
+export type SoftwareInstancePermissionOverrideUncheckedCreateNestedManyWithoutDecidedByInput = {
+    create?: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput> | Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput[] | Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput[];
+    connectOrCreate?: Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutDecidedByInput[];
+    createMany?: Prisma.SoftwareInstancePermissionOverrideCreateManyDecidedByInputEnvelope;
+    connect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+};
+export type SoftwareInstancePermissionOverrideUpdateManyWithoutDecidedByNestedInput = {
+    create?: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput> | Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput[] | Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput[];
+    connectOrCreate?: Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutDecidedByInput[];
+    upsert?: Prisma.SoftwareInstancePermissionOverrideUpsertWithWhereUniqueWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideUpsertWithWhereUniqueWithoutDecidedByInput[];
+    createMany?: Prisma.SoftwareInstancePermissionOverrideCreateManyDecidedByInputEnvelope;
+    set?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+    disconnect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+    delete?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+    connect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+    update?: Prisma.SoftwareInstancePermissionOverrideUpdateWithWhereUniqueWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideUpdateWithWhereUniqueWithoutDecidedByInput[];
+    updateMany?: Prisma.SoftwareInstancePermissionOverrideUpdateManyWithWhereWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideUpdateManyWithWhereWithoutDecidedByInput[];
+    deleteMany?: Prisma.SoftwareInstancePermissionOverrideScalarWhereInput | Prisma.SoftwareInstancePermissionOverrideScalarWhereInput[];
+};
+export type SoftwareInstancePermissionOverrideUncheckedUpdateManyWithoutDecidedByNestedInput = {
+    create?: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput> | Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput[] | Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput[];
+    connectOrCreate?: Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutDecidedByInput[];
+    upsert?: Prisma.SoftwareInstancePermissionOverrideUpsertWithWhereUniqueWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideUpsertWithWhereUniqueWithoutDecidedByInput[];
+    createMany?: Prisma.SoftwareInstancePermissionOverrideCreateManyDecidedByInputEnvelope;
+    set?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+    disconnect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+    delete?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+    connect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput | Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput[];
+    update?: Prisma.SoftwareInstancePermissionOverrideUpdateWithWhereUniqueWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideUpdateWithWhereUniqueWithoutDecidedByInput[];
+    updateMany?: Prisma.SoftwareInstancePermissionOverrideUpdateManyWithWhereWithoutDecidedByInput | Prisma.SoftwareInstancePermissionOverrideUpdateManyWithWhereWithoutDecidedByInput[];
+    deleteMany?: Prisma.SoftwareInstancePermissionOverrideScalarWhereInput | Prisma.SoftwareInstancePermissionOverrideScalarWhereInput[];
+};
+export type SoftwareInstancePermissionOverrideCreateNestedOneWithoutInstanceInput = {
+    create?: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutInstanceInput>;
+    connectOrCreate?: Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutInstanceInput;
+    connect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+};
+export type SoftwareInstancePermissionOverrideUncheckedCreateNestedOneWithoutInstanceInput = {
+    create?: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutInstanceInput>;
+    connectOrCreate?: Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutInstanceInput;
+    connect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+};
+export type SoftwareInstancePermissionOverrideUpdateOneWithoutInstanceNestedInput = {
+    create?: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutInstanceInput>;
+    connectOrCreate?: Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutInstanceInput;
+    upsert?: Prisma.SoftwareInstancePermissionOverrideUpsertWithoutInstanceInput;
+    disconnect?: Prisma.SoftwareInstancePermissionOverrideWhereInput | boolean;
+    delete?: Prisma.SoftwareInstancePermissionOverrideWhereInput | boolean;
+    connect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateToOneWithWhereWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUpdateWithoutInstanceInput>, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateWithoutInstanceInput>;
+};
+export type SoftwareInstancePermissionOverrideUncheckedUpdateOneWithoutInstanceNestedInput = {
+    create?: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutInstanceInput>;
+    connectOrCreate?: Prisma.SoftwareInstancePermissionOverrideCreateOrConnectWithoutInstanceInput;
+    upsert?: Prisma.SoftwareInstancePermissionOverrideUpsertWithoutInstanceInput;
+    disconnect?: Prisma.SoftwareInstancePermissionOverrideWhereInput | boolean;
+    delete?: Prisma.SoftwareInstancePermissionOverrideWhereInput | boolean;
+    connect?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateToOneWithWhereWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUpdateWithoutInstanceInput>, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateWithoutInstanceInput>;
+};
+export type SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput = {
+    id?: string;
+    status: $Enums.SoftwarePermissionStatus;
+    prevStatus?: $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: $Enums.Role | null;
+    decidedAt?: Date | string | null;
+    reason?: string | null;
+    updatedAt?: Date | string;
+    instance: Prisma.SoftwareInstanceCreateNestedOneWithoutPermissionOverrideInput;
+};
+export type SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput = {
+    id?: string;
+    instanceId: string;
+    status: $Enums.SoftwarePermissionStatus;
+    prevStatus?: $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: $Enums.Role | null;
+    decidedAt?: Date | string | null;
+    reason?: string | null;
+    updatedAt?: Date | string;
+};
+export type SoftwareInstancePermissionOverrideCreateOrConnectWithoutDecidedByInput = {
+    where: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    create: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput>;
+};
+export type SoftwareInstancePermissionOverrideCreateManyDecidedByInputEnvelope = {
+    data: Prisma.SoftwareInstancePermissionOverrideCreateManyDecidedByInput | Prisma.SoftwareInstancePermissionOverrideCreateManyDecidedByInput[];
+    skipDuplicates?: boolean;
+};
+export type SoftwareInstancePermissionOverrideUpsertWithWhereUniqueWithoutDecidedByInput = {
+    where: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    update: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateWithoutDecidedByInput, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateWithoutDecidedByInput>;
+    create: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutDecidedByInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutDecidedByInput>;
+};
+export type SoftwareInstancePermissionOverrideUpdateWithWhereUniqueWithoutDecidedByInput = {
+    where: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    data: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateWithoutDecidedByInput, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateWithoutDecidedByInput>;
+};
+export type SoftwareInstancePermissionOverrideUpdateManyWithWhereWithoutDecidedByInput = {
+    where: Prisma.SoftwareInstancePermissionOverrideScalarWhereInput;
+    data: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateManyMutationInput, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateManyWithoutDecidedByInput>;
+};
+export type SoftwareInstancePermissionOverrideScalarWhereInput = {
+    AND?: Prisma.SoftwareInstancePermissionOverrideScalarWhereInput | Prisma.SoftwareInstancePermissionOverrideScalarWhereInput[];
+    OR?: Prisma.SoftwareInstancePermissionOverrideScalarWhereInput[];
+    NOT?: Prisma.SoftwareInstancePermissionOverrideScalarWhereInput | Prisma.SoftwareInstancePermissionOverrideScalarWhereInput[];
+    id?: Prisma.StringFilter<"SoftwareInstancePermissionOverride"> | string;
+    instanceId?: Prisma.StringFilter<"SoftwareInstancePermissionOverride"> | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFilter<"SoftwareInstancePermissionOverride"> | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.EnumSoftwarePermissionStatusNullableFilter<"SoftwareInstancePermissionOverride"> | $Enums.SoftwarePermissionStatus | null;
+    decidedById?: Prisma.StringNullableFilter<"SoftwareInstancePermissionOverride"> | string | null;
+    decidedByRole?: Prisma.EnumRoleNullableFilter<"SoftwareInstancePermissionOverride"> | $Enums.Role | null;
+    decidedAt?: Prisma.DateTimeNullableFilter<"SoftwareInstancePermissionOverride"> | Date | string | null;
+    reason?: Prisma.StringNullableFilter<"SoftwareInstancePermissionOverride"> | string | null;
+    updatedAt?: Prisma.DateTimeFilter<"SoftwareInstancePermissionOverride"> | Date | string;
+};
+export type SoftwareInstancePermissionOverrideCreateWithoutInstanceInput = {
+    id?: string;
+    status: $Enums.SoftwarePermissionStatus;
+    prevStatus?: $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: $Enums.Role | null;
+    decidedAt?: Date | string | null;
+    reason?: string | null;
+    updatedAt?: Date | string;
+    decidedBy?: Prisma.UserCreateNestedOneWithoutDecidedInstanceOverridesInput;
+};
+export type SoftwareInstancePermissionOverrideUncheckedCreateWithoutInstanceInput = {
+    id?: string;
+    status: $Enums.SoftwarePermissionStatus;
+    prevStatus?: $Enums.SoftwarePermissionStatus | null;
+    decidedById?: string | null;
+    decidedByRole?: $Enums.Role | null;
+    decidedAt?: Date | string | null;
+    reason?: string | null;
+    updatedAt?: Date | string;
+};
+export type SoftwareInstancePermissionOverrideCreateOrConnectWithoutInstanceInput = {
+    where: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    create: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutInstanceInput>;
+};
+export type SoftwareInstancePermissionOverrideUpsertWithoutInstanceInput = {
+    update: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateWithoutInstanceInput>;
+    create: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateWithoutInstanceInput>;
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+};
+export type SoftwareInstancePermissionOverrideUpdateToOneWithWhereWithoutInstanceInput = {
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    data: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateWithoutInstanceInput, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateWithoutInstanceInput>;
+};
+export type SoftwareInstancePermissionOverrideUpdateWithoutInstanceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.NullableEnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null;
+    decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    decidedBy?: Prisma.UserUpdateOneWithoutDecidedInstanceOverridesNestedInput;
+};
+export type SoftwareInstancePermissionOverrideUncheckedUpdateWithoutInstanceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.NullableEnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus | null;
+    decidedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    decidedByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null;
+    decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type SoftwareInstancePermissionOverrideCreateManyDecidedByInput = {
+    id?: string;
+    instanceId: string;
+    status: $Enums.SoftwarePermissionStatus;
+    prevStatus?: $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: $Enums.Role | null;
+    decidedAt?: Date | string | null;
+    reason?: string | null;
+    updatedAt?: Date | string;
+};
+export type SoftwareInstancePermissionOverrideUpdateWithoutDecidedByInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.NullableEnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null;
+    decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    instance?: Prisma.SoftwareInstanceUpdateOneRequiredWithoutPermissionOverrideNestedInput;
+};
+export type SoftwareInstancePermissionOverrideUncheckedUpdateWithoutDecidedByInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    instanceId?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.NullableEnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null;
+    decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type SoftwareInstancePermissionOverrideUncheckedUpdateManyWithoutDecidedByInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    instanceId?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus;
+    prevStatus?: Prisma.NullableEnumSoftwarePermissionStatusFieldUpdateOperationsInput | $Enums.SoftwarePermissionStatus | null;
+    decidedByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null;
+    decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type SoftwareInstancePermissionOverrideSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    instanceId?: boolean;
+    status?: boolean;
+    prevStatus?: boolean;
+    decidedById?: boolean;
+    decidedByRole?: boolean;
+    decidedAt?: boolean;
+    reason?: boolean;
+    updatedAt?: boolean;
+    instance?: boolean | Prisma.SoftwareInstanceDefaultArgs<ExtArgs>;
+    decidedBy?: boolean | Prisma.SoftwareInstancePermissionOverride$decidedByArgs<ExtArgs>;
+}, ExtArgs["result"]["softwareInstancePermissionOverride"]>;
+export type SoftwareInstancePermissionOverrideSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    instanceId?: boolean;
+    status?: boolean;
+    prevStatus?: boolean;
+    decidedById?: boolean;
+    decidedByRole?: boolean;
+    decidedAt?: boolean;
+    reason?: boolean;
+    updatedAt?: boolean;
+    instance?: boolean | Prisma.SoftwareInstanceDefaultArgs<ExtArgs>;
+    decidedBy?: boolean | Prisma.SoftwareInstancePermissionOverride$decidedByArgs<ExtArgs>;
+}, ExtArgs["result"]["softwareInstancePermissionOverride"]>;
+export type SoftwareInstancePermissionOverrideSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    instanceId?: boolean;
+    status?: boolean;
+    prevStatus?: boolean;
+    decidedById?: boolean;
+    decidedByRole?: boolean;
+    decidedAt?: boolean;
+    reason?: boolean;
+    updatedAt?: boolean;
+    instance?: boolean | Prisma.SoftwareInstanceDefaultArgs<ExtArgs>;
+    decidedBy?: boolean | Prisma.SoftwareInstancePermissionOverride$decidedByArgs<ExtArgs>;
+}, ExtArgs["result"]["softwareInstancePermissionOverride"]>;
+export type SoftwareInstancePermissionOverrideSelectScalar = {
+    id?: boolean;
+    instanceId?: boolean;
+    status?: boolean;
+    prevStatus?: boolean;
+    decidedById?: boolean;
+    decidedByRole?: boolean;
+    decidedAt?: boolean;
+    reason?: boolean;
+    updatedAt?: boolean;
+};
+export type SoftwareInstancePermissionOverrideOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "instanceId" | "status" | "prevStatus" | "decidedById" | "decidedByRole" | "decidedAt" | "reason" | "updatedAt", ExtArgs["result"]["softwareInstancePermissionOverride"]>;
+export type SoftwareInstancePermissionOverrideInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    instance?: boolean | Prisma.SoftwareInstanceDefaultArgs<ExtArgs>;
+    decidedBy?: boolean | Prisma.SoftwareInstancePermissionOverride$decidedByArgs<ExtArgs>;
+};
+export type SoftwareInstancePermissionOverrideIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    instance?: boolean | Prisma.SoftwareInstanceDefaultArgs<ExtArgs>;
+    decidedBy?: boolean | Prisma.SoftwareInstancePermissionOverride$decidedByArgs<ExtArgs>;
+};
+export type SoftwareInstancePermissionOverrideIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    instance?: boolean | Prisma.SoftwareInstanceDefaultArgs<ExtArgs>;
+    decidedBy?: boolean | Prisma.SoftwareInstancePermissionOverride$decidedByArgs<ExtArgs>;
+};
+export type $SoftwareInstancePermissionOverridePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "SoftwareInstancePermissionOverride";
+    objects: {
+        instance: Prisma.$SoftwareInstancePayload<ExtArgs>;
+        decidedBy: Prisma.$UserPayload<ExtArgs> | null;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        instanceId: string;
+        status: $Enums.SoftwarePermissionStatus;
+        prevStatus: $Enums.SoftwarePermissionStatus | null;
+        decidedById: string | null;
+        decidedByRole: $Enums.Role | null;
+        decidedAt: Date | null;
+        reason: string | null;
+        updatedAt: Date;
+    }, ExtArgs["result"]["softwareInstancePermissionOverride"]>;
+    composites: {};
+};
+export type SoftwareInstancePermissionOverrideGetPayload<S extends boolean | null | undefined | SoftwareInstancePermissionOverrideDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload, S>;
+export type SoftwareInstancePermissionOverrideCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<SoftwareInstancePermissionOverrideFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: SoftwareInstancePermissionOverrideCountAggregateInputType | true;
+};
+export interface SoftwareInstancePermissionOverrideDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['SoftwareInstancePermissionOverride'];
+        meta: {
+            name: 'SoftwareInstancePermissionOverride';
+        };
+    };
+    /**
+     * Find zero or one SoftwareInstancePermissionOverride that matches the filter.
+     * @param {SoftwareInstancePermissionOverrideFindUniqueArgs} args - Arguments to find a SoftwareInstancePermissionOverride
+     * @example
+     * // Get one SoftwareInstancePermissionOverride
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SoftwareInstancePermissionOverrideFindUniqueArgs>(args: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideFindUniqueArgs<ExtArgs>>): Prisma.Prisma__SoftwareInstancePermissionOverrideClient<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one SoftwareInstancePermissionOverride that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SoftwareInstancePermissionOverrideFindUniqueOrThrowArgs} args - Arguments to find a SoftwareInstancePermissionOverride
+     * @example
+     * // Get one SoftwareInstancePermissionOverride
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SoftwareInstancePermissionOverrideFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__SoftwareInstancePermissionOverrideClient<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first SoftwareInstancePermissionOverride that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SoftwareInstancePermissionOverrideFindFirstArgs} args - Arguments to find a SoftwareInstancePermissionOverride
+     * @example
+     * // Get one SoftwareInstancePermissionOverride
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SoftwareInstancePermissionOverrideFindFirstArgs>(args?: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideFindFirstArgs<ExtArgs>>): Prisma.Prisma__SoftwareInstancePermissionOverrideClient<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first SoftwareInstancePermissionOverride that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SoftwareInstancePermissionOverrideFindFirstOrThrowArgs} args - Arguments to find a SoftwareInstancePermissionOverride
+     * @example
+     * // Get one SoftwareInstancePermissionOverride
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SoftwareInstancePermissionOverrideFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__SoftwareInstancePermissionOverrideClient<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more SoftwareInstancePermissionOverrides that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SoftwareInstancePermissionOverrideFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SoftwareInstancePermissionOverrides
+     * const softwareInstancePermissionOverrides = await prisma.softwareInstancePermissionOverride.findMany()
+     *
+     * // Get first 10 SoftwareInstancePermissionOverrides
+     * const softwareInstancePermissionOverrides = await prisma.softwareInstancePermissionOverride.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const softwareInstancePermissionOverrideWithIdOnly = await prisma.softwareInstancePermissionOverride.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends SoftwareInstancePermissionOverrideFindManyArgs>(args?: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a SoftwareInstancePermissionOverride.
+     * @param {SoftwareInstancePermissionOverrideCreateArgs} args - Arguments to create a SoftwareInstancePermissionOverride.
+     * @example
+     * // Create one SoftwareInstancePermissionOverride
+     * const SoftwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.create({
+     *   data: {
+     *     // ... data to create a SoftwareInstancePermissionOverride
+     *   }
+     * })
+     *
+     */
+    create<T extends SoftwareInstancePermissionOverrideCreateArgs>(args: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideCreateArgs<ExtArgs>>): Prisma.Prisma__SoftwareInstancePermissionOverrideClient<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many SoftwareInstancePermissionOverrides.
+     * @param {SoftwareInstancePermissionOverrideCreateManyArgs} args - Arguments to create many SoftwareInstancePermissionOverrides.
+     * @example
+     * // Create many SoftwareInstancePermissionOverrides
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends SoftwareInstancePermissionOverrideCreateManyArgs>(args?: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many SoftwareInstancePermissionOverrides and returns the data saved in the database.
+     * @param {SoftwareInstancePermissionOverrideCreateManyAndReturnArgs} args - Arguments to create many SoftwareInstancePermissionOverrides.
+     * @example
+     * // Create many SoftwareInstancePermissionOverrides
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many SoftwareInstancePermissionOverrides and only return the `id`
+     * const softwareInstancePermissionOverrideWithIdOnly = await prisma.softwareInstancePermissionOverride.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends SoftwareInstancePermissionOverrideCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a SoftwareInstancePermissionOverride.
+     * @param {SoftwareInstancePermissionOverrideDeleteArgs} args - Arguments to delete one SoftwareInstancePermissionOverride.
+     * @example
+     * // Delete one SoftwareInstancePermissionOverride
+     * const SoftwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.delete({
+     *   where: {
+     *     // ... filter to delete one SoftwareInstancePermissionOverride
+     *   }
+     * })
+     *
+     */
+    delete<T extends SoftwareInstancePermissionOverrideDeleteArgs>(args: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideDeleteArgs<ExtArgs>>): Prisma.Prisma__SoftwareInstancePermissionOverrideClient<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one SoftwareInstancePermissionOverride.
+     * @param {SoftwareInstancePermissionOverrideUpdateArgs} args - Arguments to update one SoftwareInstancePermissionOverride.
+     * @example
+     * // Update one SoftwareInstancePermissionOverride
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends SoftwareInstancePermissionOverrideUpdateArgs>(args: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideUpdateArgs<ExtArgs>>): Prisma.Prisma__SoftwareInstancePermissionOverrideClient<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more SoftwareInstancePermissionOverrides.
+     * @param {SoftwareInstancePermissionOverrideDeleteManyArgs} args - Arguments to filter SoftwareInstancePermissionOverrides to delete.
+     * @example
+     * // Delete a few SoftwareInstancePermissionOverrides
+     * const { count } = await prisma.softwareInstancePermissionOverride.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends SoftwareInstancePermissionOverrideDeleteManyArgs>(args?: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more SoftwareInstancePermissionOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SoftwareInstancePermissionOverrideUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SoftwareInstancePermissionOverrides
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends SoftwareInstancePermissionOverrideUpdateManyArgs>(args: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more SoftwareInstancePermissionOverrides and returns the data updated in the database.
+     * @param {SoftwareInstancePermissionOverrideUpdateManyAndReturnArgs} args - Arguments to update many SoftwareInstancePermissionOverrides.
+     * @example
+     * // Update many SoftwareInstancePermissionOverrides
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more SoftwareInstancePermissionOverrides and only return the `id`
+     * const softwareInstancePermissionOverrideWithIdOnly = await prisma.softwareInstancePermissionOverride.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends SoftwareInstancePermissionOverrideUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one SoftwareInstancePermissionOverride.
+     * @param {SoftwareInstancePermissionOverrideUpsertArgs} args - Arguments to update or create a SoftwareInstancePermissionOverride.
+     * @example
+     * // Update or create a SoftwareInstancePermissionOverride
+     * const softwareInstancePermissionOverride = await prisma.softwareInstancePermissionOverride.upsert({
+     *   create: {
+     *     // ... data to create a SoftwareInstancePermissionOverride
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SoftwareInstancePermissionOverride we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SoftwareInstancePermissionOverrideUpsertArgs>(args: Prisma.SelectSubset<T, SoftwareInstancePermissionOverrideUpsertArgs<ExtArgs>>): Prisma.Prisma__SoftwareInstancePermissionOverrideClient<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePermissionOverridePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of SoftwareInstancePermissionOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SoftwareInstancePermissionOverrideCountArgs} args - Arguments to filter SoftwareInstancePermissionOverrides to count.
+     * @example
+     * // Count the number of SoftwareInstancePermissionOverrides
+     * const count = await prisma.softwareInstancePermissionOverride.count({
+     *   where: {
+     *     // ... the filter for the SoftwareInstancePermissionOverrides we want to count
+     *   }
+     * })
+    **/
+    count<T extends SoftwareInstancePermissionOverrideCountArgs>(args?: Prisma.Subset<T, SoftwareInstancePermissionOverrideCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], SoftwareInstancePermissionOverrideCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a SoftwareInstancePermissionOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SoftwareInstancePermissionOverrideAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SoftwareInstancePermissionOverrideAggregateArgs>(args: Prisma.Subset<T, SoftwareInstancePermissionOverrideAggregateArgs>): Prisma.PrismaPromise<GetSoftwareInstancePermissionOverrideAggregateType<T>>;
+    /**
+     * Group by SoftwareInstancePermissionOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SoftwareInstancePermissionOverrideGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends SoftwareInstancePermissionOverrideGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: SoftwareInstancePermissionOverrideGroupByArgs['orderBy'];
+    } : {
+        orderBy?: SoftwareInstancePermissionOverrideGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, SoftwareInstancePermissionOverrideGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSoftwareInstancePermissionOverrideGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the SoftwareInstancePermissionOverride model
+     */
+    readonly fields: SoftwareInstancePermissionOverrideFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for SoftwareInstancePermissionOverride.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__SoftwareInstancePermissionOverrideClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    instance<T extends Prisma.SoftwareInstanceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SoftwareInstanceDefaultArgs<ExtArgs>>): Prisma.Prisma__SoftwareInstanceClient<runtime.Types.Result.GetResult<Prisma.$SoftwareInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    decidedBy<T extends Prisma.SoftwareInstancePermissionOverride$decidedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SoftwareInstancePermissionOverride$decidedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the SoftwareInstancePermissionOverride model
+ */
+export interface SoftwareInstancePermissionOverrideFieldRefs {
+    readonly id: Prisma.FieldRef<"SoftwareInstancePermissionOverride", 'String'>;
+    readonly instanceId: Prisma.FieldRef<"SoftwareInstancePermissionOverride", 'String'>;
+    readonly status: Prisma.FieldRef<"SoftwareInstancePermissionOverride", 'SoftwarePermissionStatus'>;
+    readonly prevStatus: Prisma.FieldRef<"SoftwareInstancePermissionOverride", 'SoftwarePermissionStatus'>;
+    readonly decidedById: Prisma.FieldRef<"SoftwareInstancePermissionOverride", 'String'>;
+    readonly decidedByRole: Prisma.FieldRef<"SoftwareInstancePermissionOverride", 'Role'>;
+    readonly decidedAt: Prisma.FieldRef<"SoftwareInstancePermissionOverride", 'DateTime'>;
+    readonly reason: Prisma.FieldRef<"SoftwareInstancePermissionOverride", 'String'>;
+    readonly updatedAt: Prisma.FieldRef<"SoftwareInstancePermissionOverride", 'DateTime'>;
+}
+/**
+ * SoftwareInstancePermissionOverride findUnique
+ */
+export type SoftwareInstancePermissionOverrideFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+    /**
+     * Filter, which SoftwareInstancePermissionOverride to fetch.
+     */
+    where: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+};
+/**
+ * SoftwareInstancePermissionOverride findUniqueOrThrow
+ */
+export type SoftwareInstancePermissionOverrideFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+    /**
+     * Filter, which SoftwareInstancePermissionOverride to fetch.
+     */
+    where: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+};
+/**
+ * SoftwareInstancePermissionOverride findFirst
+ */
+export type SoftwareInstancePermissionOverrideFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+    /**
+     * Filter, which SoftwareInstancePermissionOverride to fetch.
+     */
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of SoftwareInstancePermissionOverrides to fetch.
+     */
+    orderBy?: Prisma.SoftwareInstancePermissionOverrideOrderByWithRelationInput | Prisma.SoftwareInstancePermissionOverrideOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for SoftwareInstancePermissionOverrides.
+     */
+    cursor?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` SoftwareInstancePermissionOverrides from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` SoftwareInstancePermissionOverrides.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of SoftwareInstancePermissionOverrides.
+     */
+    distinct?: Prisma.SoftwareInstancePermissionOverrideScalarFieldEnum | Prisma.SoftwareInstancePermissionOverrideScalarFieldEnum[];
+};
+/**
+ * SoftwareInstancePermissionOverride findFirstOrThrow
+ */
+export type SoftwareInstancePermissionOverrideFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+    /**
+     * Filter, which SoftwareInstancePermissionOverride to fetch.
+     */
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of SoftwareInstancePermissionOverrides to fetch.
+     */
+    orderBy?: Prisma.SoftwareInstancePermissionOverrideOrderByWithRelationInput | Prisma.SoftwareInstancePermissionOverrideOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for SoftwareInstancePermissionOverrides.
+     */
+    cursor?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` SoftwareInstancePermissionOverrides from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` SoftwareInstancePermissionOverrides.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of SoftwareInstancePermissionOverrides.
+     */
+    distinct?: Prisma.SoftwareInstancePermissionOverrideScalarFieldEnum | Prisma.SoftwareInstancePermissionOverrideScalarFieldEnum[];
+};
+/**
+ * SoftwareInstancePermissionOverride findMany
+ */
+export type SoftwareInstancePermissionOverrideFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+    /**
+     * Filter, which SoftwareInstancePermissionOverrides to fetch.
+     */
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of SoftwareInstancePermissionOverrides to fetch.
+     */
+    orderBy?: Prisma.SoftwareInstancePermissionOverrideOrderByWithRelationInput | Prisma.SoftwareInstancePermissionOverrideOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing SoftwareInstancePermissionOverrides.
+     */
+    cursor?: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` SoftwareInstancePermissionOverrides from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` SoftwareInstancePermissionOverrides.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of SoftwareInstancePermissionOverrides.
+     */
+    distinct?: Prisma.SoftwareInstancePermissionOverrideScalarFieldEnum | Prisma.SoftwareInstancePermissionOverrideScalarFieldEnum[];
+};
+/**
+ * SoftwareInstancePermissionOverride create
+ */
+export type SoftwareInstancePermissionOverrideCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a SoftwareInstancePermissionOverride.
+     */
+    data: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateInput>;
+};
+/**
+ * SoftwareInstancePermissionOverride createMany
+ */
+export type SoftwareInstancePermissionOverrideCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SoftwareInstancePermissionOverrides.
+     */
+    data: Prisma.SoftwareInstancePermissionOverrideCreateManyInput | Prisma.SoftwareInstancePermissionOverrideCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * SoftwareInstancePermissionOverride createManyAndReturn
+ */
+export type SoftwareInstancePermissionOverrideCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * The data used to create many SoftwareInstancePermissionOverrides.
+     */
+    data: Prisma.SoftwareInstancePermissionOverrideCreateManyInput | Prisma.SoftwareInstancePermissionOverrideCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * SoftwareInstancePermissionOverride update
+ */
+export type SoftwareInstancePermissionOverrideUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a SoftwareInstancePermissionOverride.
+     */
+    data: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateInput, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateInput>;
+    /**
+     * Choose, which SoftwareInstancePermissionOverride to update.
+     */
+    where: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+};
+/**
+ * SoftwareInstancePermissionOverride updateMany
+ */
+export type SoftwareInstancePermissionOverrideUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SoftwareInstancePermissionOverrides.
+     */
+    data: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateManyMutationInput, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateManyInput>;
+    /**
+     * Filter which SoftwareInstancePermissionOverrides to update
+     */
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    /**
+     * Limit how many SoftwareInstancePermissionOverrides to update.
+     */
+    limit?: number;
+};
+/**
+ * SoftwareInstancePermissionOverride updateManyAndReturn
+ */
+export type SoftwareInstancePermissionOverrideUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * The data used to update SoftwareInstancePermissionOverrides.
+     */
+    data: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateManyMutationInput, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateManyInput>;
+    /**
+     * Filter which SoftwareInstancePermissionOverrides to update
+     */
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    /**
+     * Limit how many SoftwareInstancePermissionOverrides to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * SoftwareInstancePermissionOverride upsert
+ */
+export type SoftwareInstancePermissionOverrideUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the SoftwareInstancePermissionOverride to update in case it exists.
+     */
+    where: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+    /**
+     * In case the SoftwareInstancePermissionOverride found by the `where` argument doesn't exist, create a new SoftwareInstancePermissionOverride with this data.
+     */
+    create: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideCreateInput, Prisma.SoftwareInstancePermissionOverrideUncheckedCreateInput>;
+    /**
+     * In case the SoftwareInstancePermissionOverride was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.SoftwareInstancePermissionOverrideUpdateInput, Prisma.SoftwareInstancePermissionOverrideUncheckedUpdateInput>;
+};
+/**
+ * SoftwareInstancePermissionOverride delete
+ */
+export type SoftwareInstancePermissionOverrideDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+    /**
+     * Filter which SoftwareInstancePermissionOverride to delete.
+     */
+    where: Prisma.SoftwareInstancePermissionOverrideWhereUniqueInput;
+};
+/**
+ * SoftwareInstancePermissionOverride deleteMany
+ */
+export type SoftwareInstancePermissionOverrideDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which SoftwareInstancePermissionOverrides to delete
+     */
+    where?: Prisma.SoftwareInstancePermissionOverrideWhereInput;
+    /**
+     * Limit how many SoftwareInstancePermissionOverrides to delete.
+     */
+    limit?: number;
+};
+/**
+ * SoftwareInstancePermissionOverride.decidedBy
+ */
+export type SoftwareInstancePermissionOverride$decidedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: Prisma.UserSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: Prisma.UserOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.UserInclude<ExtArgs> | null;
+    where?: Prisma.UserWhereInput;
+};
+/**
+ * SoftwareInstancePermissionOverride without action
+ */
+export type SoftwareInstancePermissionOverrideDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SoftwareInstancePermissionOverride
+     */
+    select?: Prisma.SoftwareInstancePermissionOverrideSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SoftwareInstancePermissionOverride
+     */
+    omit?: Prisma.SoftwareInstancePermissionOverrideOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SoftwareInstancePermissionOverrideInclude<ExtArgs> | null;
+};
+//# sourceMappingURL=SoftwareInstancePermissionOverride.d.ts.map

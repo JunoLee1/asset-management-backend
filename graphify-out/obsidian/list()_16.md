@@ -1,0 +1,18 @@
+---
+source_file: "src/modules/master/location.service.ts"
+type: "code"
+community: "대시보드"
+location: "L6"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/
+---
+
+# list()
+
+## Connections
+- [[buildSoftDeleteWhere()]] - `calls` [EXTRACTED]
+- [[location.service.ts]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/
