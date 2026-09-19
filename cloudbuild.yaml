@@ -1,0 +1,32 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Build
+    args:
+      - build
+      - -t
+      - asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:$COMMIT_SHA
+      - .
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Push
+    args:
+      - push
+      - asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:$COMMIT_SHA
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: Deploy
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - asset-erp-backend
+      - --image=asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:$COMMIT_SHA
+      - --region=asia-northeast3
+      - --platform=managed
+      - --quiet
+
+images:
+  - asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:$COMMIT_SHA
+
+options:
+  logging: CLOUD_LOGGING_ONLY
