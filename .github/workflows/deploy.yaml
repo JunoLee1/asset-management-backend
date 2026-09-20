@@ -23,6 +23,8 @@ jobs:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
 
+      - name: Check Authenticated Account
+        run: gcloud auth list
       # 2. Docker 공식 로그인 액션을 통해 Artifact Registry에 직접 로그인
       - name: Login to Artifact Registry
         uses: docker/login-action@v3
