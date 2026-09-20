@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: read
+  id-token: write  # WIF 인증을 위해 반드시 필요한 권한입니다!
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -11,19 +15,24 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      # 1. Google Cloud 인증 (Secret에 저장된 서비스 계정 키 사용)
-      - name: Authenticate to Google Cloud
+      # 1. WIF(Workload Identity Federation)를 통한 키리스 GCP 인증
+      - name: Authenticate to Google Cloud using WIF
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
 
-      # 2. Google Artifact Registry 인증 설정 (도커 푸시용)
+      # 2. Google Artifact Registry 인증 설정 (도커 푸시용 - WIF 토큰 자동 연동)
       - name: Login to Artifact Registry
         uses: docker/login-action@v3
         with:
           registry: asia-northeast3-docker.pkg.dev
-          username: _json_key
-          password: ${{ secrets.GCP_SA_KEY }}
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.auth_token }} # (또는 gcloud 기반 인증 사용 가능)
+
+      # 또는 gcloud 명령어를 이용해 아티팩트 레지스트리 인증을 간편하게 처리할 수도 있습니다:
+      - name: Set up Cloud SDK & Docker Auth
+        run: gcloud auth configure-docker asia-northeast3-docker.pkg.dev --quiet
 
       # 3. Docker 이미지 빌드 및 Artifact Registry로 푸시
       - name: Build and Push Docker Image
@@ -31,9 +40,9 @@ jobs:
           docker build -t asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:latest .
           docker push asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:latest
 
-      # 4. Cloud Run에 서비스 배포 (작성해주신 yaml 파일 활용)
+      # 4. Cloud Run에 서비스 배포 (service.yaml 활용)
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          yaml_file: service.yaml  # 프로젝트 루트에 저장한 Knative yaml 파일명
+          yaml_file: service.yaml
           region: asia-northeast3
