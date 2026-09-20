@@ -4,14 +4,14 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # builder 스테이지에서도 .npmrc 복사
-COPY package.json pnpm-lock.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY prisma ./prisma/
 
 RUN pnpm install --frozen-lockfile --unsafe-perm=true
 
 COPY . .
 
-RUN pnpm approve-builds
+RUN pnpm run build
 
 FROM node:22-alpine AS runner
 WORKDIR /app
@@ -21,7 +21,7 @@ ENV NODE_ENV=production
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # runner 스테이지에서도 .npmrc 복사
-COPY package.json pnpm-lock.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 RUN pnpm install --frozen-lockfile --unsafe-perm=true
 
 COPY --from=builder /app/dist ./dist
