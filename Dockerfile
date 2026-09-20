@@ -11,7 +11,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm run build
+RUN pnpm approve-builds
 
 FROM node:22-alpine AS runner
 WORKDIR /app
