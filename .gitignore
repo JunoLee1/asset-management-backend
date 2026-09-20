@@ -7,4 +7,3 @@ graphify-out/
 .claude/
 agent-client/
 prisma/seed.ts
-cloudrun.yaml
