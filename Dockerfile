@@ -7,7 +7,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY package.json pnpm-lock.yaml .npmrc ./
 COPY prisma ./prisma/
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --unsafe-perm=true
 
 COPY . .
 
@@ -22,7 +22,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # runner 스테이지에서도 .npmrc 복사
 COPY package.json pnpm-lock.yaml .npmrc ./
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile --unsafe-perm=true
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/src/generated ./src/generated
