@@ -39,7 +39,7 @@ spec:
               value: '자산관리 ERP <noreply@company.com>'
             # TODO: Cloud Run 배포 후 실제 서비스 URL로 교체
             - name: FRONTEND_URL
-              value: 'https://YOUR_FRONTEND_URL'
+              value: 'http://10.178.0.3'
             - name: GOOGLE_CALLBACK_URL
               value: 'https://YOUR_CLOUD_RUN_URL/auth/google/callback'
             - name: KAKAO_CALLBACK_URL

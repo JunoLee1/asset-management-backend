@@ -1,0 +1,39 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # 1. Google Cloud 인증 (Secret에 저장된 서비스 계정 키 사용)
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # 2. Google Artifact Registry 인증 설정 (도커 푸시용)
+      - name: Login to Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: asia-northeast3-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.GCP_SA_KEY }}
+
+      # 3. Docker 이미지 빌드 및 Artifact Registry로 푸시
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:latest .
+          docker push asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:latest
+
+      # 4. Cloud Run에 서비스 배포 (작성해주신 yaml 파일 활용)
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          yaml_file: service.yaml  # 프로젝트 루트에 저장한 Knative yaml 파일명
+          region: asia-northeast3
