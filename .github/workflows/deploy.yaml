@@ -1,47 +1,46 @@
-name: Build and Deploy to Cloud Run
+name: Build and Push to Artifact Registry
 
 on:
   push:
     branches: [ main ]
 
-permissions:
-  contents: read
-  id-token: write  # WIF 인증을 위해 반드시 필요한 권한입니다!
-
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
+
+    # Workload Identity Federation을 사용하기 위한 권한 설정
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
-      - name: Checkout source code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 1. WIF(Workload Identity Federation)를 통한 키리스 GCP 인증
-      - id: auth
-        name: Authenticate to Google Cloud using WIF
+      # 1. Google Cloud 인증 (Workload Identity Federation)
+      - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
 
-      - name: Check Authenticated Account
-        run: gcloud auth list
-      # 2. Docker 공식 로그인 액션을 통해 Artifact Registry에 직접 로그인
-      - name: Login to Artifact Registry
-        uses: docker/login-action@v3
-        with:
-          registry: asia-northeast3-docker.pkg.dev
-          username: oauth2accesstoken
-          password: ${{ steps.auth.outputs.auth_token }}
-          
-      # 3. Docker 이미지 빌드 및 Artifact Registry로 푸시
-      - name: Build and Push Docker Image
-        run: |
-          docker build -t asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:latest .
-          docker push asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:latest
+      # 2. Docker가 asia-northeast3-docker.pkg.dev 레지스트리에 접근할 수 있도록 인증 설정
+      - name: Configure Docker to use Google Cloud Artifact Registry
+        run: gcloud auth configure-docker asia-northeast3-docker.pkg.dev --quiet
 
-      # 4. Cloud Run에 서비스 배포 (service.yaml 활용)
-      - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v2
-        with:
-          yaml_file: service.yaml
-          region: asia-northeast3
+      # 3. Docker 이미지 빌드 및 푸시
+      - name: Build and Push Docker Image
+        env:
+          PROJECT_ID: assemanagement
+          REGION: asia-northeast3
+          REPOSITORY: asset-erp-backend
+          IMAGE_NAME: asset-erp-backend
+        run: |
+          # 이미지 태그 생성 (Commit SHA 활용 등)
+          IMAGE_TAG="${{ region }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          
+          # Docker 빌드
+          docker build -t $IMAGE_TAG .
+          
+          # Artifact Registry로 푸시
+          docker push $IMAGE_TAG
