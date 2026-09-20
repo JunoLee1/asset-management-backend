@@ -23,10 +23,14 @@ jobs:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
 
-      # 2. Docker가 Artifact Registry에 로그인할 수 있도록 인증 설정
-      - name: Set up Cloud SDK & Docker Auth
-        run: gcloud auth configure-docker asia-northeast3-docker.pkg.dev --quiet
-
+      # 2. Docker 공식 로그인 액션을 통해 Artifact Registry에 직접 로그인
+      - name: Login to Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: asia-northeast3-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.auth_token }}
+          
       # 3. Docker 이미지 빌드 및 Artifact Registry로 푸시
       - name: Build and Push Docker Image
         run: |
