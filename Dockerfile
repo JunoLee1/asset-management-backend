@@ -3,10 +3,11 @@ WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-COPY package.json pnpm-lock.yaml ./
+# .npmrc 파일이 루트에 있다면 같이 복사해 줍니다
+COPY package.json pnpm-lock.yaml .npmrc ./
 COPY prisma ./prisma/
 
-RUN pnpm install --frozen-lockfile--unsafe-perm=true
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
@@ -19,8 +20,9 @@ ENV NODE_ENV=production
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --prod--unsafe-perm=true
+# 여기도 .npmrc 포함해서 복사
+COPY package.json pnpm-lock.yaml .npmrc ./
+RUN pnpm install --frozen-lockfile --prod
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/src/generated ./src/generated
