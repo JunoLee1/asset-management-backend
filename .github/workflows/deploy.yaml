@@ -36,7 +36,7 @@ jobs:
           IMAGE_NAME: asset-erp-backend
         run: |
           # 이미지 태그 생성 (Commit SHA 활용 등)
-          IMAGE_TAG="${{ region }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          IMAGE_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
           
           # Docker 빌드
           docker build -t $IMAGE_TAG .
