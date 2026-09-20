@@ -21,9 +21,8 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
-          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
-
+          workload_identity_provider: 'projects/480495809237/locations/global/workloadIdentityPools/junoh-github-pool/providers/github'
+          service_account: 'junolee1@assemanagement.iam.gserviceaccount.com'
       # 2. Docker가 asia-northeast3-docker.pkg.dev 레지스트리에 접근할 수 있도록 인증 설정
       - name: Configure Docker to use Google Cloud Artifact Registry
         run: gcloud auth configure-docker asia-northeast3-docker.pkg.dev --quiet
