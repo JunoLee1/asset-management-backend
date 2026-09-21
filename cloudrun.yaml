@@ -18,17 +18,23 @@ spec:
         - image: asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:latest
           ports:
             - name: http1
-              containerPort: 3001
+              containerPort: 8080
           resources:
             limits:
               cpu: '1'
               memory: 512Mi
+          # prisma migrate deploy가 끝나야 포트가 열리므로, 기본 헬스체크 타임아웃보다
+          # 여유를 두지 않으면 "failed to start and listen" 오류가 날 수 있다.
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 30
+            timeoutSeconds: 5
           env:
             # ── 비민감 설정 ───────────────────────────────────────────
             - name: NODE_ENV
               value: production
-            - name: PORT
-              value: '3001'
             - name: UV_THREADPOOL_SIZE
               value: '8'
             - name: JWT_EXPIRES_IN
