@@ -28,7 +28,10 @@ import { errorHandler } from './middlewares/errorHandler'
 
 const app: Express = express()
 
-app.use(cors())
+app.use(cors({
+    origin: "https://assetmanagement-web-git-480495809237.asia-northeast3.run.app",
+    credentials: true, 
+}))
 app.use(express.json())
 
 configurePassport()
