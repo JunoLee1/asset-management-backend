@@ -2,8 +2,8 @@
 
 Express 5 + TypeScript + Prisma + PostgreSQL 기반 기업 자산관리 ERP 백엔드.
 
-**Live API:** https://asset-erp-backend.fly.dev  
-**Frontend:** https://github.com/JunoLee1/asset-management-erp
+**Live API:** https://asset-erp-backend-480495809237.asia-northeast3.run.app  
+**Frontend:** https://github.com/JunoLee1/assetmanagement-web
 
 ---
 
@@ -101,7 +101,7 @@ Express 5 + TypeScript + Prisma + PostgreSQL 기반 기업 자산관리 ERP 백�
 - **ORM:** Prisma + PostgreSQL
 - **인증:** JWT (Access 15m / Refresh DB 검증) + 단일 세션 강제
 - **스케줄러:** node-cron (라이선스 만료 알림, 월말보고서 자동 생성)
-- **배포:** fly.io
+- **배포:** Cloud Run
 
 ## 프로젝트 구조
 
@@ -117,4 +117,9 @@ prisma/
 └── seed.ts           # 테스트 데이터 시드
 docs/adr/             # 아키텍처 결정 기록 (ADR 0001~0017)
 ```
+
+## 배포 트러블슈팅
+
+Cloud Run 배포 중 겪은 이슈와 해결 방법: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
+
 # asset-management-backend
