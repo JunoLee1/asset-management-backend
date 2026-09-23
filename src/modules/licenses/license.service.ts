@@ -157,6 +157,7 @@ const getById = async (id: string, requester: RequesterContext): Promise<License
     currency: row.currency,
     productKey,
     productKeyMask: row.productKeyMask,
+    coreDepartmentIds: row.coreDepartmentIds,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
     assignments: row.assignments.map((a) => ({

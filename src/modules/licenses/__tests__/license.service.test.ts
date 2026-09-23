@@ -335,6 +335,17 @@ describe('licenseService.getById', () => {
       new AppError(404, '라이선스를 찾을 수 없습니다.'),
     )
   })
+
+  it('coreDepartmentIds를 반환한다', async () => {
+    mockLicenseFindUnique.mockResolvedValue({
+      ...baseLicense,
+      coreDepartmentIds: ['dept-it', 'dept-design'],
+      assignments: [],
+    })
+
+    const result = await licenseService.getById('lic-1', adminCtx)
+    expect(result.coreDepartmentIds).toEqual(['dept-it', 'dept-design'])
+  })
 })
 
 const baseRequestRow = {
