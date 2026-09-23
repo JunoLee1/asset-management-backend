@@ -1008,7 +1008,7 @@ describe('licenseService.listRequests', () => {
     )
   })
 
-  it('target user가 핵심부서 소속이면 CORE, 아니면 DEFAULT', async () => {
+  it('target user가 핵심부서 소속이면 CORE, 아니면 DEFAULT — CORE가 먼저 정렬', async () => {
     const baseRow = {
       licenseId: 'lic-1',
       license: { name: 'Zoom Pro', coreDepartmentIds: ['dept-it'] },
@@ -1035,28 +1035,38 @@ describe('licenseService.listRequests', () => {
       rejectReason: null,
     }
 
+    // findMany의 orderBy: createdAt desc 를 흉내내서 mock도 최신순으로 준다
+    // (req-sales-old가 가장 최근, req-it-old가 가장 오래됨) — 정렬이 진짜로
+    // priorityTier를 기준으로 재배치하는지 확인하기 위해 일부러 DEFAULT를 먼저 둔다.
     mockLRFindMany.mockResolvedValue([
       {
         ...baseRow,
         id: 'req-sales',
         targetUserId: 'u-2',
         targetUser: { name: 'Bob', team: { departmentId: 'dept-sales' } },
-        createdAt: new Date('2026-01-01'),
+        createdAt: new Date('2026-01-03'),
       },
       {
         ...baseRow,
-        id: 'req-it',
+        id: 'req-it-new',
+        targetUserId: 'u-3',
+        targetUser: { name: 'Carol', team: { departmentId: 'dept-it' } },
+        createdAt: new Date('2026-01-02'),
+      },
+      {
+        ...baseRow,
+        id: 'req-it-old',
         targetUserId: 'u-4',
         targetUser: { name: 'Dave', team: { departmentId: 'dept-it' } },
-        createdAt: new Date('2026-01-02'),
+        createdAt: new Date('2026-01-01'),
       },
     ])
 
     const result = await licenseService.listRequests('lic-1', {}, adminCtx)
 
-    const byId = new Map(result.map((r) => [r.id, r.priorityTier]))
-    expect(byId.get('req-it')).toBe('CORE')
-    expect(byId.get('req-sales')).toBe('DEFAULT')
+    // CORE(req-it-new, req-it-old, 최신순) 먼저, 그다음 DEFAULT(req-sales)
+    expect(result.map((r) => r.id)).toEqual(['req-it-new', 'req-it-old', 'req-sales'])
+    expect(result.map((r) => r.priorityTier)).toEqual(['CORE', 'CORE', 'DEFAULT'])
   })
 
   it('targetUser에 team이 없으면 DEFAULT', async () => {

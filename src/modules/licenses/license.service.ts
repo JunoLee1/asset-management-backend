@@ -789,6 +789,9 @@ const listRequests = async (
     }
   })
 
+  const tierRank: Record<LicensePriorityTier, number> = { CORE: 0, DEFAULT: 1 }
+  items.sort((a, b) => tierRank[a.priorityTier] - tierRank[b.priorityTier])
+
   return items
 }
 
