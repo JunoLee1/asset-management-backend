@@ -1007,4 +1007,92 @@ describe('licenseService.listRequests', () => {
       }),
     )
   })
+
+  it('target user가 핵심부서 소속이면 CORE, 아니면 DEFAULT', async () => {
+    const baseRow = {
+      licenseId: 'lic-1',
+      license: { name: 'Zoom Pro', coreDepartmentIds: ['dept-it'] },
+      requestedById: 'u-1',
+      requestedBy: { name: 'Alice' },
+      assetId: null,
+      asset: null,
+      status: 'PENDING_ADMIN' as const,
+      managerApprovedById: null,
+      managerApprovedBy: null,
+      managerApprovedAt: null,
+      deptApprovedById: null,
+      deptApprovedBy: null,
+      deptApprovedAt: null,
+      securityReviewedById: null,
+      securityReviewedBy: null,
+      securityReviewedAt: null,
+      adminApprovedById: null,
+      adminApprovedBy: null,
+      adminApprovedAt: null,
+      rejectedById: null,
+      rejectedBy: null,
+      rejectedAt: null,
+      rejectReason: null,
+    }
+
+    mockLRFindMany.mockResolvedValue([
+      {
+        ...baseRow,
+        id: 'req-sales',
+        targetUserId: 'u-2',
+        targetUser: { name: 'Bob', team: { departmentId: 'dept-sales' } },
+        createdAt: new Date('2026-01-01'),
+      },
+      {
+        ...baseRow,
+        id: 'req-it',
+        targetUserId: 'u-4',
+        targetUser: { name: 'Dave', team: { departmentId: 'dept-it' } },
+        createdAt: new Date('2026-01-02'),
+      },
+    ])
+
+    const result = await licenseService.listRequests('lic-1', {}, adminCtx)
+
+    const byId = new Map(result.map((r) => [r.id, r.priorityTier]))
+    expect(byId.get('req-it')).toBe('CORE')
+    expect(byId.get('req-sales')).toBe('DEFAULT')
+  })
+
+  it('targetUser에 team이 없으면 DEFAULT', async () => {
+    mockLRFindMany.mockResolvedValue([
+      {
+        id: 'req-1',
+        licenseId: 'lic-1',
+        license: { name: 'Zoom Pro', coreDepartmentIds: ['dept-it'] },
+        requestedById: 'u-1',
+        requestedBy: { name: 'Alice' },
+        targetUserId: 'u-2',
+        targetUser: { name: 'Bob', team: null },
+        assetId: null,
+        asset: null,
+        status: 'PENDING_ADMIN' as const,
+        managerApprovedById: null,
+        managerApprovedBy: null,
+        managerApprovedAt: null,
+        deptApprovedById: null,
+        deptApprovedBy: null,
+        deptApprovedAt: null,
+        securityReviewedById: null,
+        securityReviewedBy: null,
+        securityReviewedAt: null,
+        adminApprovedById: null,
+        adminApprovedBy: null,
+        adminApprovedAt: null,
+        rejectedById: null,
+        rejectedBy: null,
+        rejectedAt: null,
+        rejectReason: null,
+        createdAt: new Date('2026-01-01'),
+      },
+    ])
+
+    const result = await licenseService.listRequests('lic-1', {}, adminCtx)
+    expect(result[0]?.priorityTier).toBe('DEFAULT')
+  })
 })
