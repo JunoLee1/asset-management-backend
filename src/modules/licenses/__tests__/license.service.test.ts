@@ -105,6 +105,7 @@ const baseLicense = {
   purchaseDate: new Date('2026-01-01'),
   expiryDate: new Date('2027-01-01'),
   cost: null,
+  coreDepartmentIds: [],
   assignments: [],
   softwareLinks: [],
   createdAt: new Date(),
@@ -154,6 +155,37 @@ describe('licenseService.create', () => {
     expect(createArgs?.data?.productKeyMask).toMatch(/1234$/)
   })
 
+  it('coreDepartmentIds를 저장한다', async () => {
+    mockLicenseCreate.mockResolvedValue({ id: 'lic-1' })
+    mockLicenseFindUnique.mockResolvedValue({ ...baseLicense, coreDepartmentIds: ['dept-it'] })
+
+    await licenseService.create(
+      {
+        name: 'Zoom Pro',
+        seatsTotal: 5,
+        purchaseDate: new Date('2026-01-01'),
+        coreDepartmentIds: ['dept-it'],
+      },
+      adminCtx,
+    )
+
+    const createArgs = mockLicenseCreate.mock.calls[0]?.[0]
+    expect(createArgs?.data?.coreDepartmentIds).toEqual(['dept-it'])
+  })
+
+  it('coreDepartmentIds 미지정 시 빈 배열로 저장', async () => {
+    mockLicenseCreate.mockResolvedValue({ id: 'lic-1' })
+    mockLicenseFindUnique.mockResolvedValue(baseLicense)
+
+    await licenseService.create(
+      { name: 'Zoom Pro', seatsTotal: 5, purchaseDate: new Date('2026-01-01') },
+      adminCtx,
+    )
+
+    const createArgs = mockLicenseCreate.mock.calls[0]?.[0]
+    expect(createArgs?.data?.coreDepartmentIds).toEqual([])
+  })
+
   it('USER 권한이면 403', async () => {
     await expect(
       licenseService.create(
@@ -185,6 +217,18 @@ describe('licenseService.update', () => {
 
     const result = await licenseService.update('lic-1', { seatsTotal: 150 }, managerCtx)
     expect(result.id).toBe('lic-1')
+  })
+
+  it('coreDepartmentIds를 갱신한다', async () => {
+    mockLicenseFindUnique
+      .mockResolvedValueOnce(baseLicense)
+      .mockResolvedValueOnce({ ...baseLicense, coreDepartmentIds: ['dept-sales'] })
+    mockLicenseUpdate.mockResolvedValue({ id: 'lic-1' })
+
+    await licenseService.update('lic-1', { coreDepartmentIds: ['dept-sales'] }, managerCtx)
+
+    const updateArgs = mockLicenseUpdate.mock.calls[0]?.[0]
+    expect(updateArgs?.data?.coreDepartmentIds).toEqual(['dept-sales'])
   })
 
   it('USER 권한 거부', async () => {

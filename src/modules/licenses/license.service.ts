@@ -206,6 +206,7 @@ const create = async (
         expiryDate: input.expiryDate ?? null,
         cost: input.cost ?? null,
         currency: input.currency ?? 'KRW',
+        coreDepartmentIds: input.coreDepartmentIds ?? [],
       },
     })
     if (input.softwareIds?.length) {
@@ -261,6 +262,7 @@ const update = async (
   if (input.expiryDate !== undefined) data['expiryDate'] = input.expiryDate
   if (input.cost !== undefined) data['cost'] = input.cost
   if (input.currency !== undefined) data['currency'] = input.currency
+  if (input.coreDepartmentIds !== undefined) data['coreDepartmentIds'] = input.coreDepartmentIds
   if (input.productKey !== undefined) {
     data['productKey'] = input.productKey ? encryptLicenseKey(input.productKey) : null
     data['productKeyMask'] = input.productKey ? maskLicenseKey(input.productKey) : null
