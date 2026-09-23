@@ -27,7 +27,10 @@ function authHeaders(token) {
 }
 
 export default function () {
-  const teamLead = login('lead-dev@verify.local')
+  // ASSET_ID 기본값(HAR-VRF-0001)은 IT본부 소속 — 정비 등록은 "자신의 부서
+  // 자산만" 가드가 있어 같은 부서의 TEAM_LEAD여야 한다 (개발본부 소속인
+  // lead-dev로는 403).
+  const teamLead = login('manager-1@verify.local')
   const admin = login('admin-1@verify.local')
 
   // TEAM_LEAD가 만들면 즉시 PENDING_ADMIN으로 시작 (1차 승인 스킵) — 바로 race 대상 상태
