@@ -13,6 +13,7 @@ export const createLicenseSchema = z
     cost: z.number().nonnegative().optional(),
     currency: currencyEnum.default('KRW'),
     softwareIds: z.string().array().optional(),
+    coreDepartmentIds: z.string().array().optional(),
   })
   .refine((d) => !d.expiryDate || d.expiryDate >= d.purchaseDate, {
     message: '만료일은 구매일 이전일 수 없습니다.',
@@ -29,6 +30,7 @@ export const updateLicenseSchema = z
     expiryDate: z.string().datetime().nullable().optional(),
     cost: z.number().nonnegative().nullable().optional(),
     currency: currencyEnum.optional(),
+    coreDepartmentIds: z.string().array().optional(),
   })
   // 둘 다 입력된 경우에만 zod 단에서 비교. 한 쪽만 변경되는 경우는 service 가 기존 값과 비교.
   .refine((d) => !d.purchaseDate || !d.expiryDate || d.expiryDate >= d.purchaseDate, {
