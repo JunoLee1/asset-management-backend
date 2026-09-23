@@ -513,6 +513,10 @@ model License {
   cost         Decimal?  @db.Decimal(15, 2)
   currency     Currency  @default(KRW)
 
+  // 이 라이선스가 "직무 필수"로 취급되는 핵심 부서 목록 — license 요청 대기열
+  // 정렬(priorityTier)에만 쓰이고, 좌석 할당 로직 자체에는 관여하지 않는다.
+  coreDepartmentIds String[] @default([])
+
   assignments LicenseAssignment[]
   requests    LicenseRequest[]
   createdAt   DateTime            @default(now())
