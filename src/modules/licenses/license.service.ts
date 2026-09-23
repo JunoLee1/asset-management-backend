@@ -16,6 +16,7 @@ import type {
   PaginatedResult,
   LicenseRequestItem,
   LicenseRequestStatus,
+  LicensePriorityTier,
   CreateLicenseRequestInput,
   RejectLicenseRequestInput,
   ListLicenseRequestsQuery,
@@ -157,6 +158,7 @@ const getById = async (id: string, requester: RequesterContext): Promise<License
     currency: row.currency,
     productKey,
     productKeyMask: row.productKeyMask,
+    coreDepartmentIds: row.coreDepartmentIds,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
     assignments: row.assignments.map((a) => ({
@@ -206,6 +208,7 @@ const create = async (
         expiryDate: input.expiryDate ?? null,
         cost: input.cost ?? null,
         currency: input.currency ?? 'KRW',
+        coreDepartmentIds: input.coreDepartmentIds ?? [],
       },
     })
     if (input.softwareIds?.length) {
@@ -261,6 +264,7 @@ const update = async (
   if (input.expiryDate !== undefined) data['expiryDate'] = input.expiryDate
   if (input.cost !== undefined) data['cost'] = input.cost
   if (input.currency !== undefined) data['currency'] = input.currency
+  if (input.coreDepartmentIds !== undefined) data['coreDepartmentIds'] = input.coreDepartmentIds
   if (input.productKey !== undefined) {
     data['productKey'] = input.productKey ? encryptLicenseKey(input.productKey) : null
     data['productKeyMask'] = input.productKey ? maskLicenseKey(input.productKey) : null
@@ -284,9 +288,9 @@ const getRequestById = async (id: string): Promise<LicenseRequestItem> => {
   const row = await prisma.licenseRequest.findUnique({
     where: { id },
     include: {
-      license: { select: { name: true } },
+      license: { select: { name: true, coreDepartmentIds: true } },
       requestedBy: { select: { name: true } },
-      targetUser: { select: { name: true } },
+      targetUser: { select: { name: true, team: { select: { departmentId: true } } } },
       asset: { select: { assetCode: true } },
       managerApprovedBy: { select: { name: true } },
       deptApprovedBy: { select: { name: true } },
@@ -296,6 +300,9 @@ const getRequestById = async (id: string): Promise<LicenseRequestItem> => {
     },
   })
   if (!row) throw new AppError(404, '요청을 찾을 수 없습니다.')
+  const targetDeptId = row.targetUser.team?.departmentId ?? null
+  const priorityTier: LicensePriorityTier =
+    targetDeptId && row.license.coreDepartmentIds.includes(targetDeptId) ? 'CORE' : 'DEFAULT'
   return {
     id: row.id,
     licenseId: row.licenseId,
@@ -307,6 +314,7 @@ const getRequestById = async (id: string): Promise<LicenseRequestItem> => {
     assetId: row.assetId,
     assetCode: row.asset?.assetCode ?? null,
     status: row.status as LicenseRequestStatus,
+    priorityTier,
     managerApprovedById: row.managerApprovedById,
     managerApprovedByName: row.managerApprovedBy?.name ?? null,
     managerApprovedAt: row.managerApprovedAt,
@@ -731,9 +739,9 @@ const listRequests = async (
       ...(query.status ? { status: query.status } : {}),
     },
     include: {
-      license: { select: { name: true } },
+      license: { select: { name: true, coreDepartmentIds: true } },
       requestedBy: { select: { name: true } },
-      targetUser: { select: { name: true } },
+      targetUser: { select: { name: true, team: { select: { departmentId: true } } } },
       asset: { select: { assetCode: true } },
       managerApprovedBy: { select: { name: true } },
       deptApprovedBy: { select: { name: true } },
@@ -744,35 +752,44 @@ const listRequests = async (
     orderBy: { createdAt: 'desc' },
   })
 
-  return rows.map((row) => ({
-    id: row.id,
-    licenseId: row.licenseId,
-    licenseName: row.license.name,
-    requestedById: row.requestedById,
-    requestedByName: row.requestedBy.name,
-    targetUserId: row.targetUserId,
-    targetUserName: row.targetUser.name,
-    assetId: row.assetId,
-    assetCode: row.asset?.assetCode ?? null,
-    status: row.status as LicenseRequestStatus,
-    managerApprovedById: row.managerApprovedById,
-    managerApprovedByName: row.managerApprovedBy?.name ?? null,
-    managerApprovedAt: row.managerApprovedAt,
-    deptApprovedById: row.deptApprovedById,
-    deptApprovedByName: row.deptApprovedBy?.name ?? null,
-    deptApprovedAt: row.deptApprovedAt,
-    securityReviewedById: row.securityReviewedById,
-    securityReviewedByName: row.securityReviewedBy?.name ?? null,
-    securityReviewedAt: row.securityReviewedAt,
-    adminApprovedById: row.adminApprovedById,
-    adminApprovedByName: row.adminApprovedBy?.name ?? null,
-    adminApprovedAt: row.adminApprovedAt,
-    rejectedById: row.rejectedById,
-    rejectedByName: row.rejectedBy?.name ?? null,
-    rejectedAt: row.rejectedAt,
-    rejectReason: row.rejectReason,
-    createdAt: row.createdAt,
-  }))
+  const items = rows.map((row) => {
+    const targetDeptId = row.targetUser.team?.departmentId ?? null
+    const priorityTier: LicensePriorityTier =
+      targetDeptId && row.license.coreDepartmentIds.includes(targetDeptId) ? 'CORE' : 'DEFAULT'
+
+    return {
+      id: row.id,
+      licenseId: row.licenseId,
+      licenseName: row.license.name,
+      requestedById: row.requestedById,
+      requestedByName: row.requestedBy.name,
+      targetUserId: row.targetUserId,
+      targetUserName: row.targetUser.name,
+      assetId: row.assetId,
+      assetCode: row.asset?.assetCode ?? null,
+      status: row.status as LicenseRequestStatus,
+      priorityTier,
+      managerApprovedById: row.managerApprovedById,
+      managerApprovedByName: row.managerApprovedBy?.name ?? null,
+      managerApprovedAt: row.managerApprovedAt,
+      deptApprovedById: row.deptApprovedById,
+      deptApprovedByName: row.deptApprovedBy?.name ?? null,
+      deptApprovedAt: row.deptApprovedAt,
+      securityReviewedById: row.securityReviewedById,
+      securityReviewedByName: row.securityReviewedBy?.name ?? null,
+      securityReviewedAt: row.securityReviewedAt,
+      adminApprovedById: row.adminApprovedById,
+      adminApprovedByName: row.adminApprovedBy?.name ?? null,
+      adminApprovedAt: row.adminApprovedAt,
+      rejectedById: row.rejectedById,
+      rejectedByName: row.rejectedBy?.name ?? null,
+      rejectedAt: row.rejectedAt,
+      rejectReason: row.rejectReason,
+      createdAt: row.createdAt,
+    }
+  })
+
+  return items
 }
 
 const unassign = async (

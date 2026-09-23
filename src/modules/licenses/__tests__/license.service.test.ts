@@ -105,6 +105,7 @@ const baseLicense = {
   purchaseDate: new Date('2026-01-01'),
   expiryDate: new Date('2027-01-01'),
   cost: null,
+  coreDepartmentIds: [],
   assignments: [],
   softwareLinks: [],
   createdAt: new Date(),
@@ -154,6 +155,37 @@ describe('licenseService.create', () => {
     expect(createArgs?.data?.productKeyMask).toMatch(/1234$/)
   })
 
+  it('coreDepartmentIds를 저장한다', async () => {
+    mockLicenseCreate.mockResolvedValue({ id: 'lic-1' })
+    mockLicenseFindUnique.mockResolvedValue({ ...baseLicense, coreDepartmentIds: ['dept-it'] })
+
+    await licenseService.create(
+      {
+        name: 'Zoom Pro',
+        seatsTotal: 5,
+        purchaseDate: new Date('2026-01-01'),
+        coreDepartmentIds: ['dept-it'],
+      },
+      adminCtx,
+    )
+
+    const createArgs = mockLicenseCreate.mock.calls[0]?.[0]
+    expect(createArgs?.data?.coreDepartmentIds).toEqual(['dept-it'])
+  })
+
+  it('coreDepartmentIds 미지정 시 빈 배열로 저장', async () => {
+    mockLicenseCreate.mockResolvedValue({ id: 'lic-1' })
+    mockLicenseFindUnique.mockResolvedValue(baseLicense)
+
+    await licenseService.create(
+      { name: 'Zoom Pro', seatsTotal: 5, purchaseDate: new Date('2026-01-01') },
+      adminCtx,
+    )
+
+    const createArgs = mockLicenseCreate.mock.calls[0]?.[0]
+    expect(createArgs?.data?.coreDepartmentIds).toEqual([])
+  })
+
   it('USER 권한이면 403', async () => {
     await expect(
       licenseService.create(
@@ -185,6 +217,18 @@ describe('licenseService.update', () => {
 
     const result = await licenseService.update('lic-1', { seatsTotal: 150 }, managerCtx)
     expect(result.id).toBe('lic-1')
+  })
+
+  it('coreDepartmentIds를 갱신한다', async () => {
+    mockLicenseFindUnique
+      .mockResolvedValueOnce(baseLicense)
+      .mockResolvedValueOnce({ ...baseLicense, coreDepartmentIds: ['dept-sales'] })
+    mockLicenseUpdate.mockResolvedValue({ id: 'lic-1' })
+
+    await licenseService.update('lic-1', { coreDepartmentIds: ['dept-sales'] }, managerCtx)
+
+    const updateArgs = mockLicenseUpdate.mock.calls[0]?.[0]
+    expect(updateArgs?.data?.coreDepartmentIds).toEqual(['dept-sales'])
   })
 
   it('USER 권한 거부', async () => {
@@ -290,6 +334,17 @@ describe('licenseService.getById', () => {
     await expect(licenseService.getById('x', adminCtx)).rejects.toThrow(
       new AppError(404, '라이선스를 찾을 수 없습니다.'),
     )
+  })
+
+  it('coreDepartmentIds를 반환한다', async () => {
+    mockLicenseFindUnique.mockResolvedValue({
+      ...baseLicense,
+      coreDepartmentIds: ['dept-it', 'dept-design'],
+      assignments: [],
+    })
+
+    const result = await licenseService.getById('lic-1', adminCtx)
+    expect(result.coreDepartmentIds).toEqual(['dept-it', 'dept-design'])
   })
 })
 
@@ -951,5 +1006,93 @@ describe('licenseService.listRequests', () => {
         where: expect.objectContaining({ status: 'PENDING_SECURITY' }),
       }),
     )
+  })
+
+  it('target user가 핵심부서 소속이면 CORE, 아니면 DEFAULT', async () => {
+    const baseRow = {
+      licenseId: 'lic-1',
+      license: { name: 'Zoom Pro', coreDepartmentIds: ['dept-it'] },
+      requestedById: 'u-1',
+      requestedBy: { name: 'Alice' },
+      assetId: null,
+      asset: null,
+      status: 'PENDING_ADMIN' as const,
+      managerApprovedById: null,
+      managerApprovedBy: null,
+      managerApprovedAt: null,
+      deptApprovedById: null,
+      deptApprovedBy: null,
+      deptApprovedAt: null,
+      securityReviewedById: null,
+      securityReviewedBy: null,
+      securityReviewedAt: null,
+      adminApprovedById: null,
+      adminApprovedBy: null,
+      adminApprovedAt: null,
+      rejectedById: null,
+      rejectedBy: null,
+      rejectedAt: null,
+      rejectReason: null,
+    }
+
+    mockLRFindMany.mockResolvedValue([
+      {
+        ...baseRow,
+        id: 'req-sales',
+        targetUserId: 'u-2',
+        targetUser: { name: 'Bob', team: { departmentId: 'dept-sales' } },
+        createdAt: new Date('2026-01-01'),
+      },
+      {
+        ...baseRow,
+        id: 'req-it',
+        targetUserId: 'u-4',
+        targetUser: { name: 'Dave', team: { departmentId: 'dept-it' } },
+        createdAt: new Date('2026-01-02'),
+      },
+    ])
+
+    const result = await licenseService.listRequests('lic-1', {}, adminCtx)
+
+    const byId = new Map(result.map((r) => [r.id, r.priorityTier]))
+    expect(byId.get('req-it')).toBe('CORE')
+    expect(byId.get('req-sales')).toBe('DEFAULT')
+  })
+
+  it('targetUser에 team이 없으면 DEFAULT', async () => {
+    mockLRFindMany.mockResolvedValue([
+      {
+        id: 'req-1',
+        licenseId: 'lic-1',
+        license: { name: 'Zoom Pro', coreDepartmentIds: ['dept-it'] },
+        requestedById: 'u-1',
+        requestedBy: { name: 'Alice' },
+        targetUserId: 'u-2',
+        targetUser: { name: 'Bob', team: null },
+        assetId: null,
+        asset: null,
+        status: 'PENDING_ADMIN' as const,
+        managerApprovedById: null,
+        managerApprovedBy: null,
+        managerApprovedAt: null,
+        deptApprovedById: null,
+        deptApprovedBy: null,
+        deptApprovedAt: null,
+        securityReviewedById: null,
+        securityReviewedBy: null,
+        securityReviewedAt: null,
+        adminApprovedById: null,
+        adminApprovedBy: null,
+        adminApprovedAt: null,
+        rejectedById: null,
+        rejectedBy: null,
+        rejectedAt: null,
+        rejectReason: null,
+        createdAt: new Date('2026-01-01'),
+      },
+    ])
+
+    const result = await licenseService.listRequests('lic-1', {}, adminCtx)
+    expect(result[0]?.priorityTier).toBe('DEFAULT')
   })
 })
