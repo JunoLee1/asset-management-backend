@@ -11,11 +11,12 @@ spec:
         autoscaling.knative.dev/minScale: '0'
         autoscaling.knative.dev/maxScale: '10'
         run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/cloudsql-instances: 'assemanagement:asia-northeast3:free-trial-first-project'
     spec:
       containerConcurrency: 80
       timeoutSeconds: 300
       containers:
-        - image: asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:latest
+        - image: asia-northeast3-docker.pkg.dev/assemanagement/asset-erp-backend/asset-erp-backend:8c0597ab14a9c7926d5ba194d8a54f5a58d9b60e
           ports:
             - name: http1
               containerPort: 8080
@@ -70,41 +71,10 @@ spec:
                 secretKeyRef:
                   name: JWT_REFRESH_SECRET
                   key: latest
-            - name: GOOGLE_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: GOOGLE_CLIENT_ID
-                  key: latest
-            - name: GOOGLE_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: GOOGLE_CLIENT_SECRET
-                  key: latest
-            - name: KAKAO_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: KAKAO_CLIENT_ID
-                  key: latest
-            - name: GMAIL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: GMAIL_USER
-                  key: latest
-            - name: GMAIL_APP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: GMAIL_APP_PASSWORD
-                  key: latest
-            - name: NAVER_SMS_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: NAVER_SMS_ACCESS_KEY
-                  key: latest
-            - name: NAVER_SMS_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: NAVER_SMS_SECRET_KEY
-                  key: latest
+            # TODO: 실제 값 발급 후 Secret Manager에 버전 추가하고 아래 secretKeyRef 복구
+            # (Secret Manager는 빈 payload를 허용하지 않아 현재는 미선언 상태 = process.env 미설정 = 코드의 ?? '' 기본값 적용)
+            # GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, KAKAO_CLIENT_ID, GMAIL_USER, GMAIL_APP_PASSWORD,
+            # NAVER_SMS_ACCESS_KEY, NAVER_SMS_SECRET_KEY
   traffic:
     - percent: 100
       latestRevision: true
