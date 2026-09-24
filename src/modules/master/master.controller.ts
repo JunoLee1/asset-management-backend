@@ -114,7 +114,12 @@ export const vendorHandlers = {
     const includeDeleted = req.query['includeDeleted'] === 'true'
     const status = (req.query['status'] as string | undefined) as any
     const type = req.query['type'] as 'REPAIR' | 'SOFTWARE' | undefined
-    res.json(await vendorService.list({ includeDeleted, ...(status ? { status } : {}), ...(type ? { type } : {}) }))
+    const { role } = getRequester(req)
+    res.json(await vendorService.list({ includeDeleted, ...(status ? { status } : {}), ...(type ? { type } : {}), role }))
+  },
+  getById: async (req: Request, res: Response): Promise<void> => {
+    const { role } = getRequester(req)
+    res.json(await vendorService.getById(getId(req), role))
   },
 }
 export const assetCategoryHandlers = makeHandlers(assetCategoryService)
