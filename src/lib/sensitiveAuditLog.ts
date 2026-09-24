@@ -8,6 +8,7 @@ export type SensitiveAction =
   | 'VENDOR_BLACKLIST'      // 수리업체 블랙리스트
   | 'LICENSE_KEY_ACCESS'    // 라이선스 키 평문 조회
   | 'BANK_ACCOUNT_ACCESS'   // 은행계좌 평문 조회
+  | 'USER_INVITE'           // 사용자 초대 발송
   | 'USER_DEACTIVATE'       // 사용자 비활성화
   | 'USER_ACTIVATE'         // 사용자 활성화
   | 'ASSET_RETIRE'          // 자산 폐기

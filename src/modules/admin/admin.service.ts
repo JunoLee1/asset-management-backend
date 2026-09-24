@@ -6,12 +6,17 @@ import { sendMail } from "../../lib/mailer";
 import { inviteEmailTemplate } from "../../lib/emailTemplates";
 import { encryptPhone, hashPhone, maskPhone } from "../../lib/phoneEncryption";
 import { env } from "../../config/env";
+import { logSensitiveAction } from "../../lib/sensitiveAuditLog";
 import type { InviteUserResult } from "./admin.types";
 import type { InviteUserInput } from "../../schemas/auth.schema";
+import type { RequesterContext } from "../../lib/requestHelpers";
 
 const INVITE_EXPIRES_HOURS = 48; // 이메일 초대 코드 발송 직후 만료 시간
 
-const inviteUser = async (dto: InviteUserInput): Promise<InviteUserResult> => {
+const inviteUser = async (
+  dto: InviteUserInput,
+  requester: RequesterContext,
+): Promise<InviteUserResult> => {
   if (!dto.hireDate) throw new AppError(400, '입사일(hireDate)은 필수입니다.')
 
   const existing = await prisma.user.findUnique({
@@ -53,7 +58,7 @@ const inviteUser = async (dto: InviteUserInput): Promise<InviteUserResult> => {
     Date.now() + INVITE_EXPIRES_HOURS * 60 * 60 * 1000,
   );
 
-  await prisma.user.create({
+  const created = await prisma.user.create({
     data: {
       email: dto.email,
       name: dto.name,
@@ -66,6 +71,16 @@ const inviteUser = async (dto: InviteUserInput): Promise<InviteUserResult> => {
       inviteToken,
       inviteTokenExpiresAt,
     },
+  });
+
+  logSensitiveAction({
+    action: 'USER_INVITE',
+    performedById: requester.id,
+    performedByRole: requester.role,
+    targetId: created.id,
+    targetType: 'User',
+    detail: `email=${dto.email}, role=${dto.role ?? 'USER'}`,
+    timestamp: new Date().toISOString(),
   });
 
   const inviteUrl = `${env.frontendUrl}/accept-invite?token=${inviteToken}`;
