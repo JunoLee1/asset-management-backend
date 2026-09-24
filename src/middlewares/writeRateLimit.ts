@@ -1,14 +1,13 @@
-// 관리 계정 탈취 시 대량 등록·수정을 방지하기 위한 사용자별 Rate Limiter.
+// 관리 계정 탈취 시 대량 등록·수정을 방지하기 위한 사용자별 분산 Rate Limiter.
 // - 로그인한 사용자(id) 단위로 카운트 (인증 후에 붙여야 함).
+// - Redis INCR + EXPIRE NX 원자적 조합으로 다중 Cloud Run 인스턴스에서도 정확히 동작.
+// - Redis 미설정/실패 시 fail-open (요청 통과 + 경고 로그).
 // - 개발 환경(NODE_ENV !== 'production')에서는 넉넉하게 풀어둔다.
 
 import type { Request, Response, NextFunction } from 'express'
+import { getRedis } from '../lib/redis'
 import { getRequester } from '../lib/requestHelpers'
-
-interface WriteLimitBucket {
-  count: number
-  windowStart: number
-}
+import { logger } from '../lib/logger'
 
 interface WriteLimitOptions {
   windowMs: number
@@ -17,34 +16,37 @@ interface WriteLimitOptions {
   message: string
 }
 
-const isDev = process.env['NODE_ENV'] !== 'production'
 const DEV_MULT = 100 // dev 환경에서는 max × 100 허용
 
-const buckets = new Map<string, WriteLimitBucket>()
-
 const makeLimiter = (opts: WriteLimitOptions) => {
-  const limit = isDev ? opts.max * DEV_MULT : opts.max
-  return (req: Request, res: Response, next: NextFunction): void => {
+  const ttlSec = Math.ceil(opts.windowMs / 1000)
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const isDev = process.env['NODE_ENV'] !== 'production'
+    const limit = isDev ? opts.max * DEV_MULT : opts.max
     let userKey: string
     try {
       userKey = getRequester(req).id
     } catch {
       userKey = `ip:${req.ip ?? 'unknown'}`
     }
-    const key = `${opts.keyPrefix}:${userKey}`
-    const now = Date.now()
-    const bucket = buckets.get(key)
-    if (!bucket || now - bucket.windowStart > opts.windowMs) {
-      buckets.set(key, { count: 1, windowStart: now })
+    const key = `ratelimit:${opts.keyPrefix}:${userKey}`
+    const redis = getRedis()
+    if (!redis) {
       next()
       return
     }
-    bucket.count += 1
-    if (bucket.count > limit) {
-      res.status(429).json({ message: opts.message })
-      return
+    try {
+      const count = await redis.incr(key)
+      if (count === 1) await redis.expire(key, ttlSec)
+      if (count > limit) {
+        res.status(429).json({ message: opts.message })
+        return
+      }
+      next()
+    } catch (err) {
+      logger.warn({ err, key }, '[rate-limit] redis error — fail-open')
+      next()
     }
-    next()
   }
 }
 
