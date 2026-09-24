@@ -191,10 +191,11 @@
 
 | 항목 | 상태 | 비고 |
 |---|---|---|
-| Smoke | 🔲 |
-| Stress | 🔲 |
-| 보안 — 인증 없는 접근 차단 | 🔲 |
-| 보안 — 다른 유저 알림 IDOR 차단 | 🔲 |
+| Smoke | ✅ `k6/notification-smoke.js` 4/4 PASS |
+| Stress | ✅ `k6/notification-stress.js` 100,323/100,323 PASS, 에러율 0% |
+| 보안 — 인증 없는 접근 차단 | ✅ 401 차단 |
+| 보안 — 다른 유저 알림 read IDOR 차단 | ✅ 403 차단 |
+| 보안 — USER → process-outbox 차단 (ADMIN 전용) | ✅ 403 차단 |
 
 ---
 
