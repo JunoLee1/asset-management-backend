@@ -21,6 +21,7 @@
 | 보안 — USER/TEAM_LEAD → 초대 발송 차단 | ✅ 403 차단 (Burp 확인) |
 | 보안 — 유효하지 않은 초대 토큰 | ✅ "유효하지 않은 초대 링크" 반환 |
 | 보안 — 인증 없는 초대 발송 | ✅ 401 차단 |
+| 보안 — 초대 남용 방지 (탈취된 ADMIN 계정 시나리오) | 🔲 초대 발송 Rate Limiting, 재초대 반복 차단, AuditLog 기록 여부 확인 |
 
 ---
 
@@ -244,9 +245,10 @@
 | Stress | ✅ `k6/software-stress.js` | Section 3 참고 |
 | 보안 — 입력값 퍼징 / 오버사이즈 차단 | ✅ | Section 3 참고 |
 | 보안 — USER → SW 카탈로그 접근 차단 | ✅ | Section 3 참고 |
-| 보안 — SECURITY_OFFICER → detected-software approve/reject | 🔲 |
-| 보안 — USER/TEAM_LEAD → detected-software approve/reject 차단 | 🔲 |
-| 보안 — SECURITY_OFFICER → SW permission 변경 권한 | 🔲 |
+| 보안 — SECURITY_OFFICER → detected-software 목록 조회 허용 | ✅ 접근 성공 |
+| 보안 — USER/TEAM_LEAD → detected-software approve/reject 차단 | ✅ 전부 403 차단 |
+| 보안 — SECURITY_OFFICER → SW permission 변경 (ALLOWED) | ✅ 정상 반영 |
+| 보안 — USER/TEAM_LEAD → SW permission 변경 차단 | ✅ 403 "SECURITY_OFFICER 또는 ADMIN 필요" 반환 |
 
 ---
 
@@ -272,3 +274,7 @@
 | IDOR (ID 추측 접근) | ✅ 라이선스·자산 모두 차단 확인 |
 | 에러 메시지 스택트레이스 노출 | 🔲 |
 | XSS 저장 후 프론트 sanitize | 🔲 |
+| 탈취 계정 남용 — 초대 대량 발송 | 🔲 |
+| 탈취 계정 남용 — 제조사 대량 등록 | 🔲 |
+| 탈취 계정 남용 — 소프트웨어 대량 등록 | 🔲 |
+| 탈취 계정 남용 — 카탈로그 대량 등록/수정 | 🔲 |
