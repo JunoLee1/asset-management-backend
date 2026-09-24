@@ -272,7 +272,7 @@
 | Rate Limiting (브루트포스) | ✅ 단계별 누적 잠금 적용 (5/10/15/20회) |
 | IDOR (ID 추측 접근) | ✅ 라이선스·자산 모두 차단 확인 |
 | 에러 메시지 스택트레이스 노출 | ✅ 프로덕션에서 스택 미노출 확인 (dev 환경만 상세 표시) + 404 JSON 응답 통일 |
-| XSS 저장 후 프론트 sanitize | 🔲 |
+| XSS 저장 후 프론트 sanitize | ➖ 백엔드 범위 밖 — 프론트 저장소(`assetmanagement-web`) 별도 이슈로 이관 필요 |
 | 탈취 계정 남용 — 초대 대량 발송 | ✅ 시간당 10회 Rate Limit 적용 (`fix/admin-endpoints-rate-limit`) |
 | 탈취 계정 남용 — 개인정보 수정 | ✅ USER 권한 상승 403 차단 / role 변경 sensitiveAudit 로그 기록 / 5분/20회 Rate Limit 적용 |
 | 탈취 계정 남용 — 제조사 대량 등록 | ✅ 5분/20회 Rate Limit (30건 시도 → 20건 통과, 10건 429 차단) |
