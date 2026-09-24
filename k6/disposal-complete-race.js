@@ -1,9 +1,9 @@
 import http from 'k6/http'
 import { check } from 'k6'
 
-const BASE_URL = __ENV.BASE_URL || 'http://localhost:3001'
+const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080'
 const PASSWORD = __ENV.PASSWORD || 'test1234!'
-const ASSET_ID = __ENV.ASSET_ID || 'cmr4bt67o0043kqqoh3uc9goo' // HAR-VRF-0002, IDLE, no active loan
+const ASSET_ID = __ENV.ASSET_ID || 'cmr4bt6eu004ukqqofmptmvvu' // Dell U2723QE 모니터, IDLE
 const CONCURRENCY = Number(__ENV.CONCURRENCY || 10)
 
 // disposal.service.ts의 approveManager/approveAdmin/complete 전부 findOrThrow +
