@@ -64,8 +64,8 @@ const networkInputSchema = z.object({
 // assetCode는 빈 문자열/누락 시 서버에서 자동 채번 (HAR-0001 형식)
 const coreCreateSchema = z.object({
   assetCode: z.string().default(''),
-  name: z.string().min(1, '자산명은 필수입니다.'),
-  description: z.string().optional(),
+  name: z.string().min(1, '자산명은 필수입니다.').max(255),
+  description: z.string().max(2000).optional(),
   status: assetStatusEnum.optional(),
   condition: assetConditionEnum.optional(),
   conditionAssessedAt: z.string().datetime().optional(),
