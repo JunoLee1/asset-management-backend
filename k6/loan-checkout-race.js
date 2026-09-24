@@ -1,9 +1,9 @@
 import http from 'k6/http'
 import { check } from 'k6'
 
-const BASE_URL = __ENV.BASE_URL || 'http://localhost:3001'
+const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080'
 const PASSWORD = __ENV.PASSWORD || 'test1234!'
-const ASSET_ID = __ENV.ASSET_ID || 'cmr4bt67i0041kqqooo394fo9' // HAR-VRF-0001, IDLE
+const ASSET_ID = __ENV.ASSET_ID || 'cmr4bt6f30052kqqoeb224ur9' // LG Gram 17 (공용), IDLE
 const CONCURRENCY = Number(__ENV.CONCURRENCY || 10)
 
 // loan.service.ts에 추가한 두 가드를 "진짜 동시 요청"으로 검증한다.
@@ -27,7 +27,7 @@ function authHeaders(token) {
 }
 
 export default function () {
-  const requester = login('user-dev-1@verify.local')
+  const requester = login('user-design-2@verify.local')
   const teamLead = login('lead-dev@verify.local')
   const deptLead = login('dept-lead-dev@verify.local')
   const assetMgr = login('asset-mgr-1@verify.local')
@@ -37,7 +37,7 @@ export default function () {
   const createReqs = Array.from({ length: CONCURRENCY }, () => ({
     method: 'POST',
     url: `${BASE_URL}/loans`,
-    body: JSON.stringify({ assetId: ASSET_ID, purpose: 'k6 checkout race' }),
+    body: JSON.stringify({ assetId: ASSET_ID, purpose: 'k6 checkout race', expectedReturnDate: '2026-12-31T00:00:00.000Z' }),
     params: authHeaders(requester),
   }))
   const createResps = http.batch(createReqs)
