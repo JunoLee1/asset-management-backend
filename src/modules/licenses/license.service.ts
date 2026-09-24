@@ -430,6 +430,19 @@ const request = async (
 
   const created = await prisma.$transaction(async (tx) => {
     await lockLicenseForUpdate(tx, licenseId)
+
+    const licenseInTx = await tx.license.findUnique({ where: { id: licenseId }, select: { seatsTotal: true } })
+    const activeSeats = await countActiveSeats(licenseId, tx)
+    const pendingCount = await tx.licenseRequest.count({
+      where: {
+        licenseId,
+        status: { in: ['PENDING_MANAGER', 'PENDING_DEPT', 'PENDING_SECURITY', 'PENDING_ADMIN'] },
+      },
+    })
+    if (activeSeats + pendingCount >= licenseInTx!.seatsTotal) {
+      throw new AppError(409, `잔여 시트가 없습니다. 현재 활성(${activeSeats}) + 대기 중(${pendingCount}) >= 총 시트(${licenseInTx!.seatsTotal})`)
+    }
+
     return tx.licenseRequest.create({
       data: {
         licenseId,
@@ -846,8 +859,9 @@ const bulkAssign = async (
   const assignedIds = await prisma.$transaction(async (tx) => {
     await lockLicenseForUpdate(tx, licenseId)
 
+    const licenseInTx = await tx.license.findUnique({ where: { id: licenseId }, select: { seatsTotal: true } })
     const activeCount = await tx.licenseAssignment.count({ where: { licenseId, unassignedAt: null } })
-    const availableSeats = license.seatsTotal - activeCount
+    const availableSeats = licenseInTx!.seatsTotal - activeCount
     if (availableSeats <= 0) return []
 
     const pending = await tx.licenseRequest.findMany({

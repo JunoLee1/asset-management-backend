@@ -1,10 +1,11 @@
 import http from 'k6/http'
 import { check } from 'k6'
 
-const BASE_URL = __ENV.BASE_URL || 'http://localhost:3001'
+const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080'
 const PASSWORD = __ENV.PASSWORD || 'test1234!'
-const LICENSE_ID = __ENV.LICENSE_ID // 잔여 시트 1개짜리 라이선스 id — 실행 시 환경변수로 주입
+const LICENSE_ID = __ENV.LICENSE_ID
 const TARGET_USER_IDS = (__ENV.TARGET_USER_IDS || '').split(',').filter(Boolean)
+const REMAINING_SEATS = parseInt(__ENV.REMAINING_SEATS || '1', 10)
 
 // license.service.ts의 request()는 countActiveSeats()로 "active >= seatsTotal"을
 // 체크하지만 이 체크와 licenseRequest.create()가 트랜잭션/원자적 조건부 UPDATE로
@@ -50,6 +51,6 @@ export default function () {
   }
 
   check(null, {
-    '성공한 요청 수가 실제 잔여 시트 이내': () => ok.length <= 1,
+    '성공한 요청 수가 실제 잔여 시트 이내': () => ok.length <= REMAINING_SEATS,
   })
 }
