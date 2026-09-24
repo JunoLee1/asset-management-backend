@@ -5,6 +5,7 @@ import { prisma } from "../../lib/prisma";
 import { AppError } from "../../lib/AppError";
 import { env } from "../../config/env";
 import { logger } from "../../lib/logger";
+import { maskEmail } from "../../lib/maskPii";
 import { SmsService } from "../../services/sms.service";
 import type {
   LoginDto,
@@ -395,7 +396,7 @@ const requestPasswordReset = async (
     throw new AppError(500, "SMS 발송에 실패했습니다. 다시 시도해주세요.");
   }
 
-  logger.info({ email: dto.email }, "비밀번호 리셋 요청 - SMS 발송 완료");
+  logger.info({ email: maskEmail(dto.email) }, "비밀번호 리셋 요청 - SMS 발송 완료");
 };
 
 const verifyResetCode = async (dto: VerifyResetCodeInput): Promise<void> => {
@@ -441,7 +442,7 @@ const verifyResetCode = async (dto: VerifyResetCodeInput): Promise<void> => {
     });
   });
 
-  logger.info({ email: dto.email }, "비밀번호 리셋 완료");
+  logger.info({ email: maskEmail(dto.email) }, "비밀번호 리셋 완료");
 };
 
 export const authService = {
