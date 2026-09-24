@@ -1,14 +1,14 @@
 import { z } from 'zod'
 
 export const createManufacturerSchema = z.object({
-  name: z.string().trim().min(1, 'canonical 이름은 필수입니다.'),
-  aliases: z.array(z.string().trim().min(1)).optional(),
+  name: z.string().trim().min(1, 'canonical 이름은 필수입니다.').max(255),
+  aliases: z.array(z.string().trim().min(1).max(255)).optional(),
 })
 
 export const updateManufacturerSchema = z
   .object({
-    name: z.string().trim().min(1).optional(),
-    aliases: z.array(z.string().trim().min(1)).optional(),
+    name: z.string().trim().min(1).max(255).optional(),
+    aliases: z.array(z.string().trim().min(1).max(255)).optional(),
     isActive: z.boolean().optional(),
   })
   .refine((v) => Object.keys(v).length > 0, { message: '변경할 항목이 없습니다.' })

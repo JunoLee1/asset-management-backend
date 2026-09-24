@@ -186,7 +186,7 @@
 | 보안 — 인증 없는 접근 차단 | ✅ 401 차단 |
 | 보안 — GET 모든 역할 허용 | ✅ USER 조회 성공 |
 | 보안 — POST/PATCH/DELETE ADMIN 전용 차단 | ✅ USER/TEAM_LEAD 403 차단 (Burp 확인) |
-| 보안 — 입력값 퍼징 | 🔲 |
+| 보안 — 입력값 퍼징 | ✅ SQL injection 안전, 오버사이즈 수정 완료 (`fix/manufacturer-input-validation`) |
 
 ---
 
