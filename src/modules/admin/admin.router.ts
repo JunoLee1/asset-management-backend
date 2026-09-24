@@ -4,6 +4,7 @@ import { userController } from './user.controller'
 import { authenticate } from '../../middlewares/authenticate'
 import { authorize } from '../../middlewares/authorize'
 import { validateBody } from '../../middlewares/validate'
+import { inviteRateLimit } from '../../middlewares/writeRateLimit'
 import { inviteUserSchema } from '../../schemas/auth.schema'
 import {
   updateUserSchema,
@@ -23,7 +24,7 @@ router.get('/users/:id', authorize('ADMIN', 'TEAM_LEAD', 'DEPT_LEAD', 'REPAIR_OW
 router.get('/users/:id/history', authorize('ADMIN', 'TEAM_LEAD', 'DEPT_LEAD', 'REPAIR_OWNER'), userController.listHistory)
 
 // ── 변경 — ADMIN 전용 (역할·활성 상태 변경은 운영자만)
-router.post('/users/invite', authorize('ADMIN'), validateBody(inviteUserSchema), adminController.inviteUser)
+router.post('/users/invite', authorize('ADMIN'), inviteRateLimit, validateBody(inviteUserSchema), adminController.inviteUser)
 router.patch('/users/:id', authorize('ADMIN'), validateBody(updateUserSchema), userController.update)
 router.post('/users/:id/deactivate', authorize('ADMIN'), validateBody(deactivateUserSchema), userController.deactivate)
 router.post('/users/:id/activate', authorize('ADMIN'), validateBody(activateUserSchema), userController.activate)

@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { softwareController } from './software.controller'
 import { authenticate } from '../../../middlewares/authenticate'
+import { masterWriteRateLimit } from '../../../middlewares/writeRateLimit'
 
 const router:Router = Router()
 
@@ -15,9 +16,9 @@ router.post('/ingest', softwareController.ingest)
 
 // 인벤토리 CRUD
 router.get('/', softwareController.list)
-router.post('/', softwareController.create)
+router.post('/', masterWriteRateLimit, softwareController.create)
 router.get('/:id', softwareController.getById)
-router.patch('/:id', softwareController.update)
+router.patch('/:id', masterWriteRateLimit, softwareController.update)
 router.delete('/:id', softwareController.remove)
 
 // 허가유무 변경 (ADR 0002 결정 2 — SECURITY_OFFICER 별 라우트)

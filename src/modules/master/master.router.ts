@@ -2,6 +2,7 @@ import { Router, type RequestHandler } from 'express'
 import { authenticate } from '../../middlewares/authenticate'
 import { authorize } from '../../middlewares/authorize'
 import { validateBody } from '../../middlewares/validate'
+import { masterWriteRateLimit } from '../../middlewares/writeRateLimit'
 import {
   createDepartmentSchema,
   updateDepartmentSchema,
@@ -73,8 +74,8 @@ router.use(authenticate)
 for (const r of sharedResources) {
   router.get(r.path, r.handlers.list)
   router.get(`${r.path}/:id`, r.handlers.getById)
-  router.post(r.path, authorize('ADMIN', 'ASSET_MANAGER'), validateBody(r.createSchema), r.handlers.create)
-  router.patch(`${r.path}/:id`, authorize('ADMIN', 'ASSET_MANAGER'), validateBody(r.updateSchema), r.handlers.update)
+  router.post(r.path, authorize('ADMIN', 'ASSET_MANAGER'), masterWriteRateLimit, validateBody(r.createSchema), r.handlers.create)
+  router.patch(`${r.path}/:id`, authorize('ADMIN', 'ASSET_MANAGER'), masterWriteRateLimit, validateBody(r.updateSchema), r.handlers.update)
   router.delete(`${r.path}/:id`, authorize('ADMIN', 'ASSET_MANAGER'), r.handlers.remove)
   router.post(`${r.path}/:id/restore`, authorize('ADMIN', 'ASSET_MANAGER'), r.handlers.restore)
 }
@@ -82,16 +83,16 @@ for (const r of sharedResources) {
 // 부서 — 조회: 모든 인증 사용자 / CUD: ADMIN만
 router.get('/departments', departmentHandlers.list)
 router.get('/departments/:id', departmentHandlers.getById)
-router.post('/departments', authorize('ADMIN'), validateBody(createDepartmentSchema), departmentHandlers.create)
-router.patch('/departments/:id', authorize('ADMIN'), validateBody(updateDepartmentSchema), departmentHandlers.update)
+router.post('/departments', authorize('ADMIN'), masterWriteRateLimit, validateBody(createDepartmentSchema), departmentHandlers.create)
+router.patch('/departments/:id', authorize('ADMIN'), masterWriteRateLimit, validateBody(updateDepartmentSchema), departmentHandlers.update)
 router.delete('/departments/:id', authorize('ADMIN'), departmentHandlers.remove)
 router.post('/departments/:id/restore', authorize('ADMIN'), departmentHandlers.restore)
 
 // 팀 — 조회: 모든 인증 사용자 / CUD: ADMIN 또는 해당 부서장 (동적 체크)
 router.get('/teams', teamHandlers.list)
 router.get('/teams/:id', teamHandlers.getById)
-router.post('/teams', validateBody(createTeamSchema), teamHandlers.create)
-router.patch('/teams/:id', validateBody(updateTeamSchema), teamHandlers.update)
+router.post('/teams', masterWriteRateLimit, validateBody(createTeamSchema), teamHandlers.create)
+router.patch('/teams/:id', masterWriteRateLimit, validateBody(updateTeamSchema), teamHandlers.update)
 router.delete('/teams/:id', teamHandlers.remove)
 router.post('/teams/:id/restore', teamHandlers.restore)
 
