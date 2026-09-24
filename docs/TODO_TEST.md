@@ -162,10 +162,11 @@
 
 | 항목 | 상태 | 비고 |
 |---|---|---|
-| Smoke | 🔲 |
-| Stress | 🔲 |
-| 보안 — USER/TEAM_LEAD → 생성/수정/삭제 차단 (requireManager) | 🔲 |
-| 보안 — ASSET_MANAGER → 쓰기 허용 확인 | 🔲 |
+| Smoke | ✅ `k6/depreciation-smoke.js` 6/6 PASS |
+| Stress | ✅ `k6/depreciation-stress.js` 98,883/98,883 PASS, 에러율 0% |
+| 보안 — 인증 없는 접근 차단 | ✅ 401 차단 |
+| 보안 — USER/TEAM_LEAD → upsert/delete 차단 | ✅ 403 차단 (Burp 확인) |
+| 보안 — GET 모든 역할 허용 | ✅ USER 조회 성공 확인 |
 
 ---
 
