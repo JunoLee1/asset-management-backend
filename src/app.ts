@@ -62,6 +62,11 @@ app.use('/reports', monthlyReportRouter)
 
 app.get('/health', (_req, res) => res.json({ status: 'ok' }))
 
+// 매칭 안 된 요청은 JSON 404 로 통일 (Express default HTML 응답 방지)
+app.use((_req, res) => {
+  res.status(404).json({ message: '요청한 리소스를 찾을 수 없습니다.' })
+})
+
 app.use(errorHandler)
 
 export { app }
