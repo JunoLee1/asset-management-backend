@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Role } from '../generated/prisma/enums'
+import { Role, JobType } from '../generated/prisma/enums'
 
 const roleEnum = z.nativeEnum(Role)
 
@@ -26,6 +26,7 @@ export const updateUserSchema = z
     name: z.string().min(1).optional(),
     role: roleEnum.optional(),
     teamId: z.string().nullable().optional(),
+    jobType: z.nativeEnum(JobType).nullable().optional(),
     reason: z.string().min(1, 'reason 은 비어있을 수 없습니다.').max(500).optional(),
   })
   .strict()

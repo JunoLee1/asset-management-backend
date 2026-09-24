@@ -29,19 +29,41 @@ const requireManager = (requester: RequesterContext) => {
   }
 }
 
+const DEPT_MATCH_WEIGHT = 100
+const JOB_TYPE_MATCH_WEIGHT = 50
+const DAYS_WEIGHT = 1
+
+const calculatePriorityScore = (
+  now: Date,
+  createdAt: Date,
+  targetDeptId: string | null,
+  coreDepartmentIds: string[],
+  targetJobType: string | null,
+  coreJobTypes: string[],
+): number => {
+  let score = 0
+
+  // 부서 일치: 100점
+  if (targetDeptId && coreDepartmentIds.includes(targetDeptId)) {
+    score += DEPT_MATCH_WEIGHT
+  }
+
+  // 직종 일치: 50점
+  if (targetJobType && coreJobTypes.includes(targetJobType)) {
+    score += JOB_TYPE_MATCH_WEIGHT
+  }
+
+  // 대기일수: 1점/일
+  const daysWaiting = Math.floor((now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24))
+  score += daysWaiting * DAYS_WEIGHT
+
+  return score
+}
+
 type PrismaOrTx = typeof prisma | Prisma.TransactionClient
 
 const countActiveSeats = async (licenseId: string, client: PrismaOrTx = prisma): Promise<number> => {
-  const [assignments, pendingRequests] = await Promise.all([
-    client.licenseAssignment.count({ where: { licenseId, unassignedAt: null } }),
-    client.licenseRequest.count({
-      where: {
-        licenseId,
-        status: { in: ['PENDING_MANAGER', 'PENDING_DEPT', 'PENDING_SECURITY', 'PENDING_ADMIN'] },
-      },
-    }),
-  ])
-  return assignments + pendingRequests
+  return client.licenseAssignment.count({ where: { licenseId, unassignedAt: null } })
 }
 
 // license row를 SELECT ... FOR UPDATE로 잠가 동시 요청이 같은(오래된) 시트 수를
@@ -159,6 +181,7 @@ const getById = async (id: string, requester: RequesterContext): Promise<License
     productKey,
     productKeyMask: row.productKeyMask,
     coreDepartmentIds: row.coreDepartmentIds,
+    coreJobTypes: row.coreJobTypes,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
     assignments: row.assignments.map((a) => ({
@@ -209,6 +232,7 @@ const create = async (
         cost: input.cost ?? null,
         currency: input.currency ?? 'KRW',
         coreDepartmentIds: input.coreDepartmentIds ?? [],
+        coreJobTypes: input.coreJobTypes ?? [],
       },
     })
     if (input.softwareIds?.length) {
@@ -265,6 +289,7 @@ const update = async (
   if (input.cost !== undefined) data['cost'] = input.cost
   if (input.currency !== undefined) data['currency'] = input.currency
   if (input.coreDepartmentIds !== undefined) data['coreDepartmentIds'] = input.coreDepartmentIds
+  if (input.coreJobTypes !== undefined) data['coreJobTypes'] = input.coreJobTypes
   if (input.productKey !== undefined) {
     data['productKey'] = input.productKey ? encryptLicenseKey(input.productKey) : null
     data['productKeyMask'] = input.productKey ? maskLicenseKey(input.productKey) : null
@@ -285,12 +310,13 @@ const remove = async (id: string, requester: RequesterContext): Promise<void> =>
 }
 
 const getRequestById = async (id: string): Promise<LicenseRequestItem> => {
+  const now = new Date()
   const row = await prisma.licenseRequest.findUnique({
     where: { id },
     include: {
-      license: { select: { name: true, coreDepartmentIds: true } },
+      license: { select: { name: true, coreDepartmentIds: true, coreJobTypes: true } },
       requestedBy: { select: { name: true } },
-      targetUser: { select: { name: true, team: { select: { departmentId: true } } } },
+      targetUser: { select: { name: true, jobType: true, team: { select: { departmentId: true } } } },
       asset: { select: { assetCode: true } },
       managerApprovedBy: { select: { name: true } },
       deptApprovedBy: { select: { name: true } },
@@ -303,6 +329,14 @@ const getRequestById = async (id: string): Promise<LicenseRequestItem> => {
   const targetDeptId = row.targetUser.team?.departmentId ?? null
   const priorityTier: LicensePriorityTier =
     targetDeptId && row.license.coreDepartmentIds.includes(targetDeptId) ? 'CORE' : 'DEFAULT'
+  const priorityScore = calculatePriorityScore(
+    now,
+    row.createdAt,
+    targetDeptId,
+    row.license.coreDepartmentIds,
+    row.targetUser.jobType,
+    row.license.coreJobTypes,
+  )
   return {
     id: row.id,
     licenseId: row.licenseId,
@@ -315,6 +349,7 @@ const getRequestById = async (id: string): Promise<LicenseRequestItem> => {
     assetCode: row.asset?.assetCode ?? null,
     status: row.status as LicenseRequestStatus,
     priorityTier,
+    priorityScore,
     managerApprovedById: row.managerApprovedById,
     managerApprovedByName: row.managerApprovedBy?.name ?? null,
     managerApprovedAt: row.managerApprovedAt,
@@ -342,11 +377,6 @@ const request = async (
 ): Promise<LicenseRequestItem> => {
   const license = await prisma.license.findUnique({ where: { id: licenseId } })
   if (!license) throw new AppError(404, '라이선스를 찾을 수 없습니다.')
-
-  const active = await countActiveSeats(licenseId)
-  if (active >= license.seatsTotal) {
-    throw new AppError(400, `잔여 시트가 없습니다. (${active}/${license.seatsTotal})`)
-  }
 
   const [requesterUser, targetUser] = await Promise.all([
     prisma.user.findUnique({
@@ -393,15 +423,8 @@ const request = async (
     initialStatus = 'PENDING_MANAGER'
   }
 
-  // 원자적 재확인 + 생성 — license row를 잠근 채로 다시 센 뒤 생성해야, 동시 요청들이
-  // 똑같은(오래된) 시트 수를 보고 나란히 통과해버리는 걸 막을 수 있음 (위 사전 체크는
-  // 빠른 실패용일 뿐 — 진짜 방어선은 여기)
   const created = await prisma.$transaction(async (tx) => {
     await lockLicenseForUpdate(tx, licenseId)
-    const activeInTx = await countActiveSeats(licenseId, tx)
-    if (activeInTx >= license.seatsTotal) {
-      throw new AppError(409, `잔여 시트가 없습니다. (${activeInTx}/${license.seatsTotal})`)
-    }
     return tx.licenseRequest.create({
       data: {
         licenseId,
@@ -606,12 +629,12 @@ const approveAdmin = async (
   // race condition 방어: license row를 잠근 채로 최종 승인 시점에 시트를 재확인하고,
   // 그 안에서 승인 확정 + 할당 생성까지 원자적으로 처리 — 동시에 여러 PENDING_ADMIN
   // 요청이 승인되면서 seatsTotal을 넘기는 걸 막는 진짜 최종 방어선.
-  // 이 요청 자체는 PENDING_ADMIN → countActiveSeats 에 포함되어 있으므로 seatsTotal 초과 기준은 >
+  // countActiveSeats()는 활성 할당만 셈 — 이 요청은 카운트에 포함되지 않으므로 기준은 >=
   await prisma.$transaction(async (tx) => {
     await lockLicenseForUpdate(tx, licenseId)
     const activeInTx = await countActiveSeats(licenseId, tx)
-    if (activeInTx > license.seatsTotal) {
-      throw new AppError(409, `시트가 부족합니다. 현재 잠금 수(${activeInTx}) > 총 시트(${license.seatsTotal})`)
+    if (activeInTx >= license.seatsTotal) {
+      throw new AppError(409, `시트가 부족합니다. 현재 활성 할당(${activeInTx}) >= 총 시트(${license.seatsTotal})`)
     }
 
     await tx.licenseRequest.update({
@@ -733,15 +756,16 @@ const listRequests = async (
 ): Promise<LicenseRequestItem[]> => {
   if (requester.role === 'USER') throw new AppError(403, '조회 권한이 없습니다.')
 
+  const now = new Date()
   const rows = await prisma.licenseRequest.findMany({
     where: {
       licenseId,
       ...(query.status ? { status: query.status } : {}),
     },
     include: {
-      license: { select: { name: true, coreDepartmentIds: true } },
+      license: { select: { name: true, coreDepartmentIds: true, coreJobTypes: true } },
       requestedBy: { select: { name: true } },
-      targetUser: { select: { name: true, team: { select: { departmentId: true } } } },
+      targetUser: { select: { name: true, jobType: true, team: { select: { departmentId: true } } } },
       asset: { select: { assetCode: true } },
       managerApprovedBy: { select: { name: true } },
       deptApprovedBy: { select: { name: true } },
@@ -756,6 +780,14 @@ const listRequests = async (
     const targetDeptId = row.targetUser.team?.departmentId ?? null
     const priorityTier: LicensePriorityTier =
       targetDeptId && row.license.coreDepartmentIds.includes(targetDeptId) ? 'CORE' : 'DEFAULT'
+    const priorityScore = calculatePriorityScore(
+      now,
+      row.createdAt,
+      targetDeptId,
+      row.license.coreDepartmentIds,
+      row.targetUser.jobType,
+      row.license.coreJobTypes,
+    )
 
     return {
       id: row.id,
@@ -769,6 +801,7 @@ const listRequests = async (
       assetCode: row.asset?.assetCode ?? null,
       status: row.status as LicenseRequestStatus,
       priorityTier,
+      priorityScore,
       managerApprovedById: row.managerApprovedById,
       managerApprovedByName: row.managerApprovedBy?.name ?? null,
       managerApprovedAt: row.managerApprovedAt,
@@ -789,7 +822,84 @@ const listRequests = async (
     }
   })
 
-  return items
+  return items.sort(
+    (a, b) => b.priorityScore - a.priorityScore || a.createdAt.getTime() - b.createdAt.getTime(),
+  )
+}
+
+const bulkAssign = async (
+  licenseId: string,
+  requester: RequesterContext,
+): Promise<{ assigned: LicenseRequestItem[]; stillWaiting: LicenseRequestItem[] }> => {
+  if (requester.role !== 'ADMIN') throw new AppError(403, 'ADMIN 권한이 필요합니다.')
+
+  const license = await prisma.license.findUnique({ where: { id: licenseId } })
+  if (!license) throw new AppError(404, '라이선스를 찾을 수 없습니다.')
+
+  const now = new Date()
+
+  const assignedIds = await prisma.$transaction(async (tx) => {
+    await lockLicenseForUpdate(tx, licenseId)
+
+    const activeCount = await tx.licenseAssignment.count({ where: { licenseId, unassignedAt: null } })
+    const availableSeats = license.seatsTotal - activeCount
+    if (availableSeats <= 0) return []
+
+    const pending = await tx.licenseRequest.findMany({
+      where: { licenseId, status: 'PENDING_ADMIN' },
+      include: {
+        license: { select: { coreDepartmentIds: true, coreJobTypes: true } },
+        targetUser: { select: { jobType: true, team: { select: { departmentId: true } } } },
+      },
+    })
+
+    const scored = pending
+      .map((req) => ({
+        req,
+        score: calculatePriorityScore(
+          now,
+          req.createdAt,
+          req.targetUser.team?.departmentId ?? null,
+          req.license.coreDepartmentIds,
+          req.targetUser.jobType ?? null,
+          req.license.coreJobTypes as string[],
+        ),
+      }))
+      .sort((a, b) => b.score - a.score || a.req.createdAt.getTime() - b.req.createdAt.getTime())
+
+    const toAssign = scored.slice(0, availableSeats)
+
+    for (const { req } of toAssign) {
+      await tx.licenseRequest.update({
+        where: { id: req.id },
+        data: { status: 'APPROVED', adminApprovedById: requester.id, adminApprovedAt: now },
+      })
+      await tx.licenseAssignment.create({
+        data: { licenseId, userId: req.targetUserId, assetId: req.assetId ?? null },
+      })
+    }
+
+    return toAssign.map(({ req }) => req.id)
+  })
+
+  for (const id of assignedIds) {
+    const req = await prisma.licenseRequest.findUnique({ where: { id } })
+    if (req) {
+      await Promise.resolve(
+        notificationService.createLicenseApprovedNotification({
+          requestId: id,
+          licenseId,
+          licenseName: license.name,
+          requestedById: req.requestedById,
+        }),
+      ).catch(() => {})
+    }
+  }
+
+  const assigned = await Promise.all(assignedIds.map((id) => getRequestById(id)))
+  const stillWaiting = await listRequests(licenseId, { status: 'PENDING_ADMIN' }, requester)
+
+  return { assigned, stillWaiting }
 }
 
 const unassign = async (
@@ -815,5 +925,7 @@ const unassign = async (
 export const licenseService = {
   list, getById, create, update, remove,
   unassign,
+  getRequestById,
   request, approveManager, approveDept, approveSecurity, approveAdmin, reject, cancel, listRequests,
+  bulkAssign,
 }

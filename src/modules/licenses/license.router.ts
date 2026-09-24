@@ -17,6 +17,7 @@ router.post('/:id/assignments/:assignmentId/unassign', licenseController.unassig
 
 // 승인 결재 흐름
 router.post('/:id/requests', licenseController.createRequest)
+router.post('/:id/requests/bulk-assign', licenseController.bulkAssignHandler)
 router.get('/:id/requests', licenseController.listRequests)
 router.post('/:id/requests/:requestId/approve-manager', licenseController.approveManagerHandler)
 router.post('/:id/requests/:requestId/approve-dept', licenseController.approveDeptHandler)

@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { JobType } from '../generated/prisma/enums'
 
 const currencyEnum = z.enum(['KRW', 'USD', 'EUR', 'GBP', 'JPY'])
 
@@ -14,6 +15,7 @@ export const createLicenseSchema = z
     currency: currencyEnum.default('KRW'),
     softwareIds: z.string().array().optional(),
     coreDepartmentIds: z.string().array().optional(),
+    coreJobTypes: z.array(z.nativeEnum(JobType)).optional(),
   })
   .refine((d) => !d.expiryDate || d.expiryDate >= d.purchaseDate, {
     message: '만료일은 구매일 이전일 수 없습니다.',
@@ -31,6 +33,7 @@ export const updateLicenseSchema = z
     cost: z.number().nonnegative().nullable().optional(),
     currency: currencyEnum.optional(),
     coreDepartmentIds: z.string().array().optional(),
+    coreJobTypes: z.array(z.nativeEnum(JobType)).optional(),
   })
   // 둘 다 입력된 경우에만 zod 단에서 비교. 한 쪽만 변경되는 경우는 service 가 기존 값과 비교.
   .refine((d) => !d.purchaseDate || !d.expiryDate || d.expiryDate >= d.purchaseDate, {

@@ -30,6 +30,7 @@ export interface LicenseDetail extends LicenseListItem {
   assignments: LicenseAssignmentDetail[]
   softwares: SoftwareLinkItem[]
   coreDepartmentIds: string[]
+  coreJobTypes: JobType[]
 }
 
 export const calculateLicenseCoverage = (
@@ -72,6 +73,7 @@ export interface CreateLicenseInput {
   currency?: Currency
   softwareIds?: string[]
   coreDepartmentIds?: string[]
+  coreJobTypes?: JobType[]
 }
 
 export interface UpdateLicenseInput {
@@ -84,6 +86,7 @@ export interface UpdateLicenseInput {
   cost?: number | null
   currency?: Currency
   coreDepartmentIds?: string[]
+  coreJobTypes?: JobType[]
 }
 
 export interface ListLicensesQuery {
@@ -102,8 +105,8 @@ export type { RequesterContext } from '../../lib/requestHelpers'
 
 export type { PaginatedResult } from '../../lib/pagination'
 
-import type { LicenseRequestStatus } from '../../generated/prisma/enums'
-export type { LicenseRequestStatus }
+import type { LicenseRequestStatus, JobType } from '../../generated/prisma/enums'
+export type { LicenseRequestStatus, JobType }
 
 export type LicensePriorityTier = 'CORE' | 'DEFAULT'
 
@@ -119,6 +122,7 @@ export interface LicenseRequestItem {
   assetCode: string | null
   status: LicenseRequestStatus
   priorityTier: LicensePriorityTier
+  priorityScore: number
   managerApprovedById: string | null
   managerApprovedByName: string | null
   managerApprovedAt: Date | null

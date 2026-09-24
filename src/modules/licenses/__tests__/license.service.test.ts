@@ -348,6 +348,78 @@ describe('licenseService.getById', () => {
   })
 })
 
+describe('licenseService — getRequestById priorityScore', () => {
+  it('부서+직종 일치 시 priorityScore = 150 + 대기일', async () => {
+    const createdAt = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) // 2일 전
+    mockLRFindUnique.mockResolvedValueOnce({
+      id: 'req1', licenseId: 'lic1', requestedById: 'r1', targetUserId: 'u1',
+      assetId: null, status: 'PENDING_ADMIN',
+      license: { name: 'Adobe', coreDepartmentIds: ['dept1'], coreJobTypes: ['DEVELOPER'] },
+      requestedBy: { name: 'Requester' },
+      targetUser: { name: 'Target', jobType: 'DEVELOPER', team: { departmentId: 'dept1' } },
+      asset: null,
+      managerApprovedBy: null, deptApprovedBy: null, securityReviewedBy: null,
+      adminApprovedBy: null, rejectedBy: null,
+      managerApprovedById: null, managerApprovedAt: null,
+      deptApprovedById: null, deptApprovedAt: null,
+      securityReviewedById: null, securityReviewedAt: null,
+      adminApprovedById: null, adminApprovedAt: null,
+      rejectedById: null, rejectedAt: null, rejectReason: null,
+      createdAt,
+    })
+    const result = await (licenseService as any).getRequestById('req1')
+    // dept(100) + jobType(50) + 2일(2) = 152
+    expect(result.priorityScore).toBe(152)
+    expect(result.priorityTier).toBe('CORE')
+  })
+
+  it('직종 불일치 시 +50 없음', async () => {
+    const createdAt = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) // 1일 전
+    mockLRFindUnique.mockResolvedValueOnce({
+      id: 'req2', licenseId: 'lic1', requestedById: 'r1', targetUserId: 'u1',
+      assetId: null, status: 'PENDING_ADMIN',
+      license: { name: 'Adobe', coreDepartmentIds: ['dept1'], coreJobTypes: ['DEVELOPER'] },
+      requestedBy: { name: 'Requester' },
+      targetUser: { name: 'Target', jobType: 'DESIGNER', team: { departmentId: 'dept1' } },
+      asset: null,
+      managerApprovedBy: null, deptApprovedBy: null, securityReviewedBy: null,
+      adminApprovedBy: null, rejectedBy: null,
+      managerApprovedById: null, managerApprovedAt: null,
+      deptApprovedById: null, deptApprovedAt: null,
+      securityReviewedById: null, securityReviewedAt: null,
+      adminApprovedById: null, adminApprovedAt: null,
+      rejectedById: null, rejectedAt: null, rejectReason: null,
+      createdAt,
+    })
+    const result = await (licenseService as any).getRequestById('req2')
+    // dept(100) + jobType(0) + 1일(1) = 101
+    expect(result.priorityScore).toBe(101)
+  })
+
+  it('jobType null 이면 직종 가중치 0', async () => {
+    const createdAt = new Date()
+    mockLRFindUnique.mockResolvedValueOnce({
+      id: 'req3', licenseId: 'lic1', requestedById: 'r1', targetUserId: 'u1',
+      assetId: null, status: 'PENDING_ADMIN',
+      license: { name: 'Adobe', coreDepartmentIds: [], coreJobTypes: ['DEVELOPER'] },
+      requestedBy: { name: 'Requester' },
+      targetUser: { name: 'Target', jobType: null, team: null },
+      asset: null,
+      managerApprovedBy: null, deptApprovedBy: null, securityReviewedBy: null,
+      adminApprovedBy: null, rejectedBy: null,
+      managerApprovedById: null, managerApprovedAt: null,
+      deptApprovedById: null, deptApprovedAt: null,
+      securityReviewedById: null, securityReviewedAt: null,
+      adminApprovedById: null, adminApprovedAt: null,
+      rejectedById: null, rejectedAt: null, rejectReason: null,
+      createdAt,
+    })
+    const result = await (licenseService as any).getRequestById('req3')
+    expect(result.priorityScore).toBe(0)
+    expect(result.priorityTier).toBe('DEFAULT')
+  })
+})
+
 const baseRequestRow = {
   id: 'req-1',
   licenseId: 'lic-1',
@@ -382,33 +454,48 @@ const baseRequestRow = {
 const requesterNoTeam = { id: 'mgr-1', name: 'Manager', teamId: null, team: null }
 
 describe('licenseService.request', () => {
-  it('PENDING 요청이 있으면 시트 잠금에 포함된다', async () => {
-    // seatsTotal=2, 활성 할당 1, PENDING 요청 1 → 잔여 0 (user 조회 전에 throw)
-    mockLicenseFindUnique.mockResolvedValue({ ...baseLicense, seatsTotal: 2 })
-    mockLACount.mockResolvedValue(1)
-    mockLRCount.mockResolvedValue(1)
+  it('좌석이 꽉 찬 상태에서도 요청 생성이 허용된다 (좌석 초과 차단 제거)', async () => {
+    const mockLicense = { id: 'lic-1', seatsTotal: 1, name: 'Adobe', coreDepartmentIds: [], coreJobTypes: [] }
+    mockLicenseFindUnique.mockResolvedValueOnce(mockLicense)
+    // active assignments = 1 = seatsTotal (previously would have thrown 400)
+    // countActiveSeats is no longer called in request() — no seat check needed here
 
-    await expect(
-      licenseService.request('lic-1', { targetUserId: 'user-2' }, managerCtx),
-    ).rejects.toThrow(/잔여 시트가 없습니다/)
-  })
+    const mockRequesterUser = { id: 'u1', name: 'User', role: 'USER', teamId: null, team: null }
+    const mockTargetUser = { id: 'u2', name: 'Target' }
+    ;(prisma.user.findUnique as jest.Mock)
+      .mockResolvedValueOnce(mockRequesterUser)
+      .mockResolvedValueOnce(mockTargetUser)
+    ;(prisma.licenseAssignment.findFirst as jest.Mock).mockResolvedValueOnce(null)
+    mockLRFindFirst.mockResolvedValueOnce(null)
 
-  it('바깥쪽 사전 체크는 통과했지만 트랜잭션 안에서 다시 센 시트가 꽉 찼으면 생성하지 않고 거부한다 (동시 요청 방어)', async () => {
-    mockLicenseFindUnique.mockResolvedValue({ ...baseLicense, seatsTotal: 1 })
-    // 1번째 호출(바깥 사전 체크) = 0/1 → 통과, 2번째 호출(트랜잭션 안 재확인) = 1/1 → 이미 다른 동시 요청이 선점
-    mockLACount.mockResolvedValueOnce(0).mockResolvedValueOnce(1)
-    mockLRCount.mockResolvedValue(0)
-    mockUserFindUnique
-      .mockResolvedValueOnce(requesterNoTeam)
-      .mockResolvedValueOnce({ id: 'user-2', name: 'Kim' })
-    mockLAFindFirst.mockResolvedValue(null)
-    mockLRFindFirst.mockResolvedValue(null)
+    const createdReq = {
+      id: 'req1', licenseId: 'lic-1', requestedById: 'u1', targetUserId: 'u2',
+      assetId: null, status: 'PENDING_SECURITY',
+    }
+    const mockTx = {
+      $queryRaw: jest.fn().mockResolvedValue([]),
+      licenseRequest: { create: jest.fn().mockResolvedValue(createdReq) },
+    }
+    ;(prisma.$transaction as jest.Mock).mockImplementationOnce((fn: (tx: typeof mockTx) => Promise<unknown>) => fn(mockTx))
 
-    await expect(
-      licenseService.request('lic-1', { targetUserId: 'user-2' }, managerCtx),
-    ).rejects.toThrow(/잔여 시트가 없습니다/)
-    expect(mockLRCreate).not.toHaveBeenCalled()
-    expect(prisma.$queryRaw).toHaveBeenCalled() // license row를 잠근 뒤 재확인했어야 함
+    mockLRFindUnique.mockResolvedValueOnce({
+      ...createdReq,
+      license: { name: 'Adobe', coreDepartmentIds: [], coreJobTypes: [] },
+      requestedBy: { name: 'User' },
+      targetUser: { name: 'Target', jobType: null, team: null },
+      asset: null,
+      managerApprovedBy: null, deptApprovedBy: null, securityReviewedBy: null,
+      adminApprovedBy: null, rejectedBy: null,
+      managerApprovedById: null, managerApprovedAt: null,
+      deptApprovedById: null, deptApprovedAt: null,
+      securityReviewedById: null, securityReviewedAt: null,
+      adminApprovedById: null, adminApprovedAt: null,
+      rejectedById: null, rejectedAt: null, rejectReason: null,
+      createdAt: new Date(),
+    })
+
+    const result = await licenseService.request('lic-1', { targetUserId: 'u2' }, { id: 'u1', role: 'USER' })
+    expect(result.status).toBe('PENDING_SECURITY')
   })
 
   it('존재하지 않는 라이선스면 404', async () => {
@@ -729,9 +816,8 @@ describe('licenseService.approveAdmin', () => {
 
   it('승인 시점에 시트 초과면 거부 — 트랜잭션(FOR UPDATE) 안에서 재확인 후 승인·할당 롤백', async () => {
     mockLRFindUnique.mockResolvedValue({ ...baseRequest })
-    mockLicenseFindUnique.mockResolvedValue({ ...baseLicense, seatsTotal: 3 })
-    mockLACount.mockResolvedValue(3)
-    mockLRCount.mockResolvedValue(1) // 이 요청 자체가 PENDING_ADMIN 으로 카운트됨 → 3+1=4 > 3
+    mockLicenseFindUnique.mockResolvedValue({ ...baseLicense, seatsTotal: 2 })
+    mockLACount.mockResolvedValue(2) // 활성 할당 2 >= seatsTotal 2 → 거부
 
     await expect(
       licenseService.approveAdmin('lic-1', 'req-1', adminCtx),
@@ -747,9 +833,10 @@ describe('licenseService.approveAdmin', () => {
       .mockResolvedValueOnce({
         ...baseRequest,
         status: 'APPROVED',
-        license: { name: 'Office 365' },
+        createdAt: new Date('2026-01-01'),
+        license: { name: 'Office 365', coreDepartmentIds: [], coreJobTypes: [] },
         requestedBy: { name: 'Kim' },
-        targetUser: { name: 'Lee' },
+        targetUser: { name: 'Lee', jobType: null, team: null },
         asset: null,
         managerApprovedBy: null,
         deptApprovedBy: null,
@@ -759,7 +846,6 @@ describe('licenseService.approveAdmin', () => {
       })
     mockLicenseFindUnique.mockResolvedValue({ ...baseLicense, seatsTotal: 100 })
     mockLACount.mockResolvedValue(5)
-    mockLRCount.mockResolvedValue(1) // 현재 이 요청 자체가 PENDING_ADMIN 으로 카운트됨
     mockLRUpdate.mockResolvedValue({})
     mockLACreate.mockResolvedValue({})
 
@@ -814,9 +900,10 @@ describe('licenseService.approveSecurity', () => {
       .mockResolvedValueOnce({                      // getRequestById 내부
         ...baseRequest,
         status: 'PENDING_ADMIN',
-        license: { name: 'Office 365' },
+        createdAt: new Date('2026-01-01'),
+        license: { name: 'Office 365', coreDepartmentIds: [], coreJobTypes: [] },
         requestedBy: { name: 'Kim' },
-        targetUser: { name: 'Lee' },
+        targetUser: { name: 'Lee', jobType: null, team: null },
         asset: null,
         managerApprovedBy: null,
         deptApprovedBy: null,
@@ -845,9 +932,10 @@ describe('licenseService.approveSecurity', () => {
       .mockResolvedValueOnce({
         ...baseRequest,
         status: 'PENDING_ADMIN',
-        license: { name: 'Office 365' },
+        createdAt: new Date('2026-01-01'),
+        license: { name: 'Office 365', coreDepartmentIds: [], coreJobTypes: [] },
         requestedBy: { name: 'Kim' },
-        targetUser: { name: 'Lee' },
+        targetUser: { name: 'Lee', jobType: null, team: null },
         asset: null,
         managerApprovedBy: null,
         deptApprovedBy: null,
@@ -980,6 +1068,94 @@ describe('licenseService.cancel', () => {
   })
 })
 
+describe('licenseService.bulkAssign', () => {
+  it('ADMIN 아니면 403', async () => {
+    await expect(
+      licenseService.bulkAssign('lic1', { id: 'u1', role: 'USER' }),
+    ).rejects.toThrow('ADMIN')
+  })
+
+  it('잔여석 0이면 빈 결과, 에러 아님', async () => {
+    mockLicenseFindUnique.mockResolvedValueOnce({ id: 'lic1', seatsTotal: 2, name: 'L' })
+    const mockTx = {
+      $queryRaw: jest.fn().mockResolvedValue([]),
+      licenseAssignment: { count: jest.fn().mockResolvedValue(2), create: jest.fn() },
+      licenseRequest: { findMany: jest.fn().mockResolvedValue([]), update: jest.fn() },
+    }
+    ;(prisma.$transaction as jest.Mock).mockImplementationOnce((fn: (tx: typeof mockTx) => Promise<unknown>) => fn(mockTx))
+    mockLRFindMany.mockResolvedValueOnce([])
+
+    const result = await licenseService.bulkAssign('lic1', { id: 'admin', role: 'ADMIN' })
+    expect(result.assigned).toHaveLength(0)
+    expect(result.stillWaiting).toHaveLength(0)
+  })
+
+  it('대기 요청 수 > 잔여석: 상위 N개만 APPROVED, 점수 높은 순', async () => {
+    mockLicenseFindUnique.mockResolvedValueOnce({ id: 'lic1', seatsTotal: 2, name: 'L' })
+
+    const now = new Date()
+    const makeReq = (id: string, deptMatch: boolean, jobMatch: boolean) => ({
+      id, licenseId: 'lic1', requestedById: 'r1', targetUserId: id,
+      assetId: null, status: 'PENDING_ADMIN',
+      license: { coreDepartmentIds: deptMatch ? ['dept1'] : [], coreJobTypes: jobMatch ? ['DEVELOPER'] : [] },
+      targetUser: {
+        jobType: jobMatch ? 'DEVELOPER' : null,
+        team: deptMatch ? { departmentId: 'dept1' } : null,
+      },
+      createdAt: now,
+    })
+
+    const mockUpdate = jest.fn().mockImplementation(({ where }: { where: { id: string } }) =>
+      Promise.resolve({ id: where.id })
+    )
+    const mockCreate = jest.fn().mockResolvedValue({})
+    const mockTx = {
+      $queryRaw: jest.fn().mockResolvedValue([]),
+      licenseAssignment: { count: jest.fn().mockResolvedValue(0), create: mockCreate },
+      licenseRequest: {
+        findMany: jest.fn().mockResolvedValue([
+          makeReq('low', false, false),   // 0점
+          makeReq('high', true, true),    // 150점
+          makeReq('mid', true, false),    // 100점
+        ]),
+        update: mockUpdate,
+      },
+    }
+    ;(prisma.$transaction as jest.Mock).mockImplementationOnce((fn: (tx: typeof mockTx) => Promise<unknown>) => fn(mockTx))
+
+    // getRequestById mock for assigned results
+    mockLRFindUnique.mockResolvedValue({
+      id: 'high', licenseId: 'lic1', status: 'APPROVED',
+      license: { name: 'L', coreDepartmentIds: [], coreJobTypes: [] },
+      requestedBy: { name: 'R' },
+      targetUser: { name: 'high', jobType: null, team: null },
+      asset: null,
+      managerApprovedBy: null, deptApprovedBy: null, securityReviewedBy: null,
+      adminApprovedBy: null, rejectedBy: null,
+      requestedById: 'r1', targetUserId: 'high', assetId: null,
+      managerApprovedById: null, managerApprovedAt: null,
+      deptApprovedById: null, deptApprovedAt: null,
+      securityReviewedById: null, securityReviewedAt: null,
+      adminApprovedById: 'admin', adminApprovedAt: new Date(),
+      rejectedById: null, rejectedAt: null, rejectReason: null,
+      createdAt: now,
+    })
+    // listRequests mock for stillWaiting
+    mockLRFindMany.mockResolvedValueOnce([])
+
+    const result = await licenseService.bulkAssign('lic1', { id: 'admin', role: 'ADMIN' })
+
+    // seatsTotal=2, active=0 → 2 seats available → top 2 approved
+    expect(mockUpdate).toHaveBeenCalledTimes(2)
+    expect(mockCreate).toHaveBeenCalledTimes(2)
+    // 'low' (0점) should NOT be approved
+    const updatedIds = mockUpdate.mock.calls.map((c: unknown[]) => (c[0] as { where: { id: string } }).where.id)
+    expect(updatedIds).not.toContain('low')
+    expect(updatedIds).toContain('high')
+    expect(updatedIds).toContain('mid')
+  })
+})
+
 describe('licenseService.listRequests', () => {
   it('USER 권한이면 403', async () => {
     await expect(
@@ -1059,6 +1235,57 @@ describe('licenseService.listRequests', () => {
     expect(byId.get('req-sales')).toBe('DEFAULT')
   })
 
+  it('디자인 부서가 일러스트레이터 라이선스를 대여하면 CORE, 타 부서는 DEFAULT', async () => {
+    const baseRow = {
+      licenseId: 'lic-illustrator',
+      license: { name: 'Adobe Illustrator', coreDepartmentIds: ['dept-design'] },
+      requestedById: 'u-1',
+      requestedBy: { name: 'Alice' },
+      assetId: null,
+      asset: null,
+      status: 'PENDING_ADMIN' as const,
+      managerApprovedById: null,
+      managerApprovedBy: null,
+      managerApprovedAt: null,
+      deptApprovedById: null,
+      deptApprovedBy: null,
+      deptApprovedAt: null,
+      securityReviewedById: null,
+      securityReviewedBy: null,
+      securityReviewedAt: null,
+      adminApprovedById: null,
+      adminApprovedBy: null,
+      adminApprovedAt: null,
+      rejectedById: null,
+      rejectedBy: null,
+      rejectedAt: null,
+      rejectReason: null,
+    }
+
+    mockLRFindMany.mockResolvedValue([
+      {
+        ...baseRow,
+        id: 'req-design',
+        targetUserId: 'u-design-1',
+        targetUser: { name: '디자이너', team: { departmentId: 'dept-design' } },
+        createdAt: new Date('2026-01-01'),
+      },
+      {
+        ...baseRow,
+        id: 'req-sales',
+        targetUserId: 'u-sales-1',
+        targetUser: { name: '영업사원', team: { departmentId: 'dept-sales' } },
+        createdAt: new Date('2026-01-02'),
+      },
+    ])
+
+    const result = await licenseService.listRequests('lic-illustrator', {}, adminCtx)
+
+    const byId = new Map(result.map((r) => [r.id, r.priorityTier]))
+    expect(byId.get('req-design')).toBe('CORE')
+    expect(byId.get('req-sales')).toBe('DEFAULT')
+  })
+
   it('targetUser에 team이 없으면 DEFAULT', async () => {
     mockLRFindMany.mockResolvedValue([
       {
@@ -1094,5 +1321,69 @@ describe('licenseService.listRequests', () => {
 
     const result = await licenseService.listRequests('lic-1', {}, adminCtx)
     expect(result[0]?.priorityTier).toBe('DEFAULT')
+  })
+
+  it('priorityScore 내림차순, 동점은 createdAt 오름차순 정렬', async () => {
+    const now = new Date()
+    const day = 24 * 60 * 60 * 1000
+    const makeRow = (id: string, deptMatch: boolean, jobMatch: boolean, daysAgo: number) => ({
+      id, licenseId: 'lic1', requestedById: 'r1', targetUserId: id,
+      assetId: null, status: 'PENDING_ADMIN' as const,
+      license: { name: 'L', coreDepartmentIds: deptMatch ? ['dept1'] : [], coreJobTypes: jobMatch ? ['DEVELOPER'] : [] },
+      requestedBy: { name: 'R' },
+      targetUser: {
+        name: id,
+        jobType: jobMatch ? 'DEVELOPER' : 'DESIGNER',
+        team: { departmentId: deptMatch ? 'dept1' : 'dept2' },
+      },
+      asset: null,
+      managerApprovedBy: null, deptApprovedBy: null, securityReviewedBy: null,
+      adminApprovedBy: null, rejectedBy: null,
+      managerApprovedById: null, managerApprovedAt: null,
+      deptApprovedById: null, deptApprovedAt: null,
+      securityReviewedById: null, securityReviewedAt: null,
+      adminApprovedById: null, adminApprovedAt: null,
+      rejectedById: null, rejectedAt: null, rejectReason: null,
+      createdAt: new Date(now.getTime() - daysAgo * day),
+    })
+    // A: dept+job = 150+0 = 150, B: dept = 100+0 = 100, C: job+10일 = 50+10 = 60, D: 0
+    mockLRFindMany.mockResolvedValueOnce([
+      makeRow('D', false, false, 0),
+      makeRow('B', true, false, 0),
+      makeRow('A', true, true, 0),
+      makeRow('C', false, true, 10),
+    ])
+    const result = await licenseService.listRequests('lic1', {}, { id: 'admin', role: 'ADMIN' })
+    expect(result.map((r) => r.targetUserId)).toEqual(['A', 'B', 'C', 'D'])
+    expect(result[0].priorityScore).toBe(150)
+    expect(result[1].priorityScore).toBe(100)
+  })
+
+  it('동점이면 createdAt 오름차순 (먼저 신청한 쪽 우선)', async () => {
+    const now = new Date()
+    const day = 24 * 60 * 60 * 1000
+    const makeRow = (id: string, daysAgo: number) => ({
+      id, licenseId: 'lic1', requestedById: 'r1', targetUserId: id,
+      assetId: null, status: 'PENDING_ADMIN' as const,
+      license: { name: 'L', coreDepartmentIds: [], coreJobTypes: [] },
+      requestedBy: { name: 'R' },
+      targetUser: { name: id, jobType: null, team: null },
+      asset: null,
+      managerApprovedBy: null, deptApprovedBy: null, securityReviewedBy: null,
+      adminApprovedBy: null, rejectedBy: null,
+      managerApprovedById: null, managerApprovedAt: null,
+      deptApprovedById: null, deptApprovedAt: null,
+      securityReviewedById: null, securityReviewedAt: null,
+      adminApprovedById: null, adminApprovedAt: null,
+      rejectedById: null, rejectedAt: null, rejectReason: null,
+      createdAt: new Date(now.getTime() - daysAgo * day),
+    })
+    mockLRFindMany.mockResolvedValueOnce([
+      makeRow('newer', 1),
+      makeRow('oldest', 3),
+      makeRow('middle', 2),
+    ])
+    const result = await licenseService.listRequests('lic1', {}, { id: 'admin', role: 'ADMIN' })
+    expect(result.map((r) => r.targetUserId)).toEqual(['oldest', 'middle', 'newer'])
   })
 })
