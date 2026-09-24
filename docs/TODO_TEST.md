@@ -205,11 +205,12 @@
 
 | 항목 | 상태 | 비고 |
 |---|---|---|
-| Smoke | 🔲 |
-| Stress | 🔲 |
-| 보안 — USER → 리포트 접근 차단 | 🔲 |
-| 보안 — DEPT_LEAD/ADMIN → 부서 리포트 생성/삭제 권한 | 🔲 |
-| 보안 — 민감 정보 노출 범위 | 🔲 |
+| Smoke | ✅ `k6/reports-smoke.js` 6/6 PASS |
+| Stress | ✅ `k6/reports-stress.js` 85,151/85,151 PASS, 에러율 0% |
+| 보안 — USER → 수리/월말 리포트 접근 차단 | ✅ 403 차단 (Burp 확인) |
+| 보안 — TEAM_LEAD → monthly-dept 접근 차단 (DEPT_LEAD 전용) | ✅ 403 차단 |
+| 보안 — 인증 없는 접근 차단 | ✅ 401 차단 |
+| 보안 — 보고서 승인/거절 플로우 | ✅ submit/review/reject/acknowledge 상태전이로 처리 (별도 approve 없음) |
 
 ---
 
