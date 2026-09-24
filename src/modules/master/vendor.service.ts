@@ -7,6 +7,55 @@ import { encryptField, maskBankAccount } from '../../lib/fieldEncryption'
 import { logSensitiveAction } from '../../lib/sensitiveAuditLog'
 import { verifyBusinessRegistration } from './ntsClient'
 
+type VendorRequesterRole = string | undefined
+
+// ADMIN / ASSET_MANAGER / REPAIR_OWNER → 전체 노출
+// TEAM_LEAD / DEPT_LEAD → 연락처·SLA 노출, 계약·재무·주소·사업자 마스킹
+// 그 외 (USER 등) → 이름·타입·서비스 분야만 노출
+function applyVendorMask<T extends Record<string, unknown>>(vendor: T, role: VendorRequesterRole): T {
+  const fullAccess = ['ADMIN', 'ASSET_MANAGER', 'REPAIR_OWNER']
+  const partialAccess = ['TEAM_LEAD', 'DEPT_LEAD']
+
+  if (role && fullAccess.includes(role)) return vendor
+
+  if (role && partialAccess.includes(role)) {
+    return {
+      ...vendor,
+      // 계약·재무·법인 정보 마스킹
+      businessRegistrationNumber: '***-**-*****',
+      bankAccountHolder: null,
+      bankAccountNumberMask: null,
+      bankName: null,
+      contractStartDate: null,
+      contractEndDate: null,
+      penaltyTerms: null,
+      paymentTerms: null,
+      financialNote: null,
+      isVatIncluded: null,
+      isWithholdingTax: null,
+      paymentDaysAfter: null,
+      // 주소 마스킹
+      addressBusiness: null,
+      addressHeadOffice: null,
+      addressDetail: null,
+      postalAddress: null,
+      // 대표자명 마스킹
+      ceoName: null,
+    }
+  }
+
+  // USER 등 — 최소 정보만 노출
+  return {
+    id: vendor['id'],
+    name: vendor['name'],
+    type: vendor['type'],
+    status: vendor['status'],
+    serviceRegion: vendor['serviceRegion'],
+    supportedClasses: vendor['supportedClasses'],
+    isBlacklisted: vendor['isBlacklisted'],
+  } as unknown as T
+}
+
 const REQUIRED_DOCS_COMMON: VendorDocumentType[] = ['BUSINESS_REGISTRATION', 'BANKBOOK']
 const REQUIRED_DOCS_REPAIR: VendorDocumentType[] = [...REQUIRED_DOCS_COMMON, 'INSURANCE']
 
@@ -15,7 +64,7 @@ interface VendorListOptions extends ListOptions {
   type?: 'REPAIR' | 'SOFTWARE'
 }
 
-const list = async (options?: VendorListOptions) => {
+const list = async (options?: VendorListOptions & { role?: VendorRequesterRole }) => {
   const baseWhere = buildSoftDeleteWhere(options)
   const statusWhere =
     !options?.status || options.status === 'ALL' ? {} : { status: options.status as VendorStatus }
@@ -28,10 +77,12 @@ const list = async (options?: VendorListOptions) => {
   })
 
   // 암호화된 계좌번호 원문은 응답에서 제외 — mask만 반환
-  return rows.map(({ bankAccountNumber: _omit, ...rest }) => rest)
+  return rows
+    .map(({ bankAccountNumber: _omit, ...rest }) => rest)
+    .map((v) => applyVendorMask(v, options?.role))
 }
 
-const getById = async (id: string) => {
+const getById = async (id: string, role?: VendorRequesterRole) => {
   const vendorRecord = await prisma.vendor.findUnique({
     where: { id },
     include: { approvedBy: { select: { id: true, name: true } } },
@@ -40,7 +91,7 @@ const getById = async (id: string) => {
 
   // 암호화된 계좌번호 원문은 응답에서 제외 — mask만 반환
   const { bankAccountNumber: _omit, ...rest } = vendorRecord
-  return rest
+  return applyVendorMask(rest, role)
 }
 
 const toDateTime = (v: unknown): Date | undefined =>
