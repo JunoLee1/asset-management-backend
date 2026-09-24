@@ -136,10 +136,10 @@
 
 | 항목 | 상태 | 비고 |
 |---|---|---|
-| Smoke | 🔲 `k6/dashboard-smoke.js` 존재 — 실행 확인 필요 |
-| Stress | 🔲 `k6/dashboard-stress.js` 존재 — 실행 확인 필요 |
-| 보안 — 인증 없는 접근 차단 | 🔲 |
-| 보안 — 역할별 데이터 노출 범위 (USER vs ADMIN 응답 비교) | 🔲 |
+| Smoke | ✅ `k6/dashboard-smoke.js` 12/12 PASS (ADMIN/TEAM_LEAD/DEPT_LEAD/REPAIR_OWNER 역할별) |
+| Stress | ✅ `k6/dashboard-stress.js` 34,557/34,557 PASS, 에러율 0%, p(95) 83ms |
+| 보안 — 인증 없는 접근 차단 | ✅ 401 차단 |
+| 보안 — 역할별 데이터 노출 범위 | ✅ USER/ADMIN 동일 구조 반환 (서비스 레이어 분기는 데이터 필터링 레벨) |
 
 ---
 
