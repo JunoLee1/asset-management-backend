@@ -482,11 +482,34 @@ const baseRequestRow = {
 const requesterNoTeam = { id: 'mgr-1', name: 'Manager', teamId: null, team: null }
 
 describe('licenseService.request', () => {
-  it('좌석이 꽉 찬 상태에서도 요청 생성이 허용된다 (좌석 초과 차단 제거)', async () => {
+  it('active + pending >= seatsTotal 이면 409', async () => {
     const mockLicense = { id: 'lic-1', seatsTotal: 1, name: 'Adobe', coreDepartmentIds: [], coreJobTypes: [] }
     mockLicenseFindUnique.mockResolvedValueOnce(mockLicense)
-    // active assignments = 1 = seatsTotal (previously would have thrown 400)
-    // countActiveSeats is no longer called in request() — no seat check needed here
+
+    const mockRequesterUser = { id: 'u1', name: 'User', role: 'USER', teamId: null, team: null }
+    const mockTargetUser = { id: 'u2', name: 'Target' }
+    ;(prisma.user.findUnique as jest.Mock)
+      .mockResolvedValueOnce(mockRequesterUser)
+      .mockResolvedValueOnce(mockTargetUser)
+    ;(prisma.licenseAssignment.findFirst as jest.Mock).mockResolvedValueOnce(null)
+    mockLRFindFirst.mockResolvedValueOnce(null)
+
+    const mockTx = {
+      $queryRaw: jest.fn().mockResolvedValue([]),
+      license: { findUnique: jest.fn().mockResolvedValue({ seatsTotal: 1 }) },
+      licenseAssignment: { count: jest.fn().mockResolvedValue(1) },  // active = 1
+      licenseRequest: { count: jest.fn().mockResolvedValue(0), create: jest.fn() },
+    }
+    ;(prisma.$transaction as jest.Mock).mockImplementationOnce((fn: (tx: typeof mockTx) => Promise<unknown>) => fn(mockTx))
+
+    await expect(
+      licenseService.request('lic-1', { targetUserId: 'u2' }, { id: 'u1', role: 'USER' }),
+    ).rejects.toThrow(/잔여 시트가 없습니다/)
+  })
+
+  it('active + pending < seatsTotal 이면 요청 생성 성공', async () => {
+    const mockLicense = { id: 'lic-1', seatsTotal: 3, name: 'Adobe', coreDepartmentIds: [], coreJobTypes: [] }
+    mockLicenseFindUnique.mockResolvedValueOnce(mockLicense)
 
     const mockRequesterUser = { id: 'u1', name: 'User', role: 'USER', teamId: null, team: null }
     const mockTargetUser = { id: 'u2', name: 'Target' }
@@ -502,7 +525,9 @@ describe('licenseService.request', () => {
     }
     const mockTx = {
       $queryRaw: jest.fn().mockResolvedValue([]),
-      licenseRequest: { create: jest.fn().mockResolvedValue(createdReq) },
+      license: { findUnique: jest.fn().mockResolvedValue({ seatsTotal: 3 }) },
+      licenseAssignment: { count: jest.fn().mockResolvedValue(1) },  // active = 1
+      licenseRequest: { count: jest.fn().mockResolvedValue(1), create: jest.fn().mockResolvedValue(createdReq) },  // pending = 1, total = 2 < 3
     }
     ;(prisma.$transaction as jest.Mock).mockImplementationOnce((fn: (tx: typeof mockTx) => Promise<unknown>) => fn(mockTx))
 
@@ -1107,6 +1132,7 @@ describe('licenseService.bulkAssign', () => {
     mockLicenseFindUnique.mockResolvedValueOnce({ id: 'lic1', seatsTotal: 2, name: 'L' })
     const mockTx = {
       $queryRaw: jest.fn().mockResolvedValue([]),
+      license: { findUnique: jest.fn().mockResolvedValue({ seatsTotal: 2 }) },
       licenseAssignment: { count: jest.fn().mockResolvedValue(2), create: jest.fn() },
       licenseRequest: { findMany: jest.fn().mockResolvedValue([]), update: jest.fn() },
     }
@@ -1139,6 +1165,7 @@ describe('licenseService.bulkAssign', () => {
     const mockCreate = jest.fn().mockResolvedValue({})
     const mockTx = {
       $queryRaw: jest.fn().mockResolvedValue([]),
+      license: { findUnique: jest.fn().mockResolvedValue({ seatsTotal: 2 }) },
       licenseAssignment: { count: jest.fn().mockResolvedValue(0), create: mockCreate },
       licenseRequest: {
         findMany: jest.fn().mockResolvedValue([
