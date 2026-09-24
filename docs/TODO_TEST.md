@@ -176,10 +176,11 @@
 
 | 항목 | 상태 | 비고 |
 |---|---|---|
-| Smoke | 🔲 |
-| Stress | 🔲 |
-| 보안 — GET 모든 역할 허용 | 🔲 |
-| 보안 — POST/PATCH/DELETE ADMIN 전용 차단 | 🔲 |
+| Smoke | ✅ `k6/manufacturer-smoke.js` 8/8 PASS |
+| Stress | ✅ `k6/manufacturer-stress.js` 116,709/116,709 PASS, 에러율 0% |
+| 보안 — 인증 없는 접근 차단 | ✅ 401 차단 |
+| 보안 — GET 모든 역할 허용 | ✅ USER 조회 성공 |
+| 보안 — POST/PATCH/DELETE ADMIN 전용 차단 | ✅ USER/TEAM_LEAD 403 차단 (Burp 확인) |
 | 보안 — 입력값 퍼징 | 🔲 |
 
 ---
