@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { JobType } from '../generated/prisma/enums'
 
 export const listSoftwareQuerySchema = z.object({
   type: z.enum(['SaaS', 'OnPremise', 'Other']).optional(),
@@ -23,6 +24,7 @@ export const updateSoftwareSchema = z.object({
   category: z.string().optional(),
   description: z.string().nullable().optional(),
   licenseCoverage: z.boolean().nullable().optional(),
+  suggestedJobTypes: z.array(z.nativeEnum(JobType)).optional(),
 })
 
 // 수동 카탈로그 등록 — name 필수, 나머지 옵션
@@ -33,6 +35,7 @@ export const createSoftwareSchema = z.object({
   category: z.string().optional(),
   description: z.string().nullable().optional(),
   licenseCoverage: z.boolean().nullable().optional(),
+  suggestedJobTypes: z.array(z.nativeEnum(JobType)).optional(),
 })
 
 export const updatePermissionSchema = z.object({

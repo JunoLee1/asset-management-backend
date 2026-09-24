@@ -221,6 +221,7 @@ const getById = async (id: string, requester: RequesterContext): Promise<Softwar
     category: sw.category,
     description: sw.description,
     licenseCoverage: sw.licenseCoverage,
+    suggestedJobTypes: sw.suggestedJobTypes,
     executedOs: oses[0] ?? null,
     userCount: userIds.size,
     firstDiscoveredAt: firsts.length > 0 ? new Date(Math.min(...firsts)) : null,
@@ -266,27 +267,38 @@ const update = async (
     }
   }
 
-  if (Object.keys(changed).length === 0) {
+  const hasJobTypesUpdate = input.suggestedJobTypes !== undefined
+
+  if (Object.keys(changed).length === 0 && !hasJobTypesUpdate) {
     // 의미 있는 변경 없음 — DB write 도 audit 도 생략
     return getById(id, requester)
   }
 
-  await prisma.$transaction(async (tx) => {
-    await tx.software.update({
+  if (Object.keys(changed).length > 0) {
+    await prisma.$transaction(async (tx) => {
+      await tx.software.update({
+        where: { id },
+        data: {
+          ...Object.fromEntries(Object.entries(changed).map(([k, v]) => [k, v.next])),
+          ...(hasJobTypesUpdate ? { suggestedJobTypes: input.suggestedJobTypes } : {}),
+        },
+      })
+      await logAudit({
+        action: AuditAction.SOFTWARE_UPDATE,
+        targetType: 'Software',
+        targetId: id,
+        performedById: requester.id,
+        performedByRole: requester.role,
+        detail: { changed },
+        tx,
+      })
+    })
+  } else {
+    await prisma.software.update({
       where: { id },
-      data: Object.fromEntries(Object.entries(changed).map(([k, v]) => [k, v.next])),
+      data: { suggestedJobTypes: input.suggestedJobTypes },
     })
-
-    await logAudit({
-      action: AuditAction.SOFTWARE_UPDATE,
-      targetType: 'Software',
-      targetId: id,
-      performedById: requester.id,
-      performedByRole: requester.role,
-      detail: { changed },
-      tx,
-    })
-  })
+  }
 
   return getById(id, requester)
 }
@@ -392,6 +404,7 @@ const create = async (
         category: input.category ?? '기타',
         description: input.description ?? null,
         licenseCoverage: input.licenseCoverage ?? null,
+        suggestedJobTypes: input.suggestedJobTypes ?? [],
         basePermission: {
           create: { status: SoftwarePermissionStatus.UNCLASSIFIED },
         },

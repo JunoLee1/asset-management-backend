@@ -21,6 +21,7 @@ export interface SoftwareLinkItem {
   id: string
   softwareId: string
   softwareName: string
+  suggestedJobTypes: JobType[]
 }
 
 export interface LicenseDetail extends LicenseListItem {
@@ -31,6 +32,7 @@ export interface LicenseDetail extends LicenseListItem {
   softwares: SoftwareLinkItem[]
   coreDepartmentIds: string[]
   coreJobTypes: JobType[]
+  suggestedCoreJobTypes: JobType[]
 }
 
 export const calculateLicenseCoverage = (
