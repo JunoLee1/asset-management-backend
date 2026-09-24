@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import { env } from '../config/env'
 import { logger } from '../lib/logger'
+import { maskPhone } from '../lib/maskPii'
 
 export class SmsService {
   private static readonly NAVER_ENDPOINT = 'https://sens.apigw.ntruss.com'
@@ -9,7 +10,7 @@ export class SmsService {
   static async sendSms(phoneNumber: string, message: string): Promise<boolean> {
     if (!env.sms.serviceId || !env.sms.accessKey) {
       logger.warn(
-        { phoneNumber, messageLength: message.length },
+        { phoneNumber: maskPhone(phoneNumber), messageLength: message.length },
         '[DEV] SMS 미설정 — 전송 스킵',
       )
       return true
@@ -44,17 +45,17 @@ export class SmsService {
       if (!response.ok) {
         const error = await response.text()
         logger.error(
-          { phoneNumber, status: response.status, error },
+          { phoneNumber: maskPhone(phoneNumber), status: response.status, error },
           'SMS 전송 실패',
         )
         return false
       }
 
-      logger.info({ phoneNumber }, 'SMS 전송 성공')
+      logger.info({ phoneNumber: maskPhone(phoneNumber) }, 'SMS 전송 성공')
       return true
     } catch (err) {
       logger.error(
-        { phoneNumber, error: err instanceof Error ? err.message : String(err) },
+        { phoneNumber: maskPhone(phoneNumber), error: err instanceof Error ? err.message : String(err) },
         'SMS 전송 중 예외 발생',
       )
       return false
