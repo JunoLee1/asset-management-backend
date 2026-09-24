@@ -31,6 +31,16 @@ enum Role {
   DEPT_LEAD // 부서장: 본인 부서의 2차 대여 승인, 부서 전체 자산 가시성
 }
 
+enum JobType {
+  DEVELOPER
+  DESIGNER
+  SALES
+  FINANCE
+  HR
+  SECURITY
+  OPERATIONS
+}
+
 enum OAuthProvider {
   GOOGLE
   KAKAO
@@ -317,6 +327,7 @@ model User {
   password             String?
   name                 String
   role                 Role      @default(USER)
+  jobType              JobType?  // nullable — 미설정 시 직종 가중치 0점 처리
   isActive             Boolean   @default(false)
   phoneNumber          String?
   phoneNumberHash      String?   @unique
@@ -516,6 +527,7 @@ model License {
   // 이 라이선스가 "직무 필수"로 취급되는 핵심 부서 목록 — license 요청 대기열
   // 정렬(priorityTier)에만 쓰이고, 좌석 할당 로직 자체에는 관여하지 않는다.
   coreDepartmentIds String[] @default([])
+  coreJobTypes      JobType[] @default([])
 
   assignments LicenseAssignment[]
   requests    LicenseRequest[]

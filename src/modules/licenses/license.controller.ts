@@ -119,6 +119,12 @@ const cancelHandler = async (req: Request, res: Response): Promise<void> => {
   res.json(result)
 }
 
+const bulkAssignHandler = async (req: Request, res: Response): Promise<void> => {
+  const licenseId = requireId(req)
+  const result = await licenseService.bulkAssign(licenseId, getRequester(req))
+  res.json(result)
+}
+
 export const licenseController = {
   list, getById, create, update, remove,
   unassign,
@@ -126,4 +132,5 @@ export const licenseController = {
   approveManagerHandler, approveDeptHandler,
   approveSecurityHandler, approveAdminHandler,
   rejectHandler, cancelHandler,
+  bulkAssignHandler,
 }

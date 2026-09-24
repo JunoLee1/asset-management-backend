@@ -16,7 +16,7 @@ API 응답에 붙는 상태로 남았다 (`listRequests()`가 `createdAt desc` �
 ## 문제 정의
 
 1. 부서 일치 여부만으로는 우선순위를 표현하기 부족하다 — 같은 CORE 부서 안에서도, 또는
-   CORE가 아니더라도 직무(role)상 반드시 필요한 사람과 오래 기다린 사람을 구분할 방법이 없다.
+   CORE가 아니더라도 실제 업무 직종상 반드시 필요한 사람과 오래 기다린 사람을 구분할 방법이 없다.
 2. `priorityTier`가 계산은 되지만 실제 정렬/배정에 쓰이지 않아, 관리자가 대기열을 봐도
    누구를 먼저 승인해야 하는지 여전히 판단 근거가 없다.
 3. 현재 `request()`는 좌석 수(`seatsTotal`)를 초과하는 순간 신규 요청 생성 자체를 거절한다
@@ -28,7 +28,7 @@ API 응답에 붙는 상태로 남았다 (`listRequests()`가 `createdAt desc` �
 ## 범위
 
 **포함**
-- 라이선스별 "핵심 직무(role)" 지정 (`License.coreRoles`) — `coreDepartmentIds`와 동일 패턴
+- 라이선스별 "핵심 직무" 지정 (`License.coreJobTypes`) — `coreDepartmentIds`와 동일 패턴
 - 부서 일치 + 역할 일치 + 대기시간을 합산한 가중치 점수(`priorityScore`) 계산
 - `request()` 생성 시점의 좌석초과 즉시 차단 제거 — 승인 파이프라인(팀장→부서장→보안)은
   좌석 수와 무관하게 진행
@@ -57,26 +57,43 @@ API 응답에 붙는 상태로 남았다 (`listRequests()`가 `createdAt desc` �
 ### 1. 데이터 모델
 
 ```prisma
+enum JobType {
+  DEVELOPER
+  DESIGNER
+  SALES
+  FINANCE
+  HR
+  SECURITY
+  OPERATIONS
+}
+
+model User {
+  // ...기존 필드
+  jobType JobType? // nullable — 미설정 시 직종 가중치 0점으로 처리
+}
+
 model License {
   // ...기존 필드
-  coreDepartmentIds String[] @default([])
-  coreRoles         Role[]   @default([])
+  coreDepartmentIds String[]   @default([])
+  coreJobTypes      JobType[]  @default([])
 }
 ```
 
-- `coreDepartmentIds`와 동일한 이유로 FK 없는 raw array 사용, `@default([])`라 additive
-  마이그레이션
-- 존재하지 않게 된 값(role enum이 바뀌는 경우는 없지만, 논리적으로 빈 배열이면 매칭 없음)은
-  안전하게 무시
+- `User.jobType`: nullable. 기존 사용자는 null로 마이그레이션 — null이면 직종 가중치 +0.
+  `coreDepartmentIds`의 빈 배열 → 전원 DEFAULT 처리와 동일한 논리.
+- `License.coreJobTypes`: `coreDepartmentIds`와 동일한 이유로 `@default([])`라 additive
+  마이그레이션. 빈 배열이면 직종 가중치 해당 없음(전원 +0).
+- 신규 직종 추가 시 enum 마이그레이션 필요 — 자유 문자열 대신 enum을 택한 이유는 오타/대소문자
+  불일치로 인한 매칭 실패 방지.
 
 ### 2. 우선순위 점수 계산
 
-**기준: `coreDepartmentIds`와 동일하게 신청자가 아니라 대상자(`targetUser`)의 부서/역할.**
+**기준: `coreDepartmentIds`와 동일하게 신청자가 아니라 대상자(`targetUser`)의 부서/직종.**
 
 ```
 priorityScore =
   (targetUser.team?.departmentId ∈ license.coreDepartmentIds ? 100 : 0)
-  + (targetUser.role ∈ license.coreRoles ? 50 : 0)
+  + (targetUser.jobType ∈ license.coreJobTypes ? 50 : 0)
   + floor((now - createdAt) / 1일) × 1
 ```
 
@@ -102,6 +119,12 @@ priorityScore =
   "이미 예약된 좌석"이 아니라 "배정 후보"이기 때문.
 - 이미 승인된 사용자 중복 방지(366-369행), 진행 중 요청 중복 방지(371-378행) 로직은 그대로
   유지
+- **`approveAdmin()` 비교 연산자 변경 필요**: 현재 `approveAdmin()`의 트랜잭션 내 체크는
+  `activeInTx > seatsTotal` (`>`)이다. 이는 PENDING_ADMIN 요청 자체가 `countActiveSeats()`에
+  포함되어 있어서 "이미 1 예약됨"으로 취급되기 때문. `countActiveSeats()`가 활성 할당만 세도록
+  바뀌면 이 요청은 더 이상 카운트에 포함되지 않으므로, 체크를 **`activeInTx >= seatsTotal`
+  (`>=`)으로 변경해야** 좌석 초과가 막힌다. 변경하지 않으면 마지막 잔여석이 동시 승인으로
+  초과 배정될 수 있다.
 
 ### 4. 신규 `bulkAssign(licenseId, requester)`
 
@@ -110,7 +133,7 @@ priorityScore =
 2. 트랜잭션 시작, lockLicenseForUpdate (기존 함수 재사용)
 3. availableSeats = license.seatsTotal - 활성 할당 수(APPROVED, unassignedAt: null)
 4. availableSeats <= 0 이면 빈 결과 반환 (에러 아님 — "배정할 좌석 없음"은 정상 상태)
-5. PENDING_ADMIN 상태의 모든 요청 조회 (license, targetUser.team, targetUser.role 포함)
+5. PENDING_ADMIN 상태의 모든 요청 조회 (license.coreJobTypes, targetUser.team.departmentId, targetUser.jobType 포함)
 6. 각 요청에 priorityScore 계산, score desc / tie는 createdAt asc로 정렬
 7. 상위 availableSeats개를 순서대로:
    - status: 'APPROVED', adminApprovedById, adminApprovedAt 갱신
@@ -127,6 +150,13 @@ priorityScore =
 - 잔여석보다 대기 요청이 적으면 있는 만큼만 승인(에러 아님)
 - 승인되지 못한 나머지는 `PENDING_ADMIN`에 그대로 남아 다음 `bulkAssign` 호출이나 개별
   `approveAdmin` 호출을 기다림
+- **`now` 단일 캡처**: `priorityScore`의 대기일 계산(`floor((now - createdAt) / 1일)`)에
+  쓰이는 `now`는 함수 진입 시점에 **`const now = new Date()`로 한 번만 캡처**하고 모든
+  요청에 동일하게 사용한다. 루프 안에서 매번 `new Date()`를 호출하면 자정을 넘길 때
+  동일 배치 내 요청 간 점수가 1 차이가 나 tie-breaking 일관성이 깨진다.
+  `listRequests()`의 정렬도 동일하게 단일 `now`를 사용한다.
+  (목록 조회 시점과 `bulkAssign` 호출 시점 사이의 점수 차이는 허용 범위 —
+  점수는 호출 시점 스냅샷 기준이다.)
 
 ### 5. API 계약 변경
 
@@ -134,19 +164,19 @@ priorityScore =
   `{ assigned: LicenseRequestItem[], stillWaiting: LicenseRequestItem[] }`
 - `GET /licenses/:id/requests`: 응답 배열의 각 아이템에 `priorityScore: number` 추가
   (`priorityTier`는 유지)
-- `POST /licenses`, `PATCH /licenses/:id`: body에 `coreRoles?: Role[]` 허용
+- `POST /licenses`, `PATCH /licenses/:id`: body에 `coreJobTypes?: JobType[]` 허용
 
 ### 6. 검증 스키마
 
 `src/schemas/` 내 라이선스 생성/수정 zod 스키마에 추가:
 ```ts
-coreRoles: z.array(z.nativeEnum(Role)).optional()
+coreJobTypes: z.array(z.nativeEnum(JobType)).optional()
 ```
 
 ## 테스트 계획
 
-- `priorityScore` 계산 단위테스트: 부서 일치/역할 일치/대기일수 조합별 점수, 동점 시
-  createdAt 오름차순 정렬
+- `priorityScore` 계산 단위테스트: 부서 일치/직종 일치/대기일수 조합별 점수, 동점 시
+  createdAt 오름차순 정렬. targetUser.jobType이 null인 경우 +0으로 처리되는지 확인.
 - `bulkAssign`:
   - 대기 요청 수 > 잔여석: 상위 N개(잔여석만큼)만 APPROVED, 나머지는 PENDING_ADMIN 유지
   - 대기 요청 수 <= 잔여석: 전원 APPROVED
@@ -156,7 +186,10 @@ coreRoles: z.array(z.nativeEnum(Role)).optional()
 - `request()` 회귀: 좌석 초과 상태에서도 요청 생성이 성공하는지 (기존 400/409 차단 테스트는
   제거하고 새 동작으로 교체)
 - 기존 `approveAdmin()` 개별 승인 경로 회귀 테스트 유지
-- create/update API가 `coreRoles`를 정상 저장/갱신하는지
+- create/update API가 `coreJobTypes`를 정상 저장/갱신하는지
+- `listRequests()` 응답이 `priorityScore desc` → 동점 시 `createdAt asc` 순서로 정렬되는지
+- `getRequestById()`가 모든 상태(APPROVED, REJECTED 포함)에서 `priorityScore`를 반환하는지
+- `PATCH /admin/users/:id`(또는 user 생성/수정 API)가 `jobType`을 정상 저장/갱신하는지
 
 ## 미해결 질문 (구현 중 확인 필요)
 
