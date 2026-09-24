@@ -220,12 +220,12 @@
 
 | 항목 | 상태 | 비고 |
 |---|---|---|
-| Smoke | 🔲 |
-| Stress | 🔲 |
-| 보안 — USER/TEAM_LEAD → 접근 시도 (SECURITY_OFFICER 전용) | 🔲 |
-| 보안 — SECURITY_OFFICER → 리포트 생성/수정/제출/삭제 | 🔲 |
-| 보안 — ADMIN → 리포트 조회 (허용 역할) | 🔲 |
-| 보안 — 민감 정보(SW 차단 현황) 노출 범위 | 🔲 |
+| Smoke | ✅ `k6/security-report-smoke.js` 8/8 PASS |
+| Stress | ✅ `k6/security-report-stress.js` 106,867/106,867 PASS, 에러율 0% |
+| 보안 — USER/TEAM_LEAD → 접근 차단 (SECURITY_OFFICER 전용) | ✅ 403 차단 (Burp 확인) |
+| 보안 — SECURITY_OFFICER → 생성/삭제 권한 확인 | ✅ PASS |
+| 보안 — ADMIN → 목록/통계 조회 허용 | ✅ PASS |
+| 보안 — 인증 없는 접근 차단 | ✅ 401 차단 |
 
 ---
 
