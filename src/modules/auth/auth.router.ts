@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import passport from 'passport'
+import rateLimit from 'express-rate-limit'
 import { authController } from './auth.controller'
 import { authenticate } from '../../middlewares/authenticate'
 import { validateBody } from '../../middlewares/validate'
@@ -13,9 +14,17 @@ import {
 
 const router: Router = Router()
 
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15분
+  max: 10,                   // IP당 최대 10회
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: '너무 많은 로그인 시도입니다. 15분 후 다시 시도해주세요.' },
+})
+
 // ── 로컬 인증 ───────────────────────────────────────────────────────────────
 router.post('/accept-invite', validateBody(acceptInviteSchema), authController.acceptInvite)
-router.post('/login', validateBody(loginSchema), authController.login)
+router.post('/login', loginLimiter, validateBody(loginSchema), authController.login)
 router.post('/refresh', authController.refresh)
 router.post('/logout', authController.logout)
 router.post('/logout-all', authenticate, authController.logoutAll)
