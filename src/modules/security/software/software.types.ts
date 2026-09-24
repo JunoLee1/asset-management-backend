@@ -3,7 +3,10 @@
 import type {
   SoftwareType,
   SoftwarePermissionStatus,
+  JobType,
 } from '../../../generated/prisma/enums'
+
+export type { JobType }
 
 export interface SoftwareListItem {
   id: string
@@ -22,6 +25,7 @@ export interface SoftwareListItem {
 export interface SoftwareDetail extends SoftwareListItem {
   description: string | null
   licenseCoverage: boolean | null
+  suggestedJobTypes: JobType[]
   createdAt: Date
   updatedAt: Date
 }
@@ -40,6 +44,7 @@ export interface UpdateSoftwareInput {
   category?: string
   description?: string | null
   licenseCoverage?: boolean | null
+  suggestedJobTypes?: JobType[]
 }
 
 export interface CreateSoftwareInput {
@@ -49,6 +54,7 @@ export interface CreateSoftwareInput {
   category?: string
   description?: string | null
   licenseCoverage?: boolean | null
+  suggestedJobTypes?: JobType[]
 }
 
 export interface UpdatePermissionInput {

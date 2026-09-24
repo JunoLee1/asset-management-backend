@@ -1544,6 +1544,7 @@ model Software {
   // 인벤토리의 "유료 라이선스 보유" flag — ERP License 매칭과 별 축 (ADR 0002 line 56)
   // null = 미선택, true = 보유, false = 미보유
   licenseCoverage Boolean?
+  suggestedJobTypes JobType[] @default([]) // 이 SW를 주로 쓰는 직종 힌트 — License.coreJobTypes 기본값 제안용
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -346,6 +346,34 @@ describe('licenseService.getById', () => {
     const result = await licenseService.getById('lic-1', adminCtx)
     expect(result.coreDepartmentIds).toEqual(['dept-it', 'dept-design'])
   })
+
+  it('연결된 소프트웨어의 suggestedJobTypes 합집합을 suggestedCoreJobTypes로 반환', async () => {
+    mockLicenseFindUnique.mockResolvedValue({
+      ...baseLicense,
+      coreJobTypes: [],
+      softwareLinks: [
+        { id: 'link1', softwareId: 'sw1', software: { name: 'Photoshop', suggestedJobTypes: ['DESIGNER'] } },
+        { id: 'link2', softwareId: 'sw2', software: { name: 'Illustrator', suggestedJobTypes: ['DESIGNER', 'DEVELOPER'] } },
+      ],
+    })
+
+    const result = await licenseService.getById('lic-1', adminCtx)
+
+    expect(result.suggestedCoreJobTypes).toEqual(expect.arrayContaining(['DESIGNER', 'DEVELOPER']))
+    expect(result.suggestedCoreJobTypes).toHaveLength(2)
+  })
+
+  it('연결된 소프트웨어가 없으면 suggestedCoreJobTypes 빈 배열', async () => {
+    mockLicenseFindUnique.mockResolvedValue({
+      ...baseLicense,
+      coreJobTypes: [],
+      softwareLinks: [],
+    })
+
+    const result = await licenseService.getById('lic-1', adminCtx)
+
+    expect(result.suggestedCoreJobTypes).toEqual([])
+  })
 })
 
 describe('licenseService — getRequestById priorityScore', () => {

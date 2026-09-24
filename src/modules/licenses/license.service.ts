@@ -20,6 +20,7 @@ import type {
   CreateLicenseRequestInput,
   RejectLicenseRequestInput,
   ListLicenseRequestsQuery,
+  JobType,
 } from './license.types'
 import { calculateLicenseCoverage } from './license.types'
 
@@ -138,7 +139,7 @@ const getById = async (id: string, requester: RequesterContext): Promise<License
         orderBy: { assignedAt: 'desc' },
       },
       softwareLinks: {
-        include: { software: { select: { id: true, name: true } } },
+        include: { software: { select: { id: true, name: true, suggestedJobTypes: true } } },
         orderBy: { matchedAt: 'asc' },
       },
     },
@@ -199,7 +200,11 @@ const getById = async (id: string, requester: RequesterContext): Promise<License
       id: sl.id,
       softwareId: sl.softwareId,
       softwareName: sl.software.name,
+      suggestedJobTypes: sl.software.suggestedJobTypes as JobType[],
     })),
+    suggestedCoreJobTypes: [
+      ...new Set(row.softwareLinks.flatMap((sl) => sl.software.suggestedJobTypes)),
+    ] as JobType[],
   }
 }
 
