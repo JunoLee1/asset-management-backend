@@ -5,8 +5,8 @@ const currencyEnum = z.enum(['KRW', 'USD', 'EUR', 'GBP', 'JPY'])
 
 export const createLicenseSchema = z
   .object({
-    name: z.string().min(1, '라이선스 이름은 필수입니다.'),
-    productKey: z.string().min(1).optional(),
+    name: z.string().min(1, '라이선스 이름은 필수입니다.').max(255),
+    productKey: z.string().min(1).max(500).optional(),
     vendorId: z.string().optional(),
     seatsTotal: z.number().int().positive(),
     purchaseDate: z.string().datetime(),
@@ -24,8 +24,8 @@ export const createLicenseSchema = z
 
 export const updateLicenseSchema = z
   .object({
-    name: z.string().min(1).optional(),
-    productKey: z.string().nullable().optional(),
+    name: z.string().min(1).max(255).optional(),
+    productKey: z.string().max(500).nullable().optional(),
     vendorId: z.string().nullable().optional(),
     seatsTotal: z.number().int().positive().optional(),
     purchaseDate: z.string().datetime().optional(),

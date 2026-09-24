@@ -18,22 +18,22 @@ export const listSoftwareQuerySchema = z.object({
 })
 
 export const updateSoftwareSchema = z.object({
-  name: z.string().min(1).optional(),
-  vendor: z.string().nullable().optional(),
+  name: z.string().min(1).max(255).optional(),
+  vendor: z.string().max(255).nullable().optional(),
   type: z.enum(['SaaS', 'OnPremise', 'Other']).optional(),
-  category: z.string().optional(),
-  description: z.string().nullable().optional(),
+  category: z.string().max(100).optional(),
+  description: z.string().max(2000).nullable().optional(),
   licenseCoverage: z.boolean().nullable().optional(),
   suggestedJobTypes: z.array(z.nativeEnum(JobType)).optional(),
 })
 
 // 수동 카탈로그 등록 — name 필수, 나머지 옵션
 export const createSoftwareSchema = z.object({
-  name: z.string().min(1),
-  vendor: z.string().nullable().optional(),
+  name: z.string().min(1).max(255),
+  vendor: z.string().max(255).nullable().optional(),
   type: z.enum(['SaaS', 'OnPremise', 'Other']).optional(),
-  category: z.string().optional(),
-  description: z.string().nullable().optional(),
+  category: z.string().max(100).optional(),
+  description: z.string().max(2000).nullable().optional(),
   licenseCoverage: z.boolean().nullable().optional(),
   suggestedJobTypes: z.array(z.nativeEnum(JobType)).optional(),
 })
