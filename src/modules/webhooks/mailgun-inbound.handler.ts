@@ -5,20 +5,30 @@ import { logger } from '../../lib/logger'
 import { notificationService } from '../notifications/notification.service'
 
 const SIGNING_KEY = process.env['MAILGUN_WEBHOOK_SIGNING_KEY'] ?? ''
+const IS_PRODUCTION = process.env['NODE_ENV'] === 'production'
 
 /**
  * Mailgun webhook signature verification
  * https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#securing-webhooks
+ *
+ * 반환값: 'ok' | 'invalid' | 'missing-key' (프로덕션에서 키 미설정)
  */
 function verifyMailgunSignature(params: {
   timestamp: string
   token: string
   signature: string
-}): boolean {
-  if (!SIGNING_KEY) return true // 개발 환경: signing key 미설정 시 검증 skip
+}): 'ok' | 'invalid' | 'missing-key' {
+  if (!SIGNING_KEY) {
+    if (IS_PRODUCTION) return 'missing-key' // 프로덕션에서 키 미설정 = fail-fast
+    return 'ok' // 개발 환경만 검증 skip
+  }
+  if (!params.timestamp || !params.token || !params.signature) return 'invalid'
   const value = params.timestamp + params.token
   const expected = crypto.createHmac('sha256', SIGNING_KEY).update(value).digest('hex')
-  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(params.signature))
+  const expectedBuf = Buffer.from(expected)
+  const sigBuf = Buffer.from(params.signature)
+  if (expectedBuf.length !== sigBuf.length) return 'invalid'
+  return crypto.timingSafeEqual(expectedBuf, sigBuf) ? 'ok' : 'invalid'
 }
 
 /**
@@ -63,7 +73,13 @@ export async function handleMailgunInbound(req: Request, res: Response): Promise
   const token = body['token'] ?? ''
   const signature = body['signature'] ?? ''
 
-  if (!verifyMailgunSignature({ timestamp, token, signature })) {
+  const verification = verifyMailgunSignature({ timestamp, token, signature })
+  if (verification === 'missing-key') {
+    logger.error('[mailgun-inbound] MAILGUN_WEBHOOK_SIGNING_KEY not configured in production')
+    res.status(500).json({ error: 'server misconfiguration' })
+    return
+  }
+  if (verification === 'invalid') {
     logger.warn('[mailgun-inbound] signature verification failed')
     res.status(406).json({ error: 'invalid signature' })
     return

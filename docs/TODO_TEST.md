@@ -254,15 +254,14 @@
 
 ## 19. Agent `/agent`, Webhooks `/webhooks`
 
-> `/agent` — JWT 인증 필요 / `/webhooks/mailgun-inbound` — 인증 없음 (외부 수신용)
+> `/agent` — JWT 인증 필요 / `/webhooks/mailgun-inbound` — 인증 없음 (외부 수신용, HMAC 서명 검증)
 
 | 항목 | 상태 | 비고 |
 |---|---|---|
-| Smoke | 🔲 |
-| Stress | 🔲 |
-| 보안 — `/agent` 인증 없는 접근 차단 | 🔲 |
-| 보안 — `/webhooks/mailgun-inbound` 인증 없이 접근 가능 여부 확인 | 🔲 | 외부 수신용이므로 의도된 설계인지 확인 필요 |
-| 보안 — webhook payload 변조 가능 여부 (HMAC 서명 검증 유무) | 🔲 |
+| Smoke — `/agent/block-list` 공개 접근 | ✅ 200 (의도적 공개) |
+| 보안 — `/agent/ingest`/`/collect`/`/block-events` 인증 없이 차단 | ✅ 401 차단 |
+| 보안 — `/webhooks/mailgun-inbound` HMAC 서명 검증 | ✅ 잘못된 서명 → 406 차단 |
+| 보안 — 프로덕션에서 SIGNING_KEY 미설정 fail-fast | ✅ 500 반환 (`fix/mailgun-signing-key-guard`) |
 
 ---
 
