@@ -1,10 +1,12 @@
 import type { Request, Response } from 'express'
 import { adminService } from './admin.service'
 import { prisma } from '../../lib/prisma'
+import { getRequester } from '../../lib/requestHelpers'
 import type { InviteUserInput } from '../../schemas/auth.schema'
 
 const inviteUser = async (req: Request, res: Response): Promise<void> => {
-  const result = await adminService.inviteUser(req.body as InviteUserInput)
+  const requester = getRequester(req)
+  const result = await adminService.inviteUser(req.body as InviteUserInput, requester)
   res.status(201).json(result)
 }
 
