@@ -16,6 +16,11 @@
 | 보안 — 인증 우회 (토큰 없음/변조/alg:none) | ✅ |
 | 보안 — 브루트포스 / Rate Limiting | ✅ 단계별 차단 적용 (`feat/progressive-rate-limit`) — 5회→10분, 10회→30분, 15회→1시간, 20회→24시간 |
 | 보안 — Refresh 토큰 재사용 | ✅ 로그아웃 후 재사용 차단 확인 |
+| 초대(회원가입) Smoke | ✅ `k6/invite-smoke.js` 5/5 PASS |
+| 초대(회원가입) Stress | ✅ `k6/invite-stress.js` 41,785/41,785 PASS, invite p(95) 186ms |
+| 보안 — USER/TEAM_LEAD → 초대 발송 차단 | ✅ 403 차단 (Burp 확인) |
+| 보안 — 유효하지 않은 초대 토큰 | ✅ "유효하지 않은 초대 링크" 반환 |
+| 보안 — 인증 없는 초대 발송 | ✅ 401 차단 |
 
 ---
 
