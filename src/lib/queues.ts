@@ -40,9 +40,11 @@ function getConnection(): Redis | null {
     logger.warn('[bullmq] REDIS_URL not set — queues disabled (fire-and-forget fallback)')
     return null
   }
+  // Producer 전용 연결 — Worker와 달리 blocking 명령을 안 쓰므로 strict 설정.
+  // Redis 다운 시 queue.add가 offline queue에 쌓여 hang 하지 않도록 fail-fast.
   connection = new IORedis(url, {
-    maxRetriesPerRequest: null,
-    enableOfflineQueue: true,
+    maxRetriesPerRequest: 3,
+    enableOfflineQueue: false,
   })
   connection.on('error', (err) => logger.error({ err: err.message }, '[bullmq] redis error'))
   return connection

@@ -10,6 +10,18 @@ export interface DispatchMailInput {
   html: string
 }
 
+// queue.add가 Redis 이슈로 예상보다 오래 걸리면 fallback으로 넘긴다.
+// Producer connection의 fail-fast 설정과 함께 이중 방어선.
+const QUEUE_ADD_TIMEOUT_MS = 2000
+
+function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`queue.add timed out after ${ms}ms`)), ms)
+    p.then((v) => { clearTimeout(timer); resolve(v) })
+     .catch((e) => { clearTimeout(timer); reject(e) })
+  })
+}
+
 export async function dispatchMail(input: DispatchMailInput): Promise<void> {
   const queue = getEmailQueue()
   if (!queue) {
@@ -20,7 +32,7 @@ export async function dispatchMail(input: DispatchMailInput): Promise<void> {
     return
   }
   try {
-    await queue.add('send', input)
+    await withTimeout(queue.add('send', input), QUEUE_ADD_TIMEOUT_MS)
   } catch (err) {
     logger.warn({ err, to: input.to }, '[mail-dispatch] queue add failed — fallback to direct')
     sendMail(input).catch((sendErr) => {
