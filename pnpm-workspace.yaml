@@ -6,6 +6,7 @@ allowBuilds:
   '@prisma/engines': true
   bcrypt: true
   core-js: true
+  msgpackr-extract: true
   prisma: true
   puppeteer: true
   unrs-resolver: true
