@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import { prisma } from '../../lib/prisma'
 import { AppError } from '../../lib/AppError'
 import { logger } from '../../lib/logger'
-import { sendMail } from '../../lib/mailer'
+import { dispatchMail } from '../../lib/mail-dispatch'
 import { inviteEmailTemplate } from '../../lib/emailTemplates'
 import { env } from '../../config/env'
 import { logSensitiveAction } from '../../lib/sensitiveAuditLog'
@@ -303,7 +303,7 @@ const reinvite = async (
   const inviteUrl = `${env.frontendUrl}/accept-invite?token=${inviteToken}`
   const { subject, html } = inviteEmailTemplate(updated.name, inviteUrl)
   try {
-    await sendMail({ to: updated.email, subject, html })
+    await dispatchMail({ to: updated.email, subject, html })
   } catch (err) {
     logger.error({ err }, '[Reinvite] 메일 발송 실패')
   }

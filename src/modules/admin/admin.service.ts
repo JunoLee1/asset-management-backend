@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../lib/AppError";
 import { logger } from "../../lib/logger";
-import { sendMail } from "../../lib/mailer";
+import { dispatchMail } from "../../lib/mail-dispatch";
 import { inviteEmailTemplate } from "../../lib/emailTemplates";
 import { encryptPhone, hashPhone, maskPhone } from "../../lib/phoneEncryption";
 import { env } from "../../config/env";
@@ -85,10 +85,8 @@ const inviteUser = async (
 
   const inviteUrl = `${env.frontendUrl}/accept-invite?token=${inviteToken}`;
   const { subject, html } = inviteEmailTemplate(dto.name, inviteUrl);
-  // fire-and-forget — SMTP 지연/실패가 응답 시간에 영향을 주지 않도록 응답을 기다리지 않음
-  sendMail({ to: dto.email, subject, html }).catch((err) => {
-    logger.error({ err }, '[Invite] 메일 발송 실패');
-  });
+  // BullMQ 큐로 dispatch (Redis 미설정 시 fire-and-forget fallback)
+  await dispatchMail({ to: dto.email, subject, html });
 
   return { inviteToken, email: dto.email, name: dto.name };
 };
