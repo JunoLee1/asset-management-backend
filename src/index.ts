@@ -5,9 +5,9 @@ import { startScheduler } from './lib/scheduler'
 import { startWorkers, stopWorkers } from './lib/workers'
 
 const PORT: number = Number(process.env.PORT) || 8080
-const server = app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', async () => {
   logger.info(`Server listening on port ${PORT} [${env.nodeEnv}]`)
-  startScheduler()
+  await startScheduler()
   startWorkers()
 })
 
